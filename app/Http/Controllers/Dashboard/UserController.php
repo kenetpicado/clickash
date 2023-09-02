@@ -17,11 +17,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        return inertia('Dashboard/User/Create');
-    }
-
     public function show(User $user)
     {
         return inertia('Dashboard/User/Show', [
@@ -35,10 +30,11 @@ class UserController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'sellers' => $request->sellers,
         ]);
 
-        return redirect()->route('dashboard.users.index');
+        return back();
     }
 
     public function update(UserRequest $request, $user)

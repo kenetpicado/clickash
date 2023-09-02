@@ -25,6 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_login',
+        'sellers'
     ];
 
     /**
@@ -54,12 +56,12 @@ class User extends Authenticatable
     public function getStatusAttribute(): string
     {
         if (!$this->last_login)
-            return 'Offline';
+            return 'Not logged in';
 
         if ($this->last_login->diffInMinutes() < 5)
             return 'Online';
 
-        return 'Offline';
+        return $this->last_login->diffForHumans();
     }
 
     public function sellers()

@@ -14,6 +14,7 @@ class Raffle extends Model
     protected $fillable = [
         'name',
         'fields',
+        'image'
     ];
 
     public function getFieldsAttribute($value)

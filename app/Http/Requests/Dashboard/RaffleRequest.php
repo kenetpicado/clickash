@@ -24,6 +24,7 @@ class RaffleRequest extends FormRequest
         return [
             "name" => ["required", "string"],
             "fields" => ["required"],
+            "image" => ["nullable"],
         ];
     }
 }

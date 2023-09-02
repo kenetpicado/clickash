@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/dashboard');
-
-Route::middleware(['auth:sanctum'])
+Route::middleware(['auth:sanctum', 'online'])
     ->prefix('dashboard')
     ->name('dashboard.')
     ->group(function () {
@@ -27,7 +25,7 @@ Route::middleware(['auth:sanctum'])
 
         Route::resource('profile', ProfileController::class)->only(['index', 'update']);
 
-        Route::resource('users', UserController::class)->except(['edit']);
+        Route::resource('users', UserController::class)->except(['edit', 'create']);
 
         Route::resource('raffles', RaffleController::class);
     });
