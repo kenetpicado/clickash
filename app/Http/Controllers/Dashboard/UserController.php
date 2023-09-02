@@ -13,13 +13,21 @@ class UserController extends Controller
     public function index()
     {
         return inertia('Dashboard/User/Index', [
-            'users' => User::all()
+            'users' => User::whereNull('user_id')->withCount('sellers')->get()
         ]);
     }
 
     public function create()
     {
         return inertia('Dashboard/User/Create');
+    }
+
+    public function show(User $user)
+    {
+        return inertia('Dashboard/User/Show', [
+            'user' => $user,
+            'sellers' => $user->sellers()->get()
+        ]);
     }
 
     public function store(UserRequest $request)

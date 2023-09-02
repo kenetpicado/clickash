@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])
 
         Route::resource('profile', ProfileController::class)->only(['index', 'update']);
 
-        Route::resource('users', UserController::class)->except(['show', 'edit']);
+        Route::resource('users', UserController::class)->except(['edit']);
 
         Route::resource('raffles', RaffleController::class);
     });

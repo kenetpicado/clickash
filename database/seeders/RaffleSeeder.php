@@ -14,10 +14,10 @@ class RaffleSeeder extends Seeder
     {
         $raffles = [
             [
-                "name" => "Diria",
+                "name" => "Diaria",
                 "fields" => json_encode([
                     "date" => false,
-                    "digits" => 1,
+                    "number" => 1,
                     "super_x" => true,
                 ])
             ],
@@ -25,7 +25,7 @@ class RaffleSeeder extends Seeder
                 "name" => "Fecha",
                 "fields" => json_encode([
                     "date" => true,
-                    "digits" => 1,
+                    "number" => 1,
                     "super_x" => false,
                 ])
             ],
@@ -33,7 +33,7 @@ class RaffleSeeder extends Seeder
                 "name" => "3 monazos",
                 "fields" => json_encode([
                     "date" => false,
-                    "digits" => 3,
+                    "number" => 3,
                     "super_x" => false,
                 ])
             ],
@@ -41,7 +41,7 @@ class RaffleSeeder extends Seeder
                 "name" => "Juega 3",
                 "fields" => json_encode([
                     "date" => false,
-                    "digits" => 3,
+                    "number" => 3,
                     "super_x" => false,
                 ])
             ],
@@ -49,7 +49,7 @@ class RaffleSeeder extends Seeder
                 "name" => "Tica",
                 "fields" => json_encode([
                     "date" => false,
-                    "digits" => 1,
+                    "number" => 1,
                     "super_x" => false,
                 ])
             ],
@@ -57,7 +57,7 @@ class RaffleSeeder extends Seeder
                 "name" => "Terminacion 2",
                 "fields" => json_encode([
                     "date" => false,
-                    "digits" => 2,
+                    "number" => 2,
                     "super_x" => false,
                 ])
             ],

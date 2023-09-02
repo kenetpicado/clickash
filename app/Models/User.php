@@ -44,5 +44,26 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login' => 'datetime'
     ];
+
+    protected $appends = [
+        'status'
+    ];
+
+    public function getStatusAttribute(): string
+    {
+        if (!$this->last_login)
+            return 'Offline';
+
+        if ($this->last_login->diffInMinutes() < 5)
+            return 'Online';
+
+        return 'Offline';
+    }
+
+    public function sellers()
+    {
+        return $this->hasMany(User::class, 'user_id');
+    }
 }

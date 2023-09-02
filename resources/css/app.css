@@ -39,4 +39,12 @@
     .badge-blue {
         @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-indigo-50 text-indigo-600
     }
+
+    .badge-green {
+        @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-green-50 text-green-600
+    }
+
+    .badge-red {
+        @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-red-50 text-red-600
+    }
 }

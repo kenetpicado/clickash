@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->integer('sellers')->nullable()->default(5);
+            $table->datetime('last_login')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

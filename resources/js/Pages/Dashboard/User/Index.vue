@@ -13,6 +13,8 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Sellers</th>
+                <th>Status</th>
                 <th>Accciones</th>
             </template>
 
@@ -28,8 +30,19 @@
                         {{ user.email }}
                     </td>
                     <td>
+                        {{ user.sellers_count }}
+                    </td>
+                    <td>
+                        <span :class="[user.status == 'Online' ? 'badge-green' : 'badge-red']">
+                            {{ user.status }}
+                        </span>
+                    </td>
+                    <td>
                         <div class="flex gap-2">
-                            <IconPencil role="button" @click="edit(user)"/>
+                            <Link :href="route('dashboard.users.show', user.id)">
+                            <IconEye />
+                            </Link>
+                            <IconPencil role="button" @click="edit(user)" />
                             <IconTrash role="button" @click="destroy(user.id)" />
                         </div>
                     </td>
@@ -51,12 +64,12 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import TableSection from '@/Components/TableSection.vue';
-import { IconPencil, IconTrash } from '@tabler/icons-vue';
+import { IconPencil, IconTrash, IconEye } from '@tabler/icons-vue';
 import AddButton from '@/Components/Buttons/AddButton.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Link } from '@inertiajs/vue3';
 import { toast } from '@/Use/toast';
 import { confirmAlert } from '@/Use/helpers';
 
