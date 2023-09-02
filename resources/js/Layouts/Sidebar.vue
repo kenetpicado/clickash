@@ -3,7 +3,7 @@
         <div class="flex flex-col items-center my-4">
             <div class="h-14 w-14">
                 <img class="h-full w-full"
-                    src="https://static.vecteezy.com/system/resources/previews/015/394/284/non_2x/medical-pharmacy-logo-design-vector.jpg"
+                    src="https://media.istockphoto.com/id/1211282980/es/vector/ganadores-afortunados-girando-tambor-de-la-rifa.jpg?s=612x612&w=0&k=20&c=1jJPxjaVHqPFA_DQGDV3QEBQ6_C3pbhjs8Ies2kR-44="
                     alt="" />
             </div>
             <h2 class="text-2xl font-extrabold text-gray-600">

@@ -1,5 +1,5 @@
 <template>
-    <AppLayout title="Create" :breads="breads">
+    <AppLayout title="Profile" :breads="breads">
         <template #header>
             <span class="title mt-1">
                 Profile

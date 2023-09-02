@@ -11,7 +11,8 @@ class DashboardController extends Controller
     public function __invoke()
     {
         return inertia('Dashboard/Index', [
-            'users_count' => User::count()
+            'users_count' => User::whereNull('user_id')->count(),
+            'sellers_count' => User::whereNotNull('user_id')->count()
         ]);
     }
 }

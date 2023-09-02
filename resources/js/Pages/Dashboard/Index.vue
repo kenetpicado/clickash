@@ -22,6 +22,10 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    sellers_count: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const breads = [
@@ -35,6 +39,11 @@ const stats = [
     {
         value: props.users_count,
         title: 'Users',
+        icon: IconUsers,
+    },
+    {
+        value: props.sellers_count,
+        title: 'Sellers',
         icon: IconUsers,
     },
 ]
