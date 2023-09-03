@@ -58,7 +58,7 @@ class User extends Authenticatable
         if (!$this->last_login)
             return 'Not logged in';
 
-        if ($this->last_login->diffInMinutes() < 5)
+        if ($this->last_login->diffInMinutes() < 4)
             return 'Online';
 
         return $this->last_login->diffForHumans();

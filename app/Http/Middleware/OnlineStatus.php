@@ -15,7 +15,7 @@ class OnlineStatus
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->user()->last_login || auth()->user()->last_login->diffInMinutes() > 5) {
+        if (!auth()->user()->last_login || auth()->user()->last_login->diffInMinutes() > 3) {
             auth()->user()->update([
                 'last_login' => now()
             ]);
