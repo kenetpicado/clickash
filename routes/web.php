@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::redirect('', '/dashboard');
+
 Route::middleware(['auth:sanctum', 'online'])
     ->prefix('dashboard')
     ->name('dashboard.')

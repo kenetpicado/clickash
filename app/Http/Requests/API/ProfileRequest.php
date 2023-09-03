@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Dashboard;
+namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class ProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,8 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required", "string", "max:255"],
-            "email" => ["required", "string", "email", "max:255", Rule::unique("users")->ignore($this->id)],
-            "password" => ["required_if:method,post", "string", "min:8", "confirmed"],
-            "sellers" => ["required", "numeric"],
-            "company_name" => ["required", "string", "max:255"],
+            "name" => ["required", "max:255"],
+            "email" => ["sometimes", "required", "email", Rule::unique("users")->ignore(auth()->id())],
         ];
     }
 }

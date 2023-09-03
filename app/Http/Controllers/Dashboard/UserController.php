@@ -32,6 +32,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'sellers' => $request->sellers,
+            'company_name' => $request->company_name,
         ]);
 
         return back();

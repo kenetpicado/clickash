@@ -24,7 +24,7 @@
                         {{ index + 1 }}
                     </td>
                     <td>
-                        {{ user.name }}
+                        {{ user.name }} ({{ user.company_name ?? 'No company' }})
                     </td>
                     <td>
                         {{ user.email }}
@@ -60,6 +60,7 @@
         <FormModal :show="openModal" title="User" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Name" v-model="form.name" required />
             <InputForm text="Email" v-model="form.email" type="email" required />
+            <InputForm text="Company name" v-model="form.company_name" required />
             <template v-if="isNew">
                 <InputForm text="Password" v-model="form.password" type="password" required />
                 <InputForm text="Password confirmation" v-model="form.password_confirmation" type="password" required />
@@ -109,6 +110,7 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     sellers: 5,
+    company_name: '',
 });
 
 const openModal = ref(false);
@@ -118,6 +120,7 @@ function edit(user) {
     form.name = user.name;
     form.email = user.email;
     form.sellers = user.sellers;
+    form.company_name = user.company_name;
     isNew.value = false;
     openModal.value = true;
 }
@@ -160,12 +163,7 @@ function destroy(id) {
 }
 
 function resetValues() {
-    form.id = '';
-    form.name = '';
-    form.email = '';
-    form.password = '';
-    form.password_confirmation = '';
-    form.sellers = 5;
+    form.reset();
     openModal.value = false;
     isNew.value = true;
 }
