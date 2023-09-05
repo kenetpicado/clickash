@@ -19,8 +19,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'company_name' => $this->company_name ?? 'N/A',
-            'role' => $this->user_id ? 'seller' : 'admin',
-            'sellers_limit' => $this->user_id ? 0 : $this->sellers,
+            'role' => $this->role,
+            'sellers_limit' => $this->sellers_limit,
             'sellers_count' => $this->sellers()->count()
         ];
     }

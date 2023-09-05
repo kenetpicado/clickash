@@ -18,8 +18,7 @@ class SellerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'company_name' => $this->company_name ?? 'N/A',
-            'role' => $this->user_id ? 'seller' : 'admin'
+            'status' => $this->status,
         ];
     }
 }

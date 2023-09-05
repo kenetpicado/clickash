@@ -9,7 +9,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: 'johndoe@gmail.com',
+    email: 'admin@gmail.com',
     password: 'password',
     remember: false,
 });

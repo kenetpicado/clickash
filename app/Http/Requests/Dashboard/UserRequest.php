@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
             "name" => ["required", "string", "max:255"],
             "email" => ["required", "string", "email", "max:255", Rule::unique("users")->ignore($this->id)],
             "password" => ["required_if:method,post", "string", "min:8", "confirmed"],
-            "sellers" => ["required", "numeric"],
+            "sellers_limit" => ["required", "numeric"],
             "company_name" => ["required", "string", "max:255"],
         ];
     }

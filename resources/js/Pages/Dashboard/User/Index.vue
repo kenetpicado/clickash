@@ -30,7 +30,7 @@
                         {{ user.email }}
                     </td>
                     <td>
-                        {{ user.sellers_count }} / {{ user.sellers }}
+                        {{ user.sellers_count }} / {{ user.sellers_limit }}
                     </td>
                     <td>
                         <span v-if="user.status == 'Online'" class="badge-green">
@@ -65,7 +65,7 @@
                 <InputForm text="Password" v-model="form.password" type="password" required />
                 <InputForm text="Password confirmation" v-model="form.password_confirmation" type="password" required />
             </template>
-            <InputForm text="Sellers" v-model="form.sellers" type="number" />
+            <InputForm text="Sellers limit" v-model="form.sellers_limit" type="number" />
         </FormModal>
 
     </AppLayout>
@@ -109,7 +109,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
-    sellers: 5,
+    sellers_limit: 5,
     company_name: '',
 });
 
@@ -119,7 +119,7 @@ function edit(user) {
     form.id = user.id;
     form.name = user.name;
     form.email = user.email;
-    form.sellers = user.sellers;
+    form.sellers_limit = user.sellers_limit;
     form.company_name = user.company_name;
     isNew.value = false;
     openModal.value = true;

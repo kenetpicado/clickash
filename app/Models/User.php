@@ -26,7 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'last_login',
-        'sellers',
+        'sellers_limit',
         'company_name',
     ];
 
