@@ -11,7 +11,7 @@
             <template #header>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Email</th>
+                <th>Active</th>
                 <th>Status</th>
             </template>
 
@@ -22,14 +22,21 @@
                     </td>
                     <td>
                         {{ user.name }}
+                        <div class="text-indigo-500 mt-2">
+                            {{ user.email }}
+                        </div>
                     </td>
                     <td>
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        <span :class="[user.status == 'Online' ? 'badge-green' : 'badge-red']">
-                            {{ user.status }}
+                        <span v-if="user.online == 'Now'" class="badge-green">
+                            {{ user.online }}
                         </span>
+
+                        <span v-else>
+                            {{ user.online }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="uppercase">{{ user.status }}</span>
                     </td>
                 </tr>
                 <tr v-if="sellers.length == 0">

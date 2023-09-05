@@ -22,7 +22,7 @@
                         Super X
                     </span>
                 </div>
-                <div>
+                <div v-if="canDestroy">
                     <IconTrash @click="$emit('onRemove', raffle.id)" role="button"/>
                 </div>
             </div>
@@ -39,6 +39,10 @@ const props = defineProps({
         required: true,
     },
     canEdit: {
+        type: Boolean,
+        default: true,
+    },
+    canDestroy: {
         type: Boolean,
         default: true,
     }

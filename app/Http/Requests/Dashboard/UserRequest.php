@@ -31,6 +31,7 @@ class UserRequest extends FormRequest
             "sellers_limit" => ["required", "numeric"],
             "company_name" => ["required", "string", "max:255"],
             'role' => ['required', new Enum(RoleEnum::class)],
+            'status' => ['nullable']
         ];
     }
 }

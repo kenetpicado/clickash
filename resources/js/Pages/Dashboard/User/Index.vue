@@ -15,6 +15,7 @@
                 <th>Company</th>
                 <th>Sellers</th>
                 <th>Role</th>
+                <th>Active</th>
                 <th>Status</th>
                 <th>Accciones</th>
             </template>
@@ -37,19 +38,20 @@
                         {{ user.sellers_count }} / {{ user.sellers_limit }}
                     </td>
                     <td>
-                        <span class="badge-blue" v-if="user.role">
+                        <span class="badge-blue uppercase" v-if="user.role">
                             {{ user.role }}
                         </span>
                     </td>
                     <td>
-                        <span v-if="user.status == 'Online'" class="badge-green">
-                            {{ user.status }}
+                        <span v-if="user.online == 'Now'" class="badge-green">
+                            {{ user.online }}
                         </span>
 
                         <span v-else>
-                            {{ user.status }}
+                            {{ user.online }}
                         </span>
                     </td>
+                    <td> <span class="uppercase">{{ user.status }}</span></td>
                     <td>
                         <div class="flex gap-2">
                             <Link :href="route('dashboard.users.raffles.index', user.id)">
@@ -83,6 +85,9 @@
             <SelectForm v-model="form.role" text="Role">
                 <option v-for="role in roles" :value="role">{{ role }}</option>
             </SelectForm>
+            <SelectForm v-if="!isNew" v-model="form.status" text="Status">
+                <option v-for="status in statuses" :value="status">{{ status }}</option>
+            </SelectForm>
         </FormModal>
 
     </AppLayout>
@@ -110,7 +115,11 @@ defineProps({
     roles: {
         type: Object,
         required: true,
-    }
+    },
+    statuses: {
+        type: Object,
+        required: true,
+    },
 });
 
 const breads = [
@@ -135,6 +144,7 @@ const form = useForm({
     sellers_limit: 5,
     company_name: '',
     role: 'owner',
+    status: 'enabled',
 });
 
 const openModal = ref(false);
@@ -146,6 +156,7 @@ function edit(user) {
     form.sellers_limit = user.sellers_limit;
     form.company_name = user.company_name;
     form.role = user.role;
+    form.status = user.status;
     isNew.value = false;
     openModal.value = true;
 }

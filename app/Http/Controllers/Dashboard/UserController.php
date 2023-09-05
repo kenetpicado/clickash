@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\RoleEnum;
+use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\UserRequest;
 use App\Models\User;
@@ -15,7 +16,8 @@ class UserController extends Controller
     {
         return inertia('Dashboard/User/Index', [
             'users' => User::whereNull('user_id')->withCount('sellers')->get(),
-            'roles' => RoleEnum::cases()
+            'roles' => RoleEnum::cases(),
+            'statuses' => UserStatusEnum::cases()
         ]);
     }
 
@@ -36,6 +38,7 @@ class UserController extends Controller
             'sellers_limit' => $request->sellers_limit,
             'company_name' => $request->company_name,
             'role' => $request->role,
+            'status' => UserStatusEnum::ENABLED
         ]);
 
         return back();
