@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(["prefix" => "v1"], function() {
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
-    Route::middleware(['auth:sanctum', 'role:owner|seller'])->group(function () {
+    Route::middleware(['auth:sanctum', 'role:owner|seller', 'online'])->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
         Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
