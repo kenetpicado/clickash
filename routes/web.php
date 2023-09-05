@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
+use App\Http\Controllers\Dashboard\UserRaffleController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
         Route::resource('profile', ProfileController::class)->only(['index', 'update']);
 
         Route::resource('users', UserController::class)->except(['edit', 'create']);
+
+        Route::resource('users.raffles', UserRaffleController::class);
 
         Route::resource('raffles', RaffleController::class);
     });

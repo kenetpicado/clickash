@@ -14,6 +14,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Sellers</th>
+                <th>Role</th>
                 <th>Status</th>
                 <th>Accciones</th>
             </template>
@@ -32,6 +33,7 @@
                     <td>
                         {{ user.sellers_count }} / {{ user.sellers_limit }}
                     </td>
+                    <td>{{ user.role }}</td>
                     <td>
                         <span v-if="user.status == 'Online'" class="badge-green">
                             {{ user.status }}
@@ -43,9 +45,14 @@
                     </td>
                     <td>
                         <div class="flex gap-2">
+                            <Link :href="route('dashboard.users.raffles.index', user.id)">
+                            <IconGift />
+                            </Link>
+
                             <Link :href="route('dashboard.users.show', user.id)">
                             <IconEye />
                             </Link>
+
                             <IconPencil role="button" @click="edit(user)" />
                             <IconTrash role="button" @click="destroy(user.id)" />
                         </div>
@@ -82,6 +89,7 @@ import { ref } from 'vue';
 import { useForm, Link } from '@inertiajs/vue3';
 import { toast } from '@/Use/toast';
 import { confirmAlert } from '@/Use/helpers';
+import { IconGift } from '@tabler/icons-vue';
 
 defineProps({
     users: {
