@@ -3,9 +3,8 @@
 namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ProfileRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +23,9 @@ class ProfileRequest extends FormRequest
     {
         return [
             "name" => ["required"],
-            "email" => ["sometimes", "required", "email", Rule::unique("users")->ignore(auth()->id())],
-            "company_name" => ["sometimes", "required"],
+            "email" => ["required", "email", "unique:users"],
+            "password" => ["required", "confirmed", "min:8"],
+            "company_name" => ["required"],
         ];
     }
 }

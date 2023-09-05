@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,5 +70,15 @@ class User extends Authenticatable
     public function sellers()
     {
         return $this->hasMany(User::class, 'user_id');
+    }
+
+    public function raffles()
+    {
+        return $this->belongsToMany(Raffle::class, 'raffle_user');
+    }
+
+    public function parentRaffles()
+    {
+        return $this->belongsToMany(Raffle::class, 'raffle_user', parentKey: 'user_id');
     }
 }
