@@ -53,7 +53,7 @@
                     </td>
                     <td> <span class="uppercase">{{ user.status }}</span></td>
                     <td>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 text-gray-400">
                             <Link :href="route('dashboard.users.raffles.index', user.id)">
                             <IconGift />
                             </Link>

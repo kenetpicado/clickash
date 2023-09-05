@@ -19,6 +19,7 @@ class SellerResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'status' => $this->status,
+            'active' => $this->active,
         ];
     }
 }
