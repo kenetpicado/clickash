@@ -19,7 +19,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->integer('sellers')->nullable()->default(5);
+            $table->integer('sellers_limit')->nullable()->default(5);
+            $table->string('role')->nullable();
             $table->datetime('last_login')->nullable();
             $table->rememberToken();
             $table->softDeletes();
