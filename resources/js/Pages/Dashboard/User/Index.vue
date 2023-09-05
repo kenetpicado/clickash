@@ -12,7 +12,7 @@
             <template #header>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Email</th>
+                <th>Company</th>
                 <th>Sellers</th>
                 <th>Role</th>
                 <th>Status</th>
@@ -25,15 +25,22 @@
                         {{ index + 1 }}
                     </td>
                     <td>
-                        {{ user.name }} ({{ user.company_name ?? 'No company' }})
+                        {{ user.name }}
+                        <div class="text-indigo-500 mt-2">
+                            {{ user.email }}
+                        </div>
                     </td>
                     <td>
-                        {{ user.email }}
+                        {{ user.company_name }}
                     </td>
                     <td>
                         {{ user.sellers_count }} / {{ user.sellers_limit }}
                     </td>
-                    <td>{{ user.role }}</td>
+                    <td>
+                        <span class="badge-blue" v-if="user.role">
+                            {{ user.role }}
+                        </span>
+                    </td>
                     <td>
                         <span v-if="user.status == 'Online'" class="badge-green">
                             {{ user.status }}
@@ -73,6 +80,9 @@
                 <InputForm text="Password confirmation" v-model="form.password_confirmation" type="password" required />
             </template>
             <InputForm text="Sellers limit" v-model="form.sellers_limit" type="number" />
+            <SelectForm v-model="form.role" text="Role">
+                <option v-for="role in roles" :value="role">{{ role }}</option>
+            </SelectForm>
         </FormModal>
 
     </AppLayout>
@@ -90,9 +100,14 @@ import { useForm, Link } from '@inertiajs/vue3';
 import { toast } from '@/Use/toast';
 import { confirmAlert } from '@/Use/helpers';
 import { IconGift } from '@tabler/icons-vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
 
 defineProps({
     users: {
+        type: Object,
+        required: true,
+    },
+    roles: {
         type: Object,
         required: true,
     }
@@ -119,6 +134,7 @@ const form = useForm({
     password_confirmation: '',
     sellers_limit: 5,
     company_name: '',
+    role: 'owner',
 });
 
 const openModal = ref(false);
@@ -129,6 +145,7 @@ function edit(user) {
     form.email = user.email;
     form.sellers_limit = user.sellers_limit;
     form.company_name = user.company_name;
+    form.role = user.role;
     isNew.value = false;
     openModal.value = true;
 }

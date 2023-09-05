@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Dashboard;
 
+use App\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class UserRequest extends FormRequest
 {
@@ -28,6 +30,7 @@ class UserRequest extends FormRequest
             "password" => ["required_if:method,post", "string", "min:8", "confirmed"],
             "sellers_limit" => ["required", "numeric"],
             "company_name" => ["required", "string", "max:255"],
+            'role' => ['required', new Enum(RoleEnum::class)],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\UserRequest;
 use App\Models\User;
@@ -13,7 +14,8 @@ class UserController extends Controller
     public function index()
     {
         return inertia('Dashboard/User/Index', [
-            'users' => User::whereNull('user_id')->withCount('sellers')->get()
+            'users' => User::whereNull('user_id')->withCount('sellers')->get(),
+            'roles' => RoleEnum::cases()
         ]);
     }
 
@@ -33,6 +35,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'sellers_limit' => $request->sellers_limit,
             'company_name' => $request->company_name,
+            'role' => $request->role,
         ]);
 
         return back();

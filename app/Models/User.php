@@ -30,6 +30,7 @@ class User extends Authenticatable
         'last_login',
         'sellers_limit',
         'company_name',
+        'role'
     ];
 
     /**
