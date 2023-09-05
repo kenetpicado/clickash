@@ -12,9 +12,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            'user' => UserResource::make(auth()->user()),
-        ]);
+        return UserResource::make(auth()->user());
     }
 
     public function update(ProfileRequest $request)
