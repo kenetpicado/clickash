@@ -12,9 +12,10 @@
             <template #header>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Email</th>
+                <th>Company</th>
                 <th>Sellers</th>
                 <th>Role</th>
+                <th>Active</th>
                 <th>Status</th>
                 <th>Accciones</th>
             </template>
@@ -25,26 +26,34 @@
                         {{ index + 1 }}
                     </td>
                     <td>
-                        {{ user.name }} ({{ user.company_name ?? 'No company' }})
+                        {{ user.name }}
+                        <div class="text-indigo-500 mt-2">
+                            {{ user.email }}
+                        </div>
                     </td>
                     <td>
-                        {{ user.email }}
+                        {{ user.company_name }}
                     </td>
                     <td>
                         {{ user.sellers_count }} / {{ user.sellers_limit }}
                     </td>
-                    <td>{{ user.role }}</td>
                     <td>
-                        <span v-if="user.status == 'Online'" class="badge-green">
-                            {{ user.status }}
-                        </span>
-
-                        <span v-else>
-                            {{ user.status }}
+                        <span class="badge-blue uppercase" v-if="user.role">
+                            {{ user.role }}
                         </span>
                     </td>
                     <td>
-                        <div class="flex gap-2">
+                        <span v-if="user.online == 'Now'" class="badge-green">
+                            {{ user.online }}
+                        </span>
+
+                        <span v-else>
+                            {{ user.online }}
+                        </span>
+                    </td>
+                    <td> <span class="uppercase">{{ user.status }}</span></td>
+                    <td>
+                        <div class="flex gap-2 text-gray-400">
                             <Link :href="route('dashboard.users.raffles.index', user.id)">
                             <IconGift />
                             </Link>
@@ -73,6 +82,12 @@
                 <InputForm text="Password confirmation" v-model="form.password_confirmation" type="password" required />
             </template>
             <InputForm text="Sellers limit" v-model="form.sellers_limit" type="number" />
+            <SelectForm v-model="form.role" text="Role">
+                <option v-for="role in roles" :value="role">{{ role }}</option>
+            </SelectForm>
+            <SelectForm v-if="!isNew" v-model="form.status" text="Status">
+                <option v-for="status in statuses" :value="status">{{ status }}</option>
+            </SelectForm>
         </FormModal>
 
     </AppLayout>
@@ -90,12 +105,21 @@ import { useForm, Link } from '@inertiajs/vue3';
 import { toast } from '@/Use/toast';
 import { confirmAlert } from '@/Use/helpers';
 import { IconGift } from '@tabler/icons-vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
 
 defineProps({
     users: {
         type: Object,
         required: true,
-    }
+    },
+    roles: {
+        type: Object,
+        required: true,
+    },
+    statuses: {
+        type: Object,
+        required: true,
+    },
 });
 
 const breads = [
@@ -119,6 +143,8 @@ const form = useForm({
     password_confirmation: '',
     sellers_limit: 5,
     company_name: '',
+    role: 'owner',
+    status: 'enabled',
 });
 
 const openModal = ref(false);
@@ -129,6 +155,8 @@ function edit(user) {
     form.email = user.email;
     form.sellers_limit = user.sellers_limit;
     form.company_name = user.company_name;
+    form.role = user.role;
+    form.status = user.status;
     isNew.value = false;
     openModal.value = true;
 }

@@ -30,6 +30,8 @@ class User extends Authenticatable
         'last_login',
         'sellers_limit',
         'company_name',
+        'role',
+        'status'
     ];
 
     /**
@@ -53,16 +55,16 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'status'
+        'online'
     ];
 
-    public function getStatusAttribute(): string
+    public function getOnlineAttribute(): string
     {
         if (!$this->last_login)
             return 'Not logged in';
 
         if ($this->last_login->diffInMinutes() < 4)
-            return 'Online';
+            return 'Now';
 
         return $this->last_login->diffForHumans();
     }

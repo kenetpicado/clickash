@@ -9,7 +9,7 @@
         </template>
 
         <div class="grid grid-cols-4 gap-4">
-            <RaffleCard v-for="(raffle, index) in raffles" :raffle="raffle" @onEdit="edit"/>
+            <RaffleCard v-for="(raffle, index) in raffles" :raffle="raffle" @onEdit="edit" :canDestroy="false"/>
         </div>
 
         <FormModal :show="openModal" title="Add" @onCancel="resetValues" @onSubmit="onSubmit">

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->integer('sellers_limit')->nullable()->default(5);
             $table->string('role')->nullable();
+            $table->string('status')->nullable();
             $table->datetime('last_login')->nullable();
             $table->rememberToken();
             $table->softDeletes();
