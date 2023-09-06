@@ -29,7 +29,7 @@ Route::group(["prefix" => "v1"], function() {
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 
         // Solo los dueños pueden crear, editar y eliminar vendedores
-        Route::resource('sellers', SellerController::class)->middleware(['role:owner']);
+        Route::apiResource('sellers', SellerController::class)->middleware(['role:owner']);
 
         Route::get('raffles', RaffleController::class)->name('raffles.index');
     });
