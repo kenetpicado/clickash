@@ -31,7 +31,8 @@ class User extends Authenticatable
         'sellers_limit',
         'company_name',
         'role',
-        'status'
+        'status',
+        'user_id',
     ];
 
     /**
