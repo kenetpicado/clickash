@@ -18,9 +18,7 @@ class SellerController extends Controller
     public function store(SellerRequest $request)
     {
         if (auth()->user()->seller_limit <= auth()->user()->sellers()->count())
-            return response()->json([
-                'message' => 'You have reached the maximum number of sellers',
-            ], 403);
+            abort(403, 'You have reached the maximum number of sellers');
 
         User::create($request->validated() + [
             'role' => RoleEnum::SELLER->value,
