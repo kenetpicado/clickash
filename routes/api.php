@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\SellerController;
+use App\Http\Controllers\API\V1\StatusController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +30,10 @@ Route::group(["prefix" => "v1"], function() {
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 
         // Solo los dueños pueden crear, editar y eliminar vendedores
-        Route::resource('sellers', SellerController::class)->middleware(['role:owner']);
+        Route::apiResource('sellers', SellerController::class)->middleware(['role:owner']);
 
         Route::get('raffles', RaffleController::class)->name('raffles.index');
+
+        Route::get('status', StatusController::class)->middleware(['role:owner']);
     });
 });
