@@ -17,7 +17,7 @@ class SellerController extends Controller
 
     public function store(SellerRequest $request)
     {
-        if (auth()->user()->seller_limit <= auth()->user()->sellers()->count())
+        if (auth()->user()->seller_limit >= auth()->user()->sellers()->count())
             abort(403, 'You have reached the maximum number of sellers');
 
         User::create($request->validated() + [
