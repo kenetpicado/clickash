@@ -19,7 +19,7 @@ class UserService
             'email' => $request['email'],
             'status' => $request['status'],
             'password' => Hash::make($request['password']),
-            'role' => RoleEnum::SELLER,
+            'role' => RoleEnum::SELLER->value,
         ]);
     }
 
@@ -30,7 +30,7 @@ class UserService
             'company_name' => $request['company_name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
-            'role' => RoleEnum::OWNER,
+            'role' => RoleEnum::OWNER->value,
             'sellers_limit' => 2,
             'status' => UserStatusEnum::ENABLED
         ]);
