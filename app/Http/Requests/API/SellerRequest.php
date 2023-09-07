@@ -17,11 +17,9 @@ class SellerRequest extends FormRequest
         return true;
     }
 
-    //prepared for validation
     public function prepareForValidation()
     {
         $this->merge([
-            'user_id' => auth()->id(),
             'status' => $this->status ?? UserStatusEnum::ENABLED->value,
         ]);
     }
@@ -36,7 +34,6 @@ class SellerRequest extends FormRequest
             "name" => ["required"],
             "email" => ["required", "email", Rule::unique("users")->ignore($this->route("seller"))],
             "password" => ["required", "confirmed", "min:8"],
-            "user_id" => ["required"],
             "status" => ["required"],
         ];
     }

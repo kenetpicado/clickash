@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SellerResource;
 use App\Http\Requests\API\SellerRequest;
-use App\Enums\RoleEnum;
 use App\Models\User;
+use App\Services\UserService;
 
 class SellerController extends Controller
 {
@@ -17,12 +17,7 @@ class SellerController extends Controller
 
     public function store(SellerRequest $request)
     {
-        if (auth()->user()->seller_limit <= auth()->user()->sellers()->count())
-            abort(403, 'You have reached the maximum number of sellers');
-
-        User::create($request->validated() + [
-            'role' => RoleEnum::SELLER->value,
-        ]);
+        (new UserService)->createSeller($request->validated());
 
         return response()->json([
             'message' => 'Seller created successfully',
