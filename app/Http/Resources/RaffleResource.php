@@ -17,7 +17,6 @@ class RaffleResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'fields' => $this->fields,
             'image' => $this->image,
         ];
     }

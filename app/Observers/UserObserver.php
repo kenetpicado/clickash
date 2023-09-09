@@ -10,7 +10,7 @@ class UserObserver
 {
     public function created(User $user)
     {
-        if ($user->role == RoleEnum::OWNER->value) {
+        if ($user->role === 'owner') {
             $user->raffles()->attach([1, 2, 3, 4, 5, 6]);
         }
     }
