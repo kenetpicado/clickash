@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests\API;
 
-use App\Enums\UserStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 
 class SellerRequest extends FormRequest
 {
@@ -17,12 +15,6 @@ class SellerRequest extends FormRequest
         return true;
     }
 
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'status' => $this->status ?? UserStatusEnum::ENABLED->value,
-        ]);
-    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -33,10 +25,13 @@ class SellerRequest extends FormRequest
         return [
             "name" => ["required"],
             "email" => ["required", "email", Rule::unique("users")->ignore($this->route("seller"))],
-            "password" => ["required", "confirmed", "min:8"],
-            "status" => ["required"],
+        ] + ($this->isMethod("POST") ? $this->store() : []);
+    }
+
+    public function store(): array
+    {
+        return [
+            "password" => "required|confirmed|min:8",
         ];
     }
 }
-
-

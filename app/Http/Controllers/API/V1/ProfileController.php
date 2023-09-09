@@ -17,8 +17,8 @@ class ProfileController extends Controller
 
     public function update(ProfileRequest $request)
     {
-        User::where('id', auth()->id())->update($request->validated());
+        auth()->user()->update($request->validated());
 
-        return response()->noContent();
+        return UserResource::make(auth()->user());
     }
 }
