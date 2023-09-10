@@ -26,6 +26,13 @@ class RaffleSeeder extends Seeder
                 ],
                 "availability" => [
                     [
+                        "day" => "Domingo",
+                        "order" => 0,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
                         "day" => "Lunes",
                         "order" => 1,
                         "start_time" => "07:00:00",
@@ -67,13 +74,6 @@ class RaffleSeeder extends Seeder
                         "end_time" => "21:00:00",
                         "blocked_hours" => ["11:00:00", "15:00:00", "18:00:00", "21:00:00"]
                     ],
-                    [
-                        "day" => "Domingo",
-                        "order" => 7,
-                        "start_time" => "07:00:00",
-                        "end_time" => "21:00:00",
-                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
-                    ]
                 ]
             ],
             [
@@ -108,6 +108,13 @@ class RaffleSeeder extends Seeder
                 ],
                 "availability" => [
                     [
+                        "day" => "Domingo",
+                        "order" => 0,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
                         "day" => "Lunes",
                         "order" => 1,
                         "start_time" => "07:00:00",
@@ -149,13 +156,6 @@ class RaffleSeeder extends Seeder
                         "end_time" => "19:30:00",
                         "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
                     ],
-                    [
-                        "day" => "Domingo",
-                        "order" => 7,
-                        "start_time" => "07:00:00",
-                        "end_time" => "19:30:00",
-                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
-                    ]
                 ]
             ],
             [
@@ -169,6 +169,13 @@ class RaffleSeeder extends Seeder
                     "individual_limit" => "250",
                 ],
                 "availability" => [
+                    [
+                        "day" => "Domingo",
+                        "order" => 0,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
                     [
                         "day" => "Lunes",
                         "order" => 1,
@@ -210,13 +217,6 @@ class RaffleSeeder extends Seeder
                         "start_time" => "07:00:00",
                         "end_time" => "21:00:00",
                         "blocked_hours" => ["11:00:00", "15:00:00", "18:00:00", "21:00:00"]
-                    ],
-                    [
-                        "day" => "Domingo",
-                        "order" => 7,
-                        "start_time" => "07:00:00",
-                        "end_time" => "21:00:00",
-                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
                     ]
                 ]
             ],
@@ -232,6 +232,13 @@ class RaffleSeeder extends Seeder
                 ],
                 "availability" => [
                     [
+                        "day" => "Domingo",
+                        "order" => 0,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
                         "day" => "Lunes",
                         "order" => 1,
                         "start_time" => "07:00:00",
@@ -273,13 +280,6 @@ class RaffleSeeder extends Seeder
                         "end_time" => "21:00:00",
                         "blocked_hours" => ["11:00:00", "15:00:00", "18:00:00", "21:00:00"]
                     ],
-                    [
-                        "day" => "Domingo",
-                        "order" => 7,
-                        "start_time" => "07:00:00",
-                        "end_time" => "21:00:00",
-                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
-                    ]
                 ]
             ],
             [
@@ -293,6 +293,13 @@ class RaffleSeeder extends Seeder
                     "individual_limit" => false,
                 ],
                 "availability" => [
+                    [
+                        "day" => "Domingo",
+                        "order" => 0,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
                     [
                         "day" => "Lunes",
                         "order" => 1,
@@ -335,13 +342,6 @@ class RaffleSeeder extends Seeder
                         "end_time" => "19:30:00",
                         "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
                     ],
-                    [
-                        "day" => "Domingo",
-                        "order" => 7,
-                        "start_time" => "07:00:00",
-                        "end_time" => "19:30:00",
-                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
-                    ]
                 ]
             ],
         ];

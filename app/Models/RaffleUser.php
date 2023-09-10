@@ -29,7 +29,7 @@ class RaffleUser extends Model
 
     public function blockedNumbers()
     {
-        return $this->hasMany(BlockedNumber::class);
+        return $this->morphMany(BlockedNumber::class, 'blockable');
     }
 
     public function getSettingsAttribute($value)

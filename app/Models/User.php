@@ -72,18 +72,18 @@ class User extends Authenticatable
 
     public function sellers()
     {
-        return $this->hasMany(User::class, 'user_id');
+        return $this->hasMany(User::class, 'user_id')->orderBy('name');
     }
 
     public function raffles()
     {
         return $this->belongsToMany(Raffle::class, 'raffle_user')
-            ->withPivot('id','settings')
+            ->withPivot('id', 'settings')
             ->withTimestamps();
     }
 
-    public function parentRaffles()
+    public function blockedNumbers()
     {
-        return $this->belongsToMany(Raffle::class, 'raffle_user', parentKey: 'user_id');
+        return $this->hasManyThrough(BlockedNumber::class, RaffleUser::class, 'user_id', 'blockable_id', 'id', 'id')->where('blockable_type', RaffleUser::class);
     }
 }

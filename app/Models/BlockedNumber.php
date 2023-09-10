@@ -11,6 +11,8 @@ class BlockedNumber extends Model
 
     protected $fillable = [
         'number',
+        'blockable_id',
+        'blockable_type'
     ];
 
     public function blockable()

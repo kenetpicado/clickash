@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\ProfileController;
-use App\Http\Controllers\API\V1\RaffleController;
+use App\Http\Controllers\API\V1\RaffleUserAvailabilityController;
+use App\Http\Controllers\API\V1\RaffleUserBlockedNumberController;
+use App\Http\Controllers\API\V1\RaffleUserController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
@@ -33,6 +35,10 @@ Route::group(["prefix" => "v1"], function() {
         Route::apiResource('sellers', SellerController::class)->middleware(['role:owner']);
         Route::put('toggle-status/{seller}', ToggleStatusController::class)->middleware(['role:owner']);
 
-        Route::get('raffles', RaffleController::class)->name('raffles.index');
+        Route::resource('raffles', RaffleUserController::class)->only(['index', 'update']);
+
+        Route::resource('raffles.blocked-numbers', RaffleUserBlockedNumberController::class)->only(['index', 'store', 'destroy']);
+
+        Route::resource('raffles.availability', RaffleUserAvailabilityController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 });

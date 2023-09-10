@@ -15,7 +15,8 @@ class Availability extends Model
         'day',
         'start_time',
         'end_time',
-        'blocked_hours'
+        'blocked_hours',
+        'order'
     ];
 
     public function availability()
