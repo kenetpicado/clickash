@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('raffles', function (Blueprint $table) {
+        Schema::create('blocked_numbers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image')->nullable();
-            $table->json('settings')->nullable();
-            $table->softDeletes();
+            $table->morphs('blockable');
+            $table->string('number');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raffles');
+        Schema::dropIfExists('blocked_numbers');
     }
 };

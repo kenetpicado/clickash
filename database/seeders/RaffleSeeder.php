@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Raffle;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,31 +16,347 @@ class RaffleSeeder extends Seeder
         $raffles = [
             [
                 "name" => "Diaria",
-                "image" => "https://static.vecteezy.com/system/resources/thumbnails/004/229/131/small/sticker-with-today-word-free-vector.jpg"
-            ],
-            [
-                "name" => "Fecha",
-                "image" => "https://as1.ftcdn.net/v2/jpg/00/98/96/46/1000_F_98964641_fe9ooO3c0nI4Qv2w6Zw0HOOtbiRfHbCn.jpg"
-            ],
-            [
-                "name" => "3 monazos",
-                "image" => "https://img.freepik.com/vector-gratis/tres-monos-sobre-fondo-blanco_1308-43080.jpg"
-            ],
-            [
-                "name" => "Juega 3",
-                "image" => "https://img.freepik.com/premium-photo/gold-number-3_2227-11.jpg"
-            ],
-            [
-                "name" => "Tica",
+                "settings" => [
+                    "date" => false,
+                    "super_x" => true,
+                    "min" => "00",
+                    "max" => "99",
+                    "general_limit" => "1000",
+                    "individual_limit" => "100",
+                ],
+                "availability" => [
+                    [
+                        "day" => "Lunes",
+                        "order" => 1,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Martes",
+                        "order" => 2,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Miercoles",
+                        "order" => 3,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Jueves",
+                        "order" => 4,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Viernes",
+                        "order" => 5,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Sabado",
+                        "order" => 6,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "18:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Domingo",
+                        "order" => 7,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ]
+                ]
             ],
             [
                 "name" => "Terminacion 2",
-                "image" => "https://st.depositphotos.com/1561359/4118/v/600/depositphotos_41184825-stock-illustration-3d-shiny-golden-number-2.jpg"
+                "settings" => [
+                    "date" => false,
+                    "super_x" => false,
+                    "min" => "00",
+                    "max" => "99",
+                    "general_limit" => "1000",
+                    "individual_limit" => false,
+                ],
+                "availability" => [
+                    [
+                        "day" => "Martes",
+                        "order" => 2,
+                        "start_time" => "07:00:00",
+                        "end_time" => "18:00:00",
+                        "blocked_hours" => ["09:00:00", "18:00:00"]
+                    ],
+                ]
+            ],
+            [
+                "name" => "Tica",
+                "settings" => [
+                    "date" => false,
+                    "super_x" => false,
+                    "min" => "00",
+                    "max" => "99",
+                    "general_limit" => "1000",
+                    "individual_limit" => "100",
+                ],
+                "availability" => [
+                    [
+                        "day" => "Lunes",
+                        "order" => 1,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Martes",
+                        "order" => 2,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Miercoles",
+                        "order" => 3,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Jueves",
+                        "order" => 4,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Viernes",
+                        "order" => 5,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Sabado",
+                        "order" => 6,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Domingo",
+                        "order" => 7,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ]
+                ]
+            ],
+            [
+                "name" => "Fecha",
+                "settings" => [
+                    "date" => true,
+                    "super_x" => false,
+                    "min" => false,
+                    "max" => false,
+                    "general_limit" => false,
+                    "individual_limit" => "250",
+                ],
+                "availability" => [
+                    [
+                        "day" => "Lunes",
+                        "order" => 1,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Martes",
+                        "order" => 2,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Miercoles",
+                        "order" => 3,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Jueves",
+                        "order" => 4,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Viernes",
+                        "order" => 5,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Sabado",
+                        "order" => 6,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "18:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Domingo",
+                        "order" => 7,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ]
+                ]
+            ],
+            [
+                "name" => "Juega 3",
+                "settings" => [
+                    "date" => false,
+                    "super_x" => false,
+                    "min" => "000",
+                    "max" => "999",
+                    "general_limit" => "200",
+                    "individual_limit" => false,
+                ],
+                "availability" => [
+                    [
+                        "day" => "Lunes",
+                        "order" => 1,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Martes",
+                        "order" => 2,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Miercoles",
+                        "order" => 3,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Jueves",
+                        "order" => 4,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Viernes",
+                        "order" => 5,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Sabado",
+                        "order" => 6,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "18:00:00", "21:00:00"]
+                    ],
+                    [
+                        "day" => "Domingo",
+                        "order" => 7,
+                        "start_time" => "07:00:00",
+                        "end_time" => "21:00:00",
+                        "blocked_hours" => ["11:00:00", "15:00:00", "21:00:00"]
+                    ]
+                ]
+            ],
+            [
+                "name" => "3 Monazos",
+                "settings" => [
+                    "date" => false,
+                    "super_x" => false,
+                    "min" => "000",
+                    "max" => "999",
+                    "general_limit" => "200",
+                    "individual_limit" => false,
+                ],
+                "availability" => [
+                    [
+                        "day" => "Lunes",
+                        "order" => 1,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Martes",
+                        "order" => 2,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Miercoles",
+                        "order" => 3,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Jueves",
+                        "order" => 4,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Viernes",
+                        "order" => 5,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Sabado",
+                        "order" => 6,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ],
+                    [
+                        "day" => "Domingo",
+                        "order" => 7,
+                        "start_time" => "07:00:00",
+                        "end_time" => "19:30:00",
+                        "blocked_hours" => ["13:00:00", "16:30:00", "19:30:00"]
+                    ]
+                ]
             ],
         ];
 
         foreach ($raffles as $raffle) {
-            \App\Models\Raffle::create($raffle);
+            $created = Raffle::create([
+                'name' => $raffle['name'],
+                'settings' => $raffle['settings'],
+            ]);
+
+            if (isset($raffle['availability'])) {
+                foreach ($raffle['availability'] as $availability) {
+                    $created->availability()->create($availability);
+                }
+            }
         }
     }
 }

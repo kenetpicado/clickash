@@ -78,7 +78,7 @@ class User extends Authenticatable
     public function raffles()
     {
         return $this->belongsToMany(Raffle::class, 'raffle_user')
-            ->using(RaffleUser::class)
+            ->withPivot('id','settings')
             ->withTimestamps();
     }
 

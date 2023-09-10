@@ -13,6 +13,27 @@ class Raffle extends Model
 
     protected $fillable = [
         'name',
-        'image'
+        'image',
+        'settings'
     ];
+
+    public function getSettingsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setSettingsAttribute($value)
+    {
+        $this->attributes['settings'] = json_encode($value);
+    }
+
+    public function blockedNumbers()
+    {
+        return $this->morphMany(BlockedNumber::class, 'blockable');
+    }
+
+    public function availability()
+    {
+        return $this->morphMany(Availability::class, 'availability');
+    }
 }

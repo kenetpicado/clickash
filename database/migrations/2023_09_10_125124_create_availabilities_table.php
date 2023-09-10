@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('raffles', function (Blueprint $table) {
+        Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image')->nullable();
-            $table->json('settings')->nullable();
-            $table->softDeletes();
+            $table->morphs('availability');
+            $table->string('day');
+            $table->integer('order');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->json('blocked_hours');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raffles');
+        Schema::dropIfExists('availabilities');
     }
 };
