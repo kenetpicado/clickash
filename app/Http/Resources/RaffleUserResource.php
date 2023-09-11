@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RaffleResource extends JsonResource
+class RaffleUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,10 @@ class RaffleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'image' => $this->image,
+            'name' => $this->raffle_name,
+            'image' => $this->raffle_image,
+            'settings' => $this->settings,
+            'availability' => new AvailabilityResource($this->availability->first()),
         ];
     }
 }

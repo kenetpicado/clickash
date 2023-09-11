@@ -56,7 +56,7 @@ class AuthService
 
         $this->request->clear();
 
-        $user->tokens()->delete();
+        //$user->tokens()->delete();
 
         Auth::guard($this->guard)->login($user);
 

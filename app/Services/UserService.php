@@ -14,13 +14,15 @@ class UserService
         if (auth()->user()->sellers()->count() >= auth()->user()->sellers_limit)
             abort(403, 'You have reached the maximum number of sellers');
 
-        User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'status' => $request['status'],
-            'password' => Hash::make($request['password']),
-            'role' => RoleEnum::SELLER->value,
-        ]);
+        auth()->user()
+            ->sellers()
+            ->create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'status' => UserStatusEnum::ENABLED->value,
+                'password' => Hash::make($request['password']),
+                'role' => RoleEnum::SELLER->value,
+            ]);
     }
 
     public function registerFreeAccount(array $request)

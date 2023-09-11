@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('raffle_user', function (Blueprint $table) {
+        Schema::create('blocked_numbers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('raffle_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->json('settings')->nullable();
+            $table->morphs('blockable');
+            $table->string('number');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raffle_user');
+        Schema::dropIfExists('blocked_numbers');
     }
 };

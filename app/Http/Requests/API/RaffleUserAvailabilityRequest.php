@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\API;
 
+use App\Enums\DayEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
-class ProfileRequest extends FormRequest
+class RaffleUserAvailabilityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +24,10 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required"],
-            "email" => ["required", "email", Rule::unique("users")->ignore(auth()->id())],
-            "company_name" => ["required"],
+            'day' => ['required', new Enum(DayEnum::class)],
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'blocked_hours' => 'required',
         ];
     }
 }

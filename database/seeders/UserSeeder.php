@@ -39,14 +39,14 @@ class UserSeeder extends Seeder
                 "email" => "johndoe@gmail.com",
                 "password" => Hash::make("password"),
                 "role" => RoleEnum::OWNER->value,
-                'sellers_limit' => 10,
+                'sellers_limit' => 100,
             ],
         ];
 
         foreach ($users as $user) {
             $created = User::create($user + ['status' => UserStatusEnum::ENABLED]);
 
-            if ($created->role == RoleEnum::OWNER->value) {
+            if ($created->role === RoleEnum::OWNER->value) {
                 foreach (range(1, 10) as $index) {
                     User::create([
                         "name" => "Vendedor " . $index,

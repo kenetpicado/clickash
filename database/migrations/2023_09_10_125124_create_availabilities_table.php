@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('raffle_user', function (Blueprint $table) {
+        Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('raffle_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->json('settings')->nullable();
+            $table->morphs('availability');
+            $table->string('day');
+            $table->integer('order');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->json('blocked_hours');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('raffle_user');
+        Schema::dropIfExists('availabilities');
     }
 };

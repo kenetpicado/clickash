@@ -19,26 +19,20 @@ class SellerController extends Controller
     {
         (new UserService)->createSeller($request->validated());
 
-        return response()->json([
-            'message' => 'Seller created successfully',
-        ]);
+        return self::index();
     }
 
     public function update(SellerRequest $request, User $seller)
     {
         $seller->update($request->validated());
 
-        return response()->json([
-            'message' => 'Seller updated successfully',
-        ]);
+        return self::index();
     }
 
     public function destroy(User $seller)
     {
         $seller->delete();
 
-        return response()->json([
-            'message' => 'Seller deleted successfully',
-        ]);
+        return self::index();
     }
 }

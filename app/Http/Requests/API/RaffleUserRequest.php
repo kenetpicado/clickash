@@ -3,9 +3,8 @@
 namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ProfileRequest extends FormRequest
+class RaffleUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +22,7 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required"],
-            "email" => ["required", "email", Rule::unique("users")->ignore(auth()->id())],
-            "company_name" => ["required"],
+            "settings" => "required|array",
         ];
     }
 }

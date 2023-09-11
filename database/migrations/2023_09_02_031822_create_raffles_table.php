@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('raffles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->json('fields');
             $table->string('image')->nullable();
+            $table->json('settings')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
