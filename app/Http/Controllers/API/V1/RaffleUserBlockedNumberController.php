@@ -11,31 +11,31 @@ use Illuminate\Http\Request;
 
 class RaffleUserBlockedNumberController extends Controller
 {
-    public function index($raffle)
+    public function index($raffle_user)
     {
         return BlockedNumberResource::collection(
             BlockedNumber::query()
                 ->where('blockable_type', RaffleUser::class)
-                ->where('blockable_id', $raffle)
+                ->where('blockable_id', $raffle_user)
                 ->get()
         );
     }
 
-    public function store(RaffleUserBlockedNumberRequest $request, $raffle)
+    public function store(RaffleUserBlockedNumberRequest $request, $raffle_user)
     {
         BlockedNumber::create([
             'number' => $request->number,
-            'blockable_id' => $raffle,
+            'blockable_id' => $raffle_user,
             'blockable_type' => RaffleUser::class
         ]);
 
-        return self::index($raffle);
+        return self::index($raffle_user);
     }
 
-    public function destroy($raffle, $blockedNumber)
+    public function destroy($raffle_user, $blockedNumber)
     {
         BlockedNumber::where('id', $blockedNumber)->delete();
 
-        return self::index($raffle);
+        return self::index($raffle_user);
     }
 }
