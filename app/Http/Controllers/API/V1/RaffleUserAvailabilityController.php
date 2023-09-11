@@ -8,70 +8,43 @@ use App\Http\Requests\API\RaffleUserAvailabilityRequest;
 use App\Http\Resources\AvailabilityResource;
 use App\Models\Availability;
 use App\Models\RaffleUser;
+use App\Services\AvailabilityService;
 use Illuminate\Http\Request;
 
 class RaffleUserAvailabilityController extends Controller
 {
+    public function __construct(
+        private readonly AvailabilityService $availabilityService
+    ) {
+    }
+
     public function index($raffle_user)
     {
-        return AvailabilityResource::collection(
-            Availability::query()
-                ->where('availability_type', RaffleUser::class)
-                ->where('availability_id', $raffle_user)
-                ->orderBy('order')
-                ->get()
-        );
+        return AvailabilityResource::collection((new AvailabilityService)->index($raffle_user));
     }
 
     public function store(RaffleUserAvailabilityRequest $request, $raffle_user)
     {
-        $dayNumber = DayEnum::getDayNumber($request->day);
-
-        $alreadyExists = Availability::query()
-            ->where('availability_type', RaffleUser::class)
-            ->where('availability_id', $raffle_user)
-            ->where('order', $dayNumber)
-            ->exists();
+        $alreadyExists = $this->availabilityService->check($request->day, $raffle_user);
 
         if ($alreadyExists) {
             throw new \Exception("El día {$request->day} ya esta registrado");
         }
 
-        Availability::create([
-            'day' => $request->day,
-            'order' => $dayNumber,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'blocked_hours' => $request->blocked_hours,
-            'availability_id' => $raffle_user,
-            'availability_type' => RaffleUser::class
-        ]);
+        $this->availabilityService->store($request->validated(), $raffle_user);
 
         return self::index($raffle_user);
     }
 
     public function update(RaffleUserAvailabilityRequest $request, $raffle_user, $availability)
     {
-        $alreadyExists = Availability::query()
-            ->where('availability_type', RaffleUser::class)
-            ->where('availability_id', $raffle_user)
-            ->where('order', DayEnum::getDayNumber($request->day))
-            ->where('id', '!=', $availability)
-            ->exists();
+        $alreadyExists = $this->availabilityService->check($request->day, $raffle_user, $availability);
 
         if ($alreadyExists) {
             throw new \Exception("El día {$request->day} ya esta registrado");
         }
 
-        Availability::query()
-            ->where('id', $availability)
-            ->update([
-                'day' => $request->day,
-                'order' => DayEnum::getDayNumber($request->day),
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
-                'blocked_hours' => $request->blocked_hours,
-            ]);
+        $this->availabilityService->update($request->validated(), $availability);
 
         return self::index($raffle_user);
     }
