@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Enums\DayEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\RaffleAvailabilityRequest;
+use App\Http\Requests\API\RaffleUserAvailabilityRequest;
 use App\Http\Resources\AvailabilityResource;
 use App\Models\Availability;
 use App\Models\RaffleUser;
@@ -23,7 +23,7 @@ class RaffleUserAvailabilityController extends Controller
         );
     }
 
-    public function store(RaffleAvailabilityRequest $request, $raffle)
+    public function store(RaffleUserAvailabilityRequest $request, $raffle)
     {
         $dayNumber = DayEnum::getDayNumber($request->day);
 
@@ -47,10 +47,10 @@ class RaffleUserAvailabilityController extends Controller
             'availability_type' => RaffleUser::class
         ]);
 
-        return $this->index($raffle);
+        return self::index($raffle);
     }
 
-    public function update(RaffleAvailabilityRequest $request, $raffle, $availability)
+    public function update(RaffleUserAvailabilityRequest $request, $raffle, $availability)
     {
         $alreadyExists = Availability::query()
             ->where('availability_type', RaffleUser::class)
@@ -73,15 +73,13 @@ class RaffleUserAvailabilityController extends Controller
                 'blocked_hours' => $request->blocked_hours,
             ]);
 
-        return $this->index($raffle);
+        return self::index($raffle);
     }
 
     public function destroy($raffle, $availability)
     {
-        Availability::query()
-            ->where('id', $availability)
-            ->delete();
+        Availability::where('id', $availability)->delete();
 
-        return $this->index($raffle);
+        return self::index($raffle);
     }
 }

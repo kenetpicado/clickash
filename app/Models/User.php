@@ -81,9 +81,4 @@ class User extends Authenticatable
             ->withPivot('id', 'settings')
             ->withTimestamps();
     }
-
-    public function blockedNumbers()
-    {
-        return $this->hasManyThrough(BlockedNumber::class, RaffleUser::class, 'user_id', 'blockable_id', 'id', 'id')->where('blockable_type', RaffleUser::class);
-    }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\RaffleBlockedNumberRequest;
+use App\Http\Requests\API\RaffleUserBlockedNumberRequest;
 use App\Http\Resources\BlockedNumberResource;
 use App\Models\BlockedNumber;
 use App\Models\RaffleUser;
@@ -21,7 +21,7 @@ class RaffleUserBlockedNumberController extends Controller
         );
     }
 
-    public function store(RaffleBlockedNumberRequest $request, $raffle)
+    public function store(RaffleUserBlockedNumberRequest $request, $raffle)
     {
         BlockedNumber::create([
             'number' => $request->number,
@@ -29,15 +29,13 @@ class RaffleUserBlockedNumberController extends Controller
             'blockable_type' => RaffleUser::class
         ]);
 
-        return $this->index($raffle);
+        return self::index($raffle);
     }
 
     public function destroy($raffle, $blockedNumber)
     {
-        BlockedNumber::query()
-            ->where('id', $blockedNumber)
-            ->delete();
+        BlockedNumber::where('id', $blockedNumber)->delete();
 
-        return $this->index($raffle);
+        return self::index($raffle);
     }
 }

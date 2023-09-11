@@ -19,20 +19,20 @@ class SellerController extends Controller
     {
         (new UserService)->createSeller($request->validated());
 
-        return SellerResource::collection(auth()->user()->sellers);
+        return self::index();
     }
 
     public function update(SellerRequest $request, User $seller)
     {
         $seller->update($request->validated());
 
-        return SellerResource::collection(auth()->user()->sellers);
+        return self::index();
     }
 
     public function destroy(User $seller)
     {
         $seller->delete();
 
-        return SellerResource::collection(auth()->user()->sellers);
+        return self::index();
     }
 }

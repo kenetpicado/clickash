@@ -16,8 +16,8 @@ class RaffleUserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->raffle->name,
-            'image' => $this->raffle->image,
+            'name' => $this->raffle_name,
+            'image' => $this->raffle_image,
             'settings' => $this->settings,
             'availability' => new AvailabilityResource($this->availability->first()),
         ];
