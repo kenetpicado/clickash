@@ -84,7 +84,7 @@ class RaffleSeeder extends Seeder
                     "min" => "00",
                     "max" => "99",
                     "general_limit" => "1000",
-                    "individual_limit" => false,
+                    "individual_limit" => null,
                 ],
                 "availability" => [
                     [
@@ -163,9 +163,9 @@ class RaffleSeeder extends Seeder
                 "settings" => [
                     "date" => true,
                     "super_x" => false,
-                    "min" => false,
-                    "max" => false,
-                    "general_limit" => false,
+                    "min" => null,
+                    "max" => null,
+                    "general_limit" => null,
                     "individual_limit" => "250",
                 ],
                 "availability" => [
@@ -228,7 +228,7 @@ class RaffleSeeder extends Seeder
                     "min" => "000",
                     "max" => "999",
                     "general_limit" => "200",
-                    "individual_limit" => false,
+                    "individual_limit" => null,
                 ],
                 "availability" => [
                     [
@@ -290,7 +290,7 @@ class RaffleSeeder extends Seeder
                     "min" => "000",
                     "max" => "999",
                     "general_limit" => "200",
-                    "individual_limit" => false,
+                    "individual_limit" => null,
                 ],
                 "availability" => [
                     [

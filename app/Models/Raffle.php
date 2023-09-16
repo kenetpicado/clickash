@@ -17,15 +17,9 @@ class Raffle extends Model
         'settings'
     ];
 
-    public function getSettingsAttribute($value)
-    {
-        return json_decode($value);
-    }
-
-    public function setSettingsAttribute($value)
-    {
-        $this->attributes['settings'] = json_encode($value);
-    }
+    protected $casts = [
+        'settings' => 'array'
+    ];
 
     public function blockedNumbers()
     {

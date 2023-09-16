@@ -8,20 +8,56 @@
             <AddButton @click="openModal = true" />
         </template>
 
-        <div class="grid grid-cols-4 gap-4">
-            <RaffleCard v-for="(raffle, index) in raffles" :raffle="raffle" @onEdit="edit" :canDestroy="false"/>
-        </div>
+        <TableSection>
+            <template #header>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Nombre</th>
+                <th>Settings</th>
+                <th>Accciones</th>
+            </template>
+
+            <template #body>
+                <tr v-for="(raffle, index) in raffles" class="hover:bg-gray-50">
+                    <td>
+                        {{ raffle.id }}
+                    </td>
+                    <td>
+                        <img :src="getImageSrc(raffle.image)" alt="" class="w-20 h-20 object-cover rounded-lg">
+                    </td>
+                    <td>
+                        <span class="font-bold">{{ raffle.name }}</span>
+                    </td>
+                    <td>
+                        <pre>{{ raffle.settings }}</pre>
+                    </td>
+                    <td>
+                        <div class="flex gap-2 text-gray-400">
+                            <IconPencil role="button" @click="edit(raffle)" />
+                        </div>
+                    </td>
+                </tr>
+                <tr v-if="raffles.length == 0">
+                    <td colspan="3" class="text-center">No data to display</td>
+                </tr>
+            </template>
+        </TableSection>
 
         <FormModal :show="openModal" title="Add" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Name" v-model="form.name" />
             <InputForm text="Image" v-model="form.image" type="url" />
-            <Checkbox v-model:checked="form.fields.super_x" text="Super X" />
-            <Checkbox v-model:checked="form.fields.date" text="Date" />
-            <InputForm text="Digits" v-model="form.fields.number" type="number" :disabled="disabled" />
+            <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
+            <Checkbox v-model:checked="form.settings.date" text="Date" />
 
-            <p class="text-sm text-red-600 mt-1" v-if="$page.props.errors['fields']">
-                {{ $page.props.errors['fields'] }}
-            </p>
+            <div class="grid grid-cols-2 gap-4" v-if="!form.settings.date">
+                <InputForm text="Min" v-model="form.settings.min" />
+                <InputForm text="Max" v-model="form.settings.max" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <InputForm text="General Limit" v-model="form.settings.general_limit" />
+                <InputForm text="Individual Limit" v-model="form.settings.individual_limit" />
+            </div>
 
         </FormModal>
 
@@ -29,15 +65,16 @@
 </template>
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import AddButton from '@/Components/Buttons/AddButton.vue';
-import FormModal from '@/Components/Modal/FormModal.vue';
-import InputForm from '@/Components/Form/InputForm.vue';
-import { ref, reactive, watch } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-import { toast } from '@/Use/toast';
 import Checkbox from '@/Components/Form/Checkbox.vue';
-import RaffleCard from '@/Components/RaffleCard.vue';
+import InputForm from '@/Components/Form/InputForm.vue';
+import FormModal from '@/Components/Modal/FormModal.vue';
+import TableSection from '@/Components/TableSection.vue';
+import { useRaffle } from '@/Composables/useRaffle.js';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { IconPencil } from '@tabler/icons-vue';
+import { ref, watch } from 'vue';
+import { toast } from "@/Use/toast";
 
 defineProps({
     raffles: {
@@ -57,80 +94,63 @@ const breads = [
     },
 ];
 
-const disabled = ref(false);
-
-const form = useForm({
-    id: '',
-    name: '',
-    image: '',
-    fields: reactive({
-        date: false,
-        number: 2,
-        super_x: false,
-    }),
-});
-
-watch(() => form.fields.date, (value) => {
-    if (value) {
-        form.fields.number = 4;
-        disabled.value = true;
-    } else {
-        disabled.value = false;
-    }
-});
-
 const openModal = ref(false);
 const isNew = ref(true);
+const { store, update, form } = useRaffle();
 
 function edit(raffle) {
-    form.id = raffle.id;
-    form.name = raffle.name;
-    form.image = raffle.image;
-    form.fields = raffle.fields;
+    Object.assign(form, raffle);
     openModal.value = true;
     isNew.value = false;
 }
 
+watch(() => form.settings.date, (value) => {
+    if (value) {
+        form.settings.min = null;
+        form.settings.max = null;
+    }
+});
+
 function onSubmit() {
-    if (isNew.value) {
-        form
-            .transform(data => ({
-                ...data,
-                fields: JSON.stringify(data.fields),
-            }))
-            .post(route('dashboard.raffles.store'), {
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => {
-                    toast.success('Raffle created successfully');
-                    openModal.value = false;
-                },
-            });
-    } else {
-        form
-            .transform(data => ({
-                ...data,
-                fields: JSON.stringify(data.fields),
-            }))
-            .put(route('dashboard.raffles.update', form.id), {
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => {
-                    toast.success('Raffle updated successfully');
-                    openModal.value = false;
-                },
-            });
+    if (isNaN(form.settings.min)) {
+        toast.error('Min must be a number');
+        return;
     }
 
+    if (isNaN(form.settings.max)) {
+        toast.error('Max must be a number');
+        return;
+    }
+
+    if (isNaN(form.settings.general_limit)) {
+        toast.error('General Limit must be a number');
+        return;
+    }
+
+    if (isNaN(form.settings.individual_limit)) {
+        toast.error('Individual Limit must be a number');
+        return;
+    }
+
+    if (isNew.value) {
+        store(resetValues)
+    } else {
+        update(resetValues)
+    }
 }
 
-function resetValues() {
-    form.name = '';
-    form.fields.date = false;
-    form.fields.number = 2;
-    form.fields.super_x = false;
+const resetValues = () => {
+    form.reset();
     openModal.value = false;
     isNew.value = true;
+};
+
+function getImageSrc(value) {
+    if (value) {
+        return value;
+    }
+
+    return "https://media.istockphoto.com/id/1211282980/es/vector/ganadores-afortunados-girando-tambor-de-la-rifa.jpg?s=612x612&w=0&k=20&c=1jJPxjaVHqPFA_DQGDV3QEBQ6_C3pbhjs8Ies2kR-44="
 }
 
 </script>

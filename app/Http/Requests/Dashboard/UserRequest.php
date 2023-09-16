@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Dashboard;
 
 use App\Enums\RoleEnum;
+use App\Enums\UserStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -25,13 +26,19 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required", "string", "max:255"],
-            "email" => ["required", "string", "email", "max:255", Rule::unique("users")->ignore($this->id)],
-            "password" => ["required_if:method,post", "string", "min:8", "confirmed"],
+            "name" => ["required"],
+            "email" => ["required", "email", Rule::unique("users")->ignore($this->id)],
             "sellers_limit" => ["required", "numeric"],
-            "company_name" => ["required", "string", "max:255"],
+            "company_name" => ["required",],
             'role' => ['required', new Enum(RoleEnum::class)],
-            'status' => ['nullable']
+            'status' => ['required', new Enum(UserStatusEnum::class)]
+        ] + ($this->isMethod('post') ? $this->store() : []);
+    }
+
+    public function store()
+    {
+        return [
+            "password" => ["required", "min:8", "confirmed"],
         ];
     }
 }

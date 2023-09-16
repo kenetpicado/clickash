@@ -101,11 +101,10 @@ import AddButton from '@/Components/Buttons/AddButton.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import { ref } from 'vue';
-import { useForm, Link } from '@inertiajs/vue3';
-import { toast } from '@/Use/toast';
-import { confirmAlert } from '@/Use/helpers';
+import { Link } from '@inertiajs/vue3';
 import { IconGift } from '@tabler/icons-vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
+import { useUser } from '@/Composables/useUser.js';
 
 defineProps({
     users: {
@@ -122,6 +121,8 @@ defineProps({
     },
 });
 
+const { destroy, store, update, form } = useUser();
+
 const breads = [
     {
         name: 'Home',
@@ -134,74 +135,25 @@ const breads = [
 ];
 
 const isNew = ref(true);
-
-const form = useForm({
-    id: '',
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    sellers_limit: 5,
-    company_name: '',
-    role: 'owner',
-    status: 'enabled',
-});
-
 const openModal = ref(false);
 
 function edit(user) {
-    form.id = user.id;
-    form.name = user.name;
-    form.email = user.email;
-    form.sellers_limit = user.sellers_limit;
-    form.company_name = user.company_name;
-    form.role = user.role;
-    form.status = user.status;
+    Object.assign(form, user);
     isNew.value = false;
     openModal.value = true;
 }
 
 function onSubmit() {
-    if (isNew.value) {
-        form.post(route('dashboard.users.store'), {
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: () => {
-                toast.success('User created successfully');
-                openModal.value = false;
-            },
-        });
-    } else {
-        form.put(route('dashboard.users.update', form.id), {
-            preserveScroll: true,
-            preserveState: true,
-            onSuccess: () => {
-                toast.success('User updated successfully');
-                openModal.value = false;
-            },
-        });
-    }
+    if (isNew.value)
+        store(resetValues);
+    else
+        update(resetValues);
 }
 
-function destroy(id) {
-    confirmAlert({
-        message: 'Are you sure you want to delete this user?',
-        onConfirm: () => {
-            form.delete(route('dashboard.users.destroy', id), {
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => {
-                    toast.success('User deleted successfully');
-                },
-            });
-        },
-    })
-}
-
-function resetValues() {
+const resetValues = () => {
     form.reset();
     openModal.value = false;
     isNew.value = true;
-}
+};
 
 </script>
