@@ -154,3 +154,11 @@ function getImageSrc(value) {
 }
 
 </script>
+
+<style>
+pre {
+    background-color: rgb(228, 228, 228);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+</style>
