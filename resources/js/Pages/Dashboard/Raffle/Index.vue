@@ -157,7 +157,7 @@ function getImageSrc(value) {
 
 <style>
 pre {
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(241, 241, 241);
     padding: 1rem;
     border-radius: 1rem;
 }

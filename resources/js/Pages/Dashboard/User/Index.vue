@@ -27,7 +27,7 @@
                     </td>
                     <td>
                         {{ user.name }}
-                        <div class="text-indigo-500 mt-2">
+                        <div class="text-gray-400 mt-2">
                             {{ user.email }}
                         </div>
                     </td>
