@@ -35,7 +35,7 @@ import InputForm from '@/Components/Form/InputForm.vue';
 import { ref } from 'vue';
 import { useForm, Link, router } from '@inertiajs/vue3';
 import { toast } from '@/Use/toast';
-import { confirmAlert } from '@/Use/helpers';
+
 import RaffleCard from '@/Components/RaffleCard.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
 
@@ -82,19 +82,6 @@ function onSubmit() {
     });
 }
 
-function destroy(id) {
-    confirmAlert({
-        message: 'Are you sure you want to delete this raffle?',
-        onConfirm: () => {
-            router.delete(route('dashboard.users.raffles.destroy', [props.user.id, id]), {
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => {
-                    toast.success('Raffle deleted successfully');
-                },
-            });
-        },
-    })
-}
+
 
 </script>

@@ -5,20 +5,21 @@
             <span class="title">
                 {{ user.name }}
             </span>
+            <AddButton v-if="selectedTab == 'raffles'" @click="openModal = true" />
         </template>
 
-        <div class="mb-6 bg-white rounded-lg">
-            <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
-                <li class="flex-1">
-                    <span role="button" @click="selectedTab = 'sellers'" :class="getClass('sellers')">
-                        Sellers</span>
-                </li>
-                <li class="flex-1">
-                    <span role="button" @click="selectedTab = 'raffles'" :class="getClass('raffles')">
-                        Raffles</span>
-                </li>
-            </ul>
-        </div>
+        <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 mb-4">
+            <li class="mr-2">
+                <span role="button" @click="selectedTab = 'sellers'" :class="getClass('sellers')">
+                    Sellers
+                </span>
+            </li>
+            <li class="mr-2">
+                <span role="button" @click="selectedTab = 'raffles'" :class="getClass('raffles')">
+                    Raffles
+                </span>
+            </li>
+        </ul>
 
         <TableSection v-if="selectedTab == 'sellers'">
             <template #header>
@@ -82,21 +83,35 @@
                         <pre>{{ JSON.parse(raffle.pivot.settings) }}</pre>
                     </td>
                     <td>
-                        Actions
+                        <IconTrash role="button" @click="destroy(raffle.id)" />
                     </td>
                 </tr>
                 <tr v-if="raffles.length == 0">
-                    <td colspan="3" class="text-center">No data to display</td>
+                    <td colspan="5" class="text-center">No data to display</td>
                 </tr>
             </template>
         </TableSection>
+
+        <FormModal :show="openModal" title="Raffles" @onCancel="resetValues" @onSubmit="onSubmit">
+            <SelectForm text="Raffle" v-model="raffle" required>
+                <option selected disabled value="">Select Raffle</option>
+                <option v-for="raffle in all_raffles" :value="raffle.id">{{ raffle.name }}</option>
+            </SelectForm>
+        </FormModal>
     </AppLayout>
 </template>
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import TableSection from '@/Components/TableSection.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { confirmAlert } from '@/Use/helpers';
+import { toast } from '@/Use/toast';
+import { router } from '@inertiajs/vue3';
+import { IconTrash } from '@tabler/icons-vue';
 import { ref } from 'vue';
+import AddButton from '@/Components/Buttons/AddButton.vue';
+import FormModal from '@/Components/Modal/FormModal.vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
 
 const props = defineProps({
     user: {
@@ -110,7 +125,11 @@ const props = defineProps({
     raffles: {
         type: Object,
         required: true,
-    }
+    },
+    all_raffles: {
+        type: Object,
+        required: true,
+    },
 });
 
 const breads = [
@@ -129,11 +148,13 @@ const breads = [
 ];
 
 const selectedTab = ref('sellers');
+const openModal = ref(false);
+const raffle = ref(null);
 
 function getClass(tab) {
     return selectedTab.value == tab
-        ? 'relative flex items-center justify-center gap-2 px-1 py-3 text-indigo-600 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-indigo-600 hover:text-indigo-600 rounded-lg'
-        : 'flex items-center justify-center gap-2 px-1 py-3 text-gray-500 hover:text-indigo-600';
+        ? 'inline-block px-4 py-3 text-white bg-indigo-600 rounded-lg'
+        : 'inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100';
 }
 
 function getImageSrc(value) {
@@ -144,6 +165,35 @@ function getImageSrc(value) {
     return "https://media.istockphoto.com/id/1211282980/es/vector/ganadores-afortunados-girando-tambor-de-la-rifa.jpg?s=612x612&w=0&k=20&c=1jJPxjaVHqPFA_DQGDV3QEBQ6_C3pbhjs8Ies2kR-44="
 }
 
+function destroy(id) {
+    confirmAlert({
+        message: 'Are you sure you want to delete this raffle?',
+        onConfirm: () => {
+            router.delete(route('dashboard.users.raffles.destroy', [props.user.id, id]), {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    toast.success('Raffle deleted successfully');
+                },
+            });
+        },
+    })
+}
+
+function resetValues() {
+    raffle.value = null;
+    openModal.value = false;
+}
+
+function onSubmit() {
+    router.post(route('dashboard.users.raffles.store', props.user.id), { raffle_id: raffle.value }, {
+        onSuccess: () => {
+            toast.success('Raffle added successfully');
+            resetValues();
+        },
+    });
+}
+
 </script>
 
 <style>
@@ -151,5 +201,4 @@ pre {
     background-color: rgb(241, 241, 241);
     padding: 1rem;
     border-radius: 1rem;
-}
-</style>
+}</style>

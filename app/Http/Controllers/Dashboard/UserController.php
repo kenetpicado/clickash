@@ -6,6 +6,7 @@ use App\Enums\RoleEnum;
 use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\UserRequest;
+use App\Models\Raffle;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +28,7 @@ class UserController extends Controller
             'user' => $user,
             'sellers' => $user->sellers()->get(),
             'raffles' => $user->raffles()->get(),
+            'all_raffles' => Raffle::all(['id', 'name']),
         ]);
     }
 
