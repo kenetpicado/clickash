@@ -7,7 +7,7 @@
             </span>
         </template>
 
-        <div class="border-b border-b-gray-200 mb-6">
+        <div class="mb-6 bg-white rounded-lg">
             <ul class="-mb-px flex items-center gap-4 text-sm font-medium">
                 <li class="flex-1">
                     <span role="button" @click="selectedTab = 'sellers'" :class="getClass('sellers')">
@@ -132,7 +132,7 @@ const selectedTab = ref('sellers');
 
 function getClass(tab) {
     return selectedTab.value == tab
-        ? 'relative flex items-center justify-center gap-2 px-1 py-3 text-indigo-600 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-indigo-600 hover:text-indigo-600'
+        ? 'relative flex items-center justify-center gap-2 px-1 py-3 text-indigo-600 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-indigo-600 hover:text-indigo-600 rounded-lg'
         : 'flex items-center justify-center gap-2 px-1 py-3 text-gray-500 hover:text-indigo-600';
 }
 
