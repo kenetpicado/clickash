@@ -47,7 +47,7 @@
                             {{ user.online }}
                         </span>
 
-                        <span v-else>
+                        <span v-else class="badge-red">
                             {{ user.online }}
                         </span>
                     </td>
@@ -98,7 +98,6 @@ import FormModal from '@/Components/Modal/FormModal.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { IconGift } from '@tabler/icons-vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
 import { useUser } from '@/Composables/useUser.js';
 

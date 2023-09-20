@@ -36,7 +36,7 @@ defineProps({
             </ol>
 
             <div class="w-full">
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between h-10 mb-6">
                     <slot name="header" />
                 </div>
                 <slot />

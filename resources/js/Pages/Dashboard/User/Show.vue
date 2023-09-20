@@ -36,7 +36,7 @@
                     </td>
                     <td>
                         {{ user.name }}
-                        <div class="text-indigo-500 mt-2">
+                        <div class="text-gray-400 mt-2">
                             {{ user.email }}
                         </div>
                     </td>
@@ -153,8 +153,8 @@ const raffle = ref(null);
 
 function getClass(tab) {
     return selectedTab.value == tab
-        ? 'inline-block px-4 py-3 text-white bg-indigo-600 rounded-lg'
-        : 'inline-block px-4 py-3 rounded-lg hover:text-gray-900 hover:bg-gray-100';
+        ? 'inline-block px-4 py-2 text-white bg-gray-800 rounded-lg'
+        : 'inline-block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100';
 }
 
 function getImageSrc(value) {
