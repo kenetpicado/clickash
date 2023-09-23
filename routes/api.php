@@ -22,14 +22,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(["prefix" => "v1"], function () {
-    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
-    Route::post('register', RegisterController::class)->name('register');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])
+        ->name('login');
+
+    Route::post('register', RegisterController::class)
+        ->name('register');
 
     Route::middleware(['auth:sanctum', 'role:owner|seller', 'online'])->group(function () {
-        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
 
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
-        Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('profile', [ProfileController::class, 'index'])
+            ->name('profile.index');
+
+        Route::put('profile', [ProfileController::class, 'update'])
+            ->name('profile.update');
+
+        Route::get('raffles', [RaffleUserController::class, "index"])
+            ->name('raffles.index');
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
@@ -38,8 +48,7 @@ Route::group(["prefix" => "v1"], function () {
             Route::apiResource('sellers', SellerController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
 
-            Route::apiResource('raffles', RaffleUserController::class)
-                ->only(['index', 'update']);
+            Route::put('raffles/{raffle}', [RaffleUserController::class, "update"])->name('raffles.update');
 
             Route::apiResource('raffles.blocked-numbers', RaffleUserBlockedNumberController::class)
                 ->parameters(['raffles' => 'raffle_user'])

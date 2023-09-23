@@ -10,11 +10,20 @@ class RaffleUserService
 {
     public function getRafflesWithAvailability()
     {
-        $user_id = auth()->user()->role == RoleEnum::OWNER->value
+        $isOwner = auth()->user()->role == RoleEnum::OWNER->value;
+
+        $user_id = $isOwner
             ? auth()->id()
             : auth()->user()->user_id;
 
         return RaffleUser::query()
+            ->when($isOwner, function ($query) {
+                $query->whereHas("availability", function ($query) {
+                    $query->where('order', now()->dayOfWeek)
+                        ->where('start_time', '<=', now()->format('H:i:s'))
+                        ->where('end_time', '>=', now()->format('H:i:s'));
+                });
+            })
             ->with([
                 'availability' => fn ($query) => $query->where('order', now()->dayOfWeek)
             ])
