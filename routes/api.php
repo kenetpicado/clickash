@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\ProfileController;
-use App\Http\Controllers\API\V1\RaffleUserAvailabilityController;
-use App\Http\Controllers\API\V1\RaffleUserBlockedNumberController;
-use App\Http\Controllers\API\V1\RaffleUserController;
+use App\Http\Controllers\API\V1\RaffleAvailabilityController;
+use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
+use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
@@ -22,14 +22,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(["prefix" => "v1"], function () {
-    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
-    Route::post('register', RegisterController::class)->name('register');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])
+        ->name('login');
+
+    Route::post('register', RegisterController::class)
+        ->name('register');
 
     Route::middleware(['auth:sanctum', 'role:owner|seller', 'online'])->group(function () {
-        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+        Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+            ->name('logout');
 
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
-        Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('profile', [ProfileController::class, 'index'])
+            ->name('profile.index');
+
+        Route::put('profile', [ProfileController::class, 'update'])
+            ->name('profile.update');
+
+        Route::get('raffles', [RaffleController::class, "index"])
+            ->name('raffles.index');
+
+        Route::get('raffles/{raffle}', [RaffleController::class, "show"])
+            ->name('raffles.show');
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
@@ -38,15 +51,13 @@ Route::group(["prefix" => "v1"], function () {
             Route::apiResource('sellers', SellerController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
 
-            Route::apiResource('raffles', RaffleUserController::class)
-                ->only(['index', 'update']);
+            Route::put('raffles/{raffle}', [RaffleController::class, "update"])
+                ->name('raffles.update');
 
-            Route::apiResource('raffles.blocked-numbers', RaffleUserBlockedNumberController::class)
-                ->parameters(['raffles' => 'raffle_user'])
+            Route::apiResource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
                 ->only(['index', 'store', 'destroy']);
 
-            Route::apiResource('raffles.availability', RaffleUserAvailabilityController::class)
-                ->parameters(['raffles' => 'raffle_user'])
+            Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
         });
     });

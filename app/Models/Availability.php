@@ -12,6 +12,7 @@ class Availability extends Model
     protected $fillable = [
         'availability_id',
         'availability_type',
+        'raffle_id',
         'day',
         'start_time',
         'end_time',

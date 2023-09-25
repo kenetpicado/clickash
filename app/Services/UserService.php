@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
+    public function getUserId(): int
+    {
+        return self::isOwner()
+            ? auth()->id()
+            : auth()->user()->user_id;
+    }
+
+    public function isOwner(): bool
+    {
+        return auth()->user()->role == RoleEnum::OWNER->value;
+    }
+
     public function createSeller(array $request)
     {
         if (auth()->user()->sellers()->count() >= auth()->user()->sellers_limit)

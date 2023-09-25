@@ -17,6 +17,10 @@ class RaffleUser extends Model
         'settings'
     ];
 
+    protected $casts = [
+        'settings' => 'array'
+    ];
+
     public function raffle()
     {
         return $this->belongsTo(Raffle::class);
@@ -25,25 +29,5 @@ class RaffleUser extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function blockedNumbers()
-    {
-        return $this->morphMany(BlockedNumber::class, 'blockable');
-    }
-
-    public function getSettingsAttribute($value)
-    {
-        return json_decode($value);
-    }
-
-    public function setSettingsAttribute($value)
-    {
-        $this->attributes['settings'] = json_encode($value);
-    }
-
-    public function availability()
-    {
-        return $this->morphMany(Availability::class, 'availability');
     }
 }

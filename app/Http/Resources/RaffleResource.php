@@ -18,6 +18,7 @@ class RaffleResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image,
+            'settings' => $this->raffle_user->settings,
         ];
     }
 }

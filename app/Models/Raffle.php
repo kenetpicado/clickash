@@ -17,23 +17,22 @@ class Raffle extends Model
         'settings'
     ];
 
-    public function getSettingsAttribute($value)
-    {
-        return json_decode($value);
-    }
-
-    public function setSettingsAttribute($value)
-    {
-        $this->attributes['settings'] = json_encode($value);
-    }
-
-    public function blockedNumbers()
-    {
-        return $this->morphMany(BlockedNumber::class, 'blockable');
-    }
+    protected $casts = [
+        'settings' => 'array'
+    ];
 
     public function availability()
     {
         return $this->morphMany(Availability::class, 'availability');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function raffle_user()
+    {
+        return $this->hasOne(RaffleUser::class);
     }
 }

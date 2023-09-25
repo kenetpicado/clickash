@@ -24,13 +24,18 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
     ->prefix('dashboard')
     ->name('dashboard.')
     ->group(function () {
-        Route::get('/', DashboardController::class)->name('index');
+        Route::get('/', DashboardController::class)
+            ->name('index');
 
-        Route::resource('profile', ProfileController::class)->only(['index', 'update']);
+        Route::resource('profile', ProfileController::class)
+            ->only(['index', 'update']);
 
-        Route::resource('users', UserController::class)->except(['edit', 'create']);
+        Route::resource('users', UserController::class)
+            ->except(['edit', 'create']);
 
-        Route::resource('users.raffles', UserRaffleController::class);
+        Route::resource('users.raffles', UserRaffleController::class)
+            ->only(['store', 'destroy']);
 
-        Route::resource('raffles', RaffleController::class);
+        Route::resource('raffles', RaffleController::class)
+            ->except(['edit', 'create', 'show']);
     });

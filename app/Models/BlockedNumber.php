@@ -11,12 +11,7 @@ class BlockedNumber extends Model
 
     protected $fillable = [
         'number',
-        'blockable_id',
-        'blockable_type'
+        'user_id',
+        'raffle_id'
     ];
-
-    public function blockable()
-    {
-        return $this->morphTo();
-    }
 }

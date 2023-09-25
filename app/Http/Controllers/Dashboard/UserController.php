@@ -6,6 +6,7 @@ use App\Enums\RoleEnum;
 use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\UserRequest;
+use App\Models\Raffle;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,9 +24,15 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $raffles = $user->raffles()->get();
+
+        $all_raffles = Raffle::whereNotIn('id', $raffles->pluck('id'))->get(['id', 'name']);
+
         return inertia('Dashboard/User/Show', [
             'user' => $user,
-            'sellers' => $user->sellers()->get()
+            'sellers' => $user->sellers()->get(),
+            'raffles' => $raffles,
+            'all_raffles' => $all_raffles,
         ]);
     }
 

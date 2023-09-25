@@ -81,4 +81,14 @@ class User extends Authenticatable
             ->withPivot('id', 'settings')
             ->withTimestamps();
     }
+
+    public function availability()
+    {
+        return $this->morphMany(Availability::class, 'availability');
+    }
+
+    public function blockedNumbers()
+    {
+        return $this->hasMany(BlockedNumber::class);
+    }
 }
