@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\ProfileController;
-use App\Http\Controllers\API\V1\RaffleUserAvailabilityController;
-use App\Http\Controllers\API\V1\RaffleUserBlockedNumberController;
-use App\Http\Controllers\API\V1\RaffleUserController;
+use App\Http\Controllers\API\V1\RaffleAvailabilityController;
+use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
+use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
@@ -38,8 +38,11 @@ Route::group(["prefix" => "v1"], function () {
         Route::put('profile', [ProfileController::class, 'update'])
             ->name('profile.update');
 
-        Route::get('raffles', [RaffleUserController::class, "index"])
+        Route::get('raffles', [RaffleController::class, "index"])
             ->name('raffles.index');
+
+        Route::get('raffles/{raffle}', [RaffleController::class, "show"])
+            ->name('raffles.show');
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
@@ -48,14 +51,13 @@ Route::group(["prefix" => "v1"], function () {
             Route::apiResource('sellers', SellerController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
 
-            Route::put('raffles/{raffle}', [RaffleUserController::class, "update"])->name('raffles.update');
+            Route::put('raffles/{raffle}', [RaffleController::class, "update"])
+                ->name('raffles.update');
 
-            Route::apiResource('raffles.blocked-numbers', RaffleUserBlockedNumberController::class)
-                ->parameters(['raffles' => 'raffle_user'])
+            Route::apiResource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
                 ->only(['index', 'store', 'destroy']);
 
-            Route::apiResource('raffles.availability', RaffleUserAvailabilityController::class)
-                ->parameters(['raffles' => 'raffle_user'])
+            Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
         });
     });

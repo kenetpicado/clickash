@@ -30,14 +30,4 @@ class RaffleUser extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function blockedNumbers()
-    {
-        return $this->morphMany(BlockedNumber::class, 'blockable');
-    }
-
-    public function availability()
-    {
-        return $this->morphMany(Availability::class, 'availability');
-    }
 }

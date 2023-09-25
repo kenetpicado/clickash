@@ -21,13 +21,18 @@ class Raffle extends Model
         'settings' => 'array'
     ];
 
-    public function blockedNumbers()
-    {
-        return $this->morphMany(BlockedNumber::class, 'blockable');
-    }
-
     public function availability()
     {
         return $this->morphMany(Availability::class, 'availability');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function raffle_user()
+    {
+        return $this->hasOne(RaffleUser::class);
     }
 }

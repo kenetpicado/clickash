@@ -25,6 +25,7 @@
             <template #header>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>Email</th>
                 <th>Active</th>
                 <th>Status</th>
             </template>
@@ -36,9 +37,9 @@
                     </td>
                     <td>
                         {{ user.name }}
-                        <div class="text-gray-400 mt-2">
-                            {{ user.email }}
-                        </div>
+                    </td>
+                    <td>
+                        {{ user.email }}
                     </td>
                     <td>
                         <span v-if="user.online == 'Now'" class="badge-green">

@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
             $table->morphs('availability');
+            $table->foreignId('raffle_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->string('day');
             $table->integer('order');
             $table->time('start_time');

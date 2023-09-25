@@ -24,11 +24,15 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $raffles = $user->raffles()->get();
+
+        $all_raffles = Raffle::whereNotIn('id', $raffles->pluck('id'))->get(['id', 'name']);
+
         return inertia('Dashboard/User/Show', [
             'user' => $user,
             'sellers' => $user->sellers()->get(),
-            'raffles' => $user->raffles()->get(),
-            'all_raffles' => Raffle::all(['id', 'name']),
+            'raffles' => $raffles,
+            'all_raffles' => $all_raffles,
         ]);
     }
 

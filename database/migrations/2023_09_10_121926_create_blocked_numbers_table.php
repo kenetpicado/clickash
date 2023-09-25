@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('blocked_numbers', function (Blueprint $table) {
             $table->id();
-            $table->morphs('blockable');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('raffle_id')->constrained()->onDelete('cascade');
             $table->string('number');
             $table->timestamps();
         });
