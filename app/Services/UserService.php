@@ -34,6 +34,7 @@ class UserService
                 'status' => UserStatusEnum::ENABLED->value,
                 'password' => Hash::make($request['password']),
                 'role' => RoleEnum::SELLER->value,
+                'company_name' => auth()->user()->company_name,
             ]);
     }
 
