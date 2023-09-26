@@ -62,12 +62,12 @@ class User extends Authenticatable
     public function getOnlineAttribute(): string
     {
         if (!$this->last_login)
-            return 'Not logged in';
+            return 'No ha iniciado sesión';
 
         if ($this->last_login->diffInMinutes() < 4)
-            return 'Now';
+            return 'Activo ahora';
 
-        return $this->last_login->diffForHumans();
+        return "Activo " . $this->last_login->diffForHumans();
     }
 
     public function sellers()
