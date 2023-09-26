@@ -19,10 +19,8 @@ class RaffleController extends Controller
     public function show($raffle)
     {
         return response()->json([
-            'data' => [
-                'blocked_hours' => (new RaffleService)->getBlockedHours($raffle),
-                'blocked_numbers' => (new RaffleService)->getBlockedNumbers($raffle)
-            ]
+            'blocked_hours' => (new RaffleService)->getNextBlockedHours($raffle),
+            'blocked_numbers' => (new RaffleService)->getBlockedNumbers($raffle)
         ]);
     }
 
@@ -31,7 +29,7 @@ class RaffleController extends Controller
         RaffleUser::where('raffle_id', $raffle)
             ->where('user_id', auth()->id())
             ->update([
-                'settings' => $request->settings,
+                'settings' => $request->settings
             ]);
 
         return self::index();

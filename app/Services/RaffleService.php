@@ -39,18 +39,33 @@ class RaffleService
 
     public function getBlockedHours($raffle)
     {
+        $user_id = (new UserService)->getUserId();
+
         return Availability::query()
             ->where('availability_type', User::class)
-            ->where('availability_id', auth()->id())
+            ->where('availability_id', $user_id)
             ->where('raffle_id', $raffle)
             ->where('order', now()->dayOfWeek)
             ->value('blocked_hours');
     }
 
+    public function getNextBlockedHours($raffle)
+    {
+        $blockedHours = self::getBlockedHours($raffle);
+
+        $nextBlockedHours = collect($blockedHours)->filter(function ($value, $key) {
+            return $value > now()->format('H:i:s');
+        });
+
+        return $nextBlockedHours->values();
+    }
+
     public function getBlockedNumbers($raffle)
     {
+        $user_id = (new UserService)->getUserId();
+
         return BlockedNumber::query()
-            ->where('user_id', auth()->id())
+            ->where('user_id', $user_id)
             ->where('raffle_id', $raffle)
             ->pluck('number');
     }
