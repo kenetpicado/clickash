@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
-            $table->morphs('availability');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->foreignId('raffle_id')
                 ->nullable()
                 ->constrained()

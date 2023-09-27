@@ -23,7 +23,12 @@ class Raffle extends Model
 
     public function availability()
     {
-        return $this->morphMany(Availability::class, 'availability');
+        return $this->hasMany(Availability::class);
+    }
+
+    public function currentAvailability()
+    {
+        return $this->hasOne(Availability::class)->where('order', now()->dayOfWeek);
     }
 
     public function users()
@@ -34,5 +39,10 @@ class Raffle extends Model
     public function raffle_user()
     {
         return $this->hasOne(RaffleUser::class);
+    }
+
+    public function blockedNumbers()
+    {
+        return $this->hasMany(BlockedNumber::class);
     }
 }

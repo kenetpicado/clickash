@@ -10,8 +10,7 @@ class Availability extends Model
     use HasFactory;
 
     protected $fillable = [
-        'availability_id',
-        'availability_type',
+        'user_id',
         'raffle_id',
         'day',
         'start_time',
@@ -20,18 +19,17 @@ class Availability extends Model
         'order'
     ];
 
-    public function availability()
+    protected $casts = [
+        'blocked_hours' => 'array'
+    ];
+
+    public function user()
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class);
     }
 
-    public function getBlockedHoursAttribute($value)
+    public function raffle()
     {
-        return json_decode($value);
-    }
-
-    public function setBlockedHoursAttribute($value)
-    {
-        $this->attributes['blocked_hours'] = json_encode($value);
+        return $this->belongsTo(Raffle::class);
     }
 }

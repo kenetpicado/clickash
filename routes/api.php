@@ -44,6 +44,12 @@ Route::group(["prefix" => "v1"], function () {
         Route::get('raffles/{raffle}', [RaffleController::class, "show"])
             ->name('raffles.show');
 
+        Route::get('raffles/{raffle}/blocked-numbers', [RaffleBlockedNumberController::class, "index"])
+            ->name('raffles.blocked-numbers.index');
+
+        Route::get('raffles/{raffle}/availability', [RaffleAvailabilityController::class, "index"])
+            ->name('raffles.availability.index');
+
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
             Route::put('toggle-status/{seller}', ToggleStatusController::class);
@@ -55,10 +61,10 @@ Route::group(["prefix" => "v1"], function () {
                 ->name('raffles.update');
 
             Route::apiResource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
-                ->only(['index', 'store', 'destroy']);
+                ->only(['store', 'destroy']);
 
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
-                ->only(['index', 'store', 'update', 'destroy']);
+                ->only(['store', 'update', 'destroy']);
         });
     });
 });
