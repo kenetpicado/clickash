@@ -16,7 +16,7 @@ class AuthenticatedSessionController extends Controller
         $user = (new AuthService)->setRequest($request)->login();
 
         return response()->json([
-            'message' => 'Login success',
+            'message' => "Bienvenido {$user->name}",
             'auth_token' => $user->createToken('authToken')->plainTextToken,
             "name" => $user->name,
             "email" => $user->email,
@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => "Logout success",
+            'message' => 'Sesión cerrada',
         ]);
     }
 }
