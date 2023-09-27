@@ -45,7 +45,11 @@ class RaffleService
             ->transform(function ($raffle) {
                 $raffle->settings = $raffle->raffle_user->settings;
                 $raffle->blocked_numbers = $raffle->blockedNumbers->pluck('number');
-                $raffle->blocked_hours = $raffle->currentAvailability->blocked_hours;
+                $raffle->blocked_hours = collect($raffle->currentAvailability->blocked_hours)
+                    ->filter(function ($value, $key) {
+                        return $value > now()->format('H:i:s');
+                    })
+                    ->values();
                 unset($raffle->raffle_user);
                 unset($raffle->blockedNumbers);
                 unset($raffle->currentAvailability);
