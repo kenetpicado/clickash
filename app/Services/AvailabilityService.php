@@ -14,8 +14,7 @@ class AvailabilityService
         $user_id = (new UserService)->getUserId();
 
         return Availability::query()
-            ->where('availability_type', User::class)
-            ->where('availability_id', $user_id)
+            ->where('user_id', $user_id)
             ->where("raffle_id", $raffle)
             ->orderBy('order')
             ->get();
@@ -26,8 +25,7 @@ class AvailabilityService
         $dayNumber = DayEnum::getDayNumber($day);
 
         return Availability::query()
-            ->where('availability_type', User::class)
-            ->where('availability_id', auth()->id())
+            ->where('user_id', auth()->id())
             ->where('raffle_id', $raffle)
             ->where('order', $dayNumber)
             ->when($availability, function ($query) use ($availability) {
@@ -49,8 +47,7 @@ class AvailabilityService
             'end_time' => $request['end_time'],
             'blocked_hours' => $blockedHours,
             'raffle_id' => $raffle,
-            'availability_id' => auth()->id(),
-            'availability_type' => User::class
+            'user_id' => auth()->id(),
         ]);
     }
 

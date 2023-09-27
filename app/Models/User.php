@@ -84,7 +84,7 @@ class User extends Authenticatable
 
     public function availability()
     {
-        return $this->morphMany(Availability::class, 'availability');
+        return $this->hasMany(Availability::class);
     }
 
     public function blockedNumbers()

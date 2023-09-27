@@ -24,17 +24,33 @@ class RaffleService
                 $query->whereIn('id', function ($query) use ($user_id, $time) {
                     $query->select('raffle_id')
                         ->from('availabilities')
-                        ->where('availability_type', User::class)
+                        ->where('user_id', $user_id)
                         ->where('order', now()->dayOfWeek)
                         ->where('start_time', '<=', $time)
-                        ->where('end_time', '>=', $time)
-                        ->where('availability_id', $user_id);
+                        ->where('end_time', '>=', $time);
                 });
             })
             ->with(['raffle_user' => function ($query) use ($user_id) {
-                $query->where('user_id', $user_id);
+                $query->where('user_id', $user_id)->select('id', 'settings','raffle_id', 'user_id');
             }])
-            ->get(['id', 'name', 'image', 'settings']);
+            ->with([
+                "blockedNumbers" => function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id)->select('id', 'number', 'raffle_id', 'user_id');
+                },
+                "currentAvailability" => function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id)->select('id', 'raffle_id', 'user_id', 'blocked_hours');
+                }
+            ])
+            ->get(['id', 'name', 'image'])
+            ->transform(function ($raffle) {
+                $raffle->settings = $raffle->raffle_user->settings;
+                $raffle->blocked_numbers = $raffle->blockedNumbers->pluck('number');
+                $raffle->blocked_hours = $raffle->currentAvailability->blocked_hours;
+                unset($raffle->raffle_user);
+                unset($raffle->blockedNumbers);
+                unset($raffle->currentAvailability);
+                return $raffle;
+            });
     }
 
     public function getBlockedHours($raffle)
