@@ -11,8 +11,9 @@ class RaffleService
 {
     public function getRaffles()
     {
-        $user_id = (new UserService)->getUserId();
-        $is_owner = (new UserService)->isOwner();
+        $userService = new UserService;
+        $user_id = $userService->getUserId();
+        $is_owner = $userService->isOwner();
 
         $time = now()->format('H:i:s');
 
@@ -30,10 +31,10 @@ class RaffleService
                         ->where('end_time', '>=', $time);
                 });
             })
-            ->with(['raffle_user' => function ($query) use ($user_id) {
-                $query->where('user_id', $user_id)->select('id', 'settings','raffle_id', 'user_id');
-            }])
             ->with([
+                'raffle_user' => function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id)->select('id', 'settings','raffle_id', 'user_id');
+                },
                 "blockedNumbers" => function ($query) use ($user_id) {
                     $query->where('user_id', $user_id)->select('id', 'number', 'raffle_id', 'user_id');
                 },
@@ -55,38 +56,5 @@ class RaffleService
                 unset($raffle->currentAvailability);
                 return $raffle;
             });
-    }
-
-    public function getBlockedHours($raffle)
-    {
-        $user_id = (new UserService)->getUserId();
-
-        return Availability::query()
-            ->where('availability_type', User::class)
-            ->where('availability_id', $user_id)
-            ->where('raffle_id', $raffle)
-            ->where('order', now()->dayOfWeek)
-            ->value('blocked_hours');
-    }
-
-    public function getNextBlockedHours($raffle)
-    {
-        $blockedHours = self::getBlockedHours($raffle);
-
-        $nextBlockedHours = collect($blockedHours)->filter(function ($value, $key) {
-            return $value > now()->format('H:i:s');
-        });
-
-        return $nextBlockedHours->values();
-    }
-
-    public function getBlockedNumbers($raffle)
-    {
-        $user_id = (new UserService)->getUserId();
-
-        return BlockedNumber::query()
-            ->where('user_id', $user_id)
-            ->where('raffle_id', $raffle)
-            ->pluck('number');
     }
 }

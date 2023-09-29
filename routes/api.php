@@ -8,6 +8,7 @@ use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
+use App\Http\Controllers\API\V1\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,9 @@ Route::group(["prefix" => "v1"], function () {
 
         Route::get('raffles/{raffle}/availability', [RaffleAvailabilityController::class, "index"])
             ->name('raffles.availability.index');
+
+        Route::apiResource('transactions', TransactionController::class)
+            ->only(['index', 'store']);
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {

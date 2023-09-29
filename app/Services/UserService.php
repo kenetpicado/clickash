@@ -24,7 +24,7 @@ class UserService
     public function createSeller(array $request)
     {
         if (auth()->user()->sellers()->count() >= auth()->user()->sellers_limit)
-            abort(403, 'You have reached the maximum number of sellers');
+            abort(403, "Ha alcanzado el límite de vendedores permitidos");
 
         auth()->user()
             ->sellers()
