@@ -54,7 +54,7 @@ class AuthService
             ]);
         }
 
-        $this->request->clear();
+        // $this->request->clear();
 
         //$user->tokens()->delete();
 

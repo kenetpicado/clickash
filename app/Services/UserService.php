@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\RoleEnum;
 use App\Enums\UserStatusEnum;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -14,6 +15,15 @@ class UserService
         return self::isOwner()
             ? auth()->id()
             : auth()->user()->user_id;
+    }
+
+    public function getTeamIds($user_id): array
+    {
+        return User::query()
+            ->where('id', $user_id)
+            ->orWhere('user_id', $user_id)
+            ->pluck('id')
+            ->toArray();
     }
 
     public function isOwner(): bool
