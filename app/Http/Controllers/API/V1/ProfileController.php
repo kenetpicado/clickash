@@ -18,6 +18,6 @@ class ProfileController extends Controller
     {
         auth()->user()->update($request->validated());
 
-        return UserResource::make(auth()->user());
+        return self::index();
     }
 }

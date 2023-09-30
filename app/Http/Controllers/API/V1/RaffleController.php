@@ -18,10 +18,8 @@ class RaffleController extends Controller
 
     public function show($raffle)
     {
-        return response()->json([
-            'blocked_hours' => (new RaffleService)->getNextBlockedHours($raffle),
-            'blocked_numbers' => (new RaffleService)->getBlockedNumbers($raffle)
-        ]);
+        //mostrar las ventas de una rifa
+        return response()->json([]);
     }
 
     public function update(RaffleRequest $request, $raffle)

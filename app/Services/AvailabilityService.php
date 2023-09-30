@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Enums\DayEnum;
 use App\Models\Availability;
-use App\Models\RaffleUser;
-use App\Models\User;
 
 class AvailabilityService
 {

@@ -15,8 +15,10 @@ class AuthenticatedSessionController extends Controller
 
         $user = (new AuthService)->setRequest($request)->login();
 
+        $firstName = explode(' ', $user->name)[0];
+
         return response()->json([
-            'message' => "Bienvenido {$user->name}",
+            'message' => "Bienvenido {$firstName}",
             'auth_token' => $user->createToken('authToken')->plainTextToken,
             "name" => $user->name,
             "email" => $user->email,

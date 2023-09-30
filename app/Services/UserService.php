@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\RoleEnum;
 use App\Enums\UserStatusEnum;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -16,6 +17,15 @@ class UserService
             : auth()->user()->user_id;
     }
 
+    public function getTeamIds($user_id): array
+    {
+        return User::query()
+            ->where('id', $user_id)
+            ->orWhere('user_id', $user_id)
+            ->pluck('id')
+            ->toArray();
+    }
+
     public function isOwner(): bool
     {
         return auth()->user()->role == RoleEnum::OWNER->value;
@@ -24,7 +34,7 @@ class UserService
     public function createSeller(array $request)
     {
         if (auth()->user()->sellers()->count() >= auth()->user()->sellers_limit)
-            abort(403, 'You have reached the maximum number of sellers');
+            abort(403, "Ha alcanzado el límite de vendedores permitidos");
 
         auth()->user()
             ->sellers()
