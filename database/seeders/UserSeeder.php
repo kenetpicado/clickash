@@ -40,6 +40,7 @@ class UserSeeder extends Seeder
                 "password" => Hash::make("password"),
                 "role" => RoleEnum::OWNER->value,
                 'sellers_limit' => 100,
+                "company_name" => "John Doe Company"
             ],
         ];
 
@@ -54,7 +55,8 @@ class UserSeeder extends Seeder
                         "password" => Hash::make("password"),
                         "user_id" => $created->id,
                         "role" => RoleEnum::SELLER->value,
-                        'status' => UserStatusEnum::ENABLED
+                        'status' => UserStatusEnum::ENABLED,
+                        "company_name" => "John Doe Company"
                     ]);
                 }
             }

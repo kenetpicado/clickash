@@ -70,6 +70,11 @@ class User extends Authenticatable
         return "Activo " . $this->last_login->diffForHumans();
     }
 
+    public function setCompanyNameAttribute($value)
+    {
+        $this->attributes['company_name'] = strtoupper($value);
+    }
+
     public function sellers()
     {
         return $this->hasMany(User::class, 'user_id')->orderBy('name');

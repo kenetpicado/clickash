@@ -35,9 +35,6 @@ class RaffleService
                 'raffle_user' => function ($query) use ($user_id) {
                     $query->where('user_id', $user_id)->select('id', 'settings','raffle_id', 'user_id');
                 },
-                "blockedNumbers" => function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id)->select('id', 'number', 'raffle_id', 'user_id');
-                },
                 "currentAvailability" => function ($query) use ($user_id) {
                     $query->where('user_id', $user_id)->select('id', 'raffle_id', 'user_id', 'blocked_hours');
                 }
@@ -45,14 +42,12 @@ class RaffleService
             ->get(['id', 'name', 'image'])
             ->transform(function ($raffle) {
                 $raffle->settings = $raffle->raffle_user->settings;
-                $raffle->blocked_numbers = $raffle->blockedNumbers->pluck('number');
                 $raffle->blocked_hours = collect($raffle->currentAvailability->blocked_hours ?? [])
                     ->filter(function ($value, $key) {
                         return $value > now()->format('H:i:s');
                     })
                     ->values();
                 unset($raffle->raffle_user);
-                unset($raffle->blockedNumbers);
                 unset($raffle->currentAvailability);
                 return $raffle;
             });

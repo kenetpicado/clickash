@@ -86,12 +86,14 @@ class TransactionController extends Controller
 
             if ($transactionsTotalAmount + $request->amount > $settings["general_limit"]) {
                 $availableAmount = $settings["general_limit"] - $transactionsTotalAmount;
-                abort(422, "El monto total permitido es C$" . $settings["general_limit"] . " y hay C$" . $availableAmount . " disponibles.");
+                abort(422, "El monto disponible es C$" . $availableAmount);
             }
         }
 
         $transaction = Transaction::create($request->validated() + ["user_id" => auth()->id()]);
 
-        return response()->json($transaction);
+        $transaction->raffle_name = Raffle::where('id', $request->raffle_id)->value("name");
+
+        return TransactionResource::make($transaction);
     }
 }
