@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\SellerResource;
+use App\Http\Requests\API\IntervalRequest;
 use App\Http\Requests\API\SellerRequest;
+use App\Http\Resources\SellerResource;
+use App\Http\Resources\UserTransactionResource;
 use App\Models\User;
 use App\Services\UserService;
 
 class SellerController extends Controller
 {
+    public function __construct(
+        private readonly UserService $service
+    ) {
+    }
+
     public function index()
     {
         return SellerResource::collection(auth()->user()->sellers);
@@ -17,21 +24,26 @@ class SellerController extends Controller
 
     public function store(SellerRequest $request)
     {
-        (new UserService)->createSeller($request->validated());
+        $this->service->createSeller($request->validated());
 
         return self::index();
     }
 
-    public function update(SellerRequest $request, User $seller)
+    public function show(IntervalRequest $request, $seller)
     {
-        $seller->update($request->validated());
+        return UserTransactionResource::collection($this->service->getTransactionsByUser($seller, $request->validated()));
+    }
+
+    public function update(SellerRequest $request, $seller)
+    {
+        User::where('id', $seller)->update($request->validated());
 
         return self::index();
     }
 
-    public function destroy(User $seller)
+    public function destroy($seller)
     {
-        $seller->delete();
+        User::where('id', $seller)->delete();
 
         return self::index();
     }

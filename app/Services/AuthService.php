@@ -10,8 +10,11 @@ use Illuminate\Validation\ValidationException;
 class AuthService
 {
     private $model = User::class;
+
     private $guard = 'web';
+
     private $field = 'email';
+
     private $request = null;
 
     public function setRequest($request)
@@ -46,7 +49,7 @@ class AuthService
     {
         $user = $this->model::where($this->field, $this->request->{$this->field})->first();
 
-        if (!$user || !Hash::check($this->request->password, $user->password)) {
+        if (! $user || ! Hash::check($this->request->password, $user->password)) {
             $this->request->hit();
 
             throw ValidationException::withMessages([

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\RaffleRequest;
 use App\Models\Raffle;
-use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {

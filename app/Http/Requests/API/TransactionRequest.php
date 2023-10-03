@@ -22,11 +22,11 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "raffle_id" => ["required", "exists:raffles,id"],
-            "digit" => ["required"],
-            "amount" => ["required", "numeric"],
-            "hour" => ["required", "date_format:H:i:s"],
-            "client" => ["required"],
+            'raffle_id' => ['required', 'exists:raffles,id'],
+            'digit' => ['required'],
+            'amount' => ['required', 'numeric'],
+            'hour' => ['required', 'date_format:H:i:s'],
+            'client' => ['required'],
         ];
     }
 }

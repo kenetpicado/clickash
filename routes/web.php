@@ -3,8 +3,8 @@
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
-use App\Http\Controllers\Dashboard\UserRaffleController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\UserRaffleController;
 use Illuminate\Support\Facades\Route;
 
 /*

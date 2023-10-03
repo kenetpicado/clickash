@@ -14,11 +14,11 @@ class RaffleUser extends Model
     protected $fillable = [
         'raffle_id',
         'user_id',
-        'settings'
+        'settings',
     ];
 
     protected $casts = [
-        'settings' => 'array'
+        'settings' => 'array',
     ];
 
     public function raffle()

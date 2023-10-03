@@ -14,11 +14,11 @@ class Raffle extends Model
     protected $fillable = [
         'name',
         'image',
-        'settings'
+        'settings',
     ];
 
     protected $casts = [
-        'settings' => 'array'
+        'settings' => 'array',
     ];
 
     public function availability()

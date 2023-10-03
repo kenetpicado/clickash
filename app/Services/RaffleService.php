@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Availability;
-use App\Models\BlockedNumber;
 use App\Models\Raffle;
+use App\Models\Transaction;
 use App\Models\User;
 
 class RaffleService
@@ -21,7 +20,7 @@ class RaffleService
             ->whereHas('users', function ($query) use ($user_id) {
                 $query->where('raffle_user.user_id', $user_id);
             })
-            ->when(!$is_owner, function ($query) use ($user_id, $time) {
+            ->when(! $is_owner, function ($query) use ($user_id, $time) {
                 $query->whereIn('id', function ($query) use ($user_id, $time) {
                     $query->select('raffle_id')
                         ->from('availabilities')
@@ -33,11 +32,11 @@ class RaffleService
             })
             ->with([
                 'raffle_user' => function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id)->select('id', 'settings','raffle_id', 'user_id');
+                    $query->where('user_id', $user_id)->select('id', 'settings', 'raffle_id', 'user_id');
                 },
-                "currentAvailability" => function ($query) use ($user_id) {
+                'currentAvailability' => function ($query) use ($user_id) {
                     $query->where('user_id', $user_id)->select('id', 'raffle_id', 'user_id', 'blocked_hours');
-                }
+                },
             ])
             ->get(['id', 'name', 'image'])
             ->transform(function ($raffle) {
@@ -49,7 +48,26 @@ class RaffleService
                     ->values();
                 unset($raffle->raffle_user);
                 unset($raffle->currentAvailability);
+
                 return $raffle;
             });
+    }
+
+    public function getTransactions($raffle_id, array $request)
+    {
+        $start_date = $request['start_date'].' 00:00:00';
+        $end_date = $request['end_date'].' 23:59:59';
+
+        $teamIds = User::where('id', auth()->id())
+            ->orWhere('user_id', auth()->id())
+            ->pluck('id');
+
+        return Transaction::query()
+            ->where('raffle_id', $raffle_id)
+            ->whereIn('user_id', $teamIds)
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->with('user:id,name')
+            ->orderBy('id', $request['order'] ?? 'desc')
+            ->get();
     }
 }

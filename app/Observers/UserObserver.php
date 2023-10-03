@@ -17,7 +17,7 @@ class UserObserver
                 RaffleUser::create([
                     'raffle_id' => $raffle->id,
                     'user_id' => $user->id,
-                    'settings' => $raffle->settings
+                    'settings' => $raffle->settings,
                 ]);
 
                 foreach ($raffle->availability as $availability) {
@@ -27,7 +27,7 @@ class UserObserver
                         'start_time' => $availability->start_time,
                         'end_time' => $availability->end_time,
                         'blocked_hours' => $availability->blocked_hours,
-                        'raffle_id' => $raffle->id
+                        'raffle_id' => $raffle->id,
                     ]);
                 }
             });

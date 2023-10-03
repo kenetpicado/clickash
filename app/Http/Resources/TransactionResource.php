@@ -15,15 +15,16 @@ class TransactionResource extends JsonResource
     public function toArray(Request $request): array
     {
         $companyName = auth()->user()->company_name;
+
         return [
-            "id" => $this->id,
-            "digit" => $this->digit,
-            "amount" => $this->amount,
-            "client" => $this->client,
-            "hour" => $this->hour,
-            "created_at" => $this->created_at->format('d/m/y g:i A'),
-            "raffle" => $this->raffle_name,
-            "company_name" => $companyName,
+            'id' => $this->id,
+            'digit' => $this->digit,
+            'amount' => $this->amount,
+            'client' => $this->client,
+            'hour' => $this->hour,
+            'created_at' => $this->created_at->format('d/m/y g:i A'),
+            'raffle' => $this->raffle_name,
+            'company_name' => $companyName,
         ];
     }
 }

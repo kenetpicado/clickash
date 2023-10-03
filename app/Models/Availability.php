@@ -16,11 +16,11 @@ class Availability extends Model
         'start_time',
         'end_time',
         'blocked_hours',
-        'order'
+        'order',
     ];
 
     protected $casts = [
-        'blocked_hours' => 'array'
+        'blocked_hours' => 'array',
     ];
 
     public function user()

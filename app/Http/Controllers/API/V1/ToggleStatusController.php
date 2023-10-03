@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\V1;
 use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class ToggleStatusController extends Controller
 {
