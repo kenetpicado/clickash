@@ -11,6 +11,7 @@ use App\Models\RaffleUser;
 use App\Models\Transaction;
 use App\Services\UserService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
