@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,22 +51,29 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'last_login' => 'datetime'
+        'last_login' => 'datetime',
     ];
 
     protected $appends = [
-        'online'
+        'online',
     ];
 
     public function getOnlineAttribute(): string
     {
-        if (!$this->last_login)
+        if (! $this->last_login) {
             return 'No ha iniciado sesión';
+        }
 
-        if ($this->last_login->diffInMinutes() < 4)
+        if ($this->last_login->diffInMinutes() < 4) {
             return 'Activo ahora';
+        }
 
-        return "Activo " . $this->last_login->diffForHumans();
+        return 'Activo '.$this->last_login->diffForHumans();
+    }
+
+    public function setCompanyNameAttribute($value)
+    {
+        $this->attributes['company_name'] = strtoupper($value);
     }
 
     public function sellers()

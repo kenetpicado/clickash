@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\UserRequest;
 use App\Models\Raffle;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -18,7 +17,7 @@ class UserController extends Controller
         return inertia('Dashboard/User/Index', [
             'users' => User::whereNull('user_id')->withCount('sellers')->get(),
             'roles' => RoleEnum::cases(),
-            'statuses' => UserStatusEnum::cases()
+            'statuses' => UserStatusEnum::cases(),
         ]);
     }
 
@@ -45,7 +44,7 @@ class UserController extends Controller
             'sellers_limit' => $request->sellers_limit,
             'company_name' => $request->company_name,
             'role' => $request->role,
-            'status' => UserStatusEnum::ENABLED
+            'status' => UserStatusEnum::ENABLED,
         ]);
 
         return back();

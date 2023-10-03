@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('raffle_id')->constrained()->cascadeOnDelete();
             $table->string('digit');
             $table->decimal('amount');
-            $table->string("client")->nullable();
-            $table->time("hour")->nullable();
+            $table->string('client')->nullable();
+            $table->time('hour')->nullable();
             $table->timestamps();
         });
     }

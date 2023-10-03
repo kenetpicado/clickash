@@ -17,7 +17,7 @@ class CheckRole
     {
         $roles = explode('|', $rolesString);
 
-        if (!in_array(auth()->user()->role, $roles)) {
+        if (! in_array(auth()->user()->role, $roles)) {
             abort(403, "You don't have permission to access this page");
         }
 

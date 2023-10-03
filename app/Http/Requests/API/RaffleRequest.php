@@ -22,7 +22,7 @@ class RaffleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "settings" => "required|array",
+            'settings' => 'required|array',
         ];
     }
 }

@@ -12,6 +12,6 @@ class BlockedNumber extends Model
     protected $fillable = [
         'number',
         'user_id',
-        'raffle_id'
+        'raffle_id',
     ];
 }

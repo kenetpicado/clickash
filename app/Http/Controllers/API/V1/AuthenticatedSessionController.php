@@ -20,12 +20,12 @@ class AuthenticatedSessionController extends Controller
         return response()->json([
             'message' => "Bienvenido {$firstName}",
             'auth_token' => $user->createToken('authToken')->plainTextToken,
-            "name" => $user->name,
-            "email" => $user->email,
-            "company_name" => $user->company_name,
-            "sellers_limit" => $user->sellers_limit,
-            "role" => $user->role,
-            "status" => $user->status,
+            'name' => $user->name,
+            'email' => $user->email,
+            'company_name' => $user->company_name,
+            'sellers_limit' => $user->sellers_limit,
+            'role' => $user->role,
+            'status' => $user->status,
         ]);
     }
 

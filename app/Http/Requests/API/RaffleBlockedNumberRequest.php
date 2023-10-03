@@ -22,7 +22,7 @@ class RaffleBlockedNumberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "number" => "required|numeric",
+            'number' => 'required|numeric',
         ];
     }
 }

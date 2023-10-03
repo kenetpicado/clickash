@@ -23,15 +23,15 @@ class SellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required"],
-            "email" => ["required", "email", Rule::unique("users")->ignore($this->route("seller"))],
-        ] + ($this->isMethod("POST") ? $this->store() : []);
+            'name' => ['required'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->route('seller'))],
+        ] + ($this->isMethod('POST') ? $this->store() : []);
     }
 
     public function store(): array
     {
         return [
-            "password" => "required|confirmed|min:8",
+            'password' => 'required|confirmed|min:8',
         ];
     }
 }

@@ -17,7 +17,7 @@ class RaffleBlockedNumberController extends Controller
             'data' => BlockedNumber::query()
                 ->where('user_id', $user_id)
                 ->where('raffle_id', $raffle)
-                ->pluck('number')
+                ->pluck('number'),
         ]);
     }
 

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(["prefix" => "v1"], function () {
+Route::group(['prefix' => 'v1'], function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
         ->name('login');
 
@@ -39,17 +39,8 @@ Route::group(["prefix" => "v1"], function () {
         Route::put('profile', [ProfileController::class, 'update'])
             ->name('profile.update');
 
-        Route::get('raffles', [RaffleController::class, "index"])
+        Route::get('raffles', [RaffleController::class, 'index'])
             ->name('raffles.index');
-
-        Route::get('raffles/{raffle}', [RaffleController::class, "show"])
-            ->name('raffles.show');
-
-        Route::get('raffles/{raffle}/blocked-numbers', [RaffleBlockedNumberController::class, "index"])
-            ->name('raffles.blocked-numbers.index');
-
-        Route::get('raffles/{raffle}/availability', [RaffleAvailabilityController::class, "index"])
-            ->name('raffles.availability.index');
 
         Route::apiResource('transactions', TransactionController::class)
             ->only(['index', 'store']);
@@ -58,17 +49,19 @@ Route::group(["prefix" => "v1"], function () {
         Route::group(['middleware' => ['role:owner']], function () {
             Route::put('toggle-status/{seller}', ToggleStatusController::class);
 
-            Route::apiResource('sellers', SellerController::class)
-                ->only(['index', 'store', 'update', 'destroy']);
+            Route::apiResource('sellers', SellerController::class);
 
-            Route::put('raffles/{raffle}', [RaffleController::class, "update"])
+            Route::put('raffles/{raffle}', [RaffleController::class, 'update'])
                 ->name('raffles.update');
 
+            Route::get('raffles/{raffle}', [RaffleController::class, 'show'])
+                ->name('raffles.show');
+
             Route::apiResource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
-                ->only(['store', 'destroy']);
+                ->only(['index', 'store', 'destroy']);
 
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
-                ->only(['store', 'update', 'destroy']);
+                ->only(['index', 'store', 'update', 'destroy']);
         });
     });
 });

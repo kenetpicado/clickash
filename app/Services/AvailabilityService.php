@@ -13,7 +13,7 @@ class AvailabilityService
 
         return Availability::query()
             ->where('user_id', $user_id)
-            ->where("raffle_id", $raffle)
+            ->where('raffle_id', $raffle)
             ->orderBy('order')
             ->get();
     }

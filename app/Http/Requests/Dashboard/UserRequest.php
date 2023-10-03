@@ -26,19 +26,19 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required"],
-            "email" => ["required", "email", Rule::unique("users")->ignore($this->id)],
-            "sellers_limit" => ["required", "numeric"],
-            "company_name" => ["required",],
+            'name' => ['required'],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id)],
+            'sellers_limit' => ['required', 'numeric'],
+            'company_name' => ['required'],
             'role' => ['required', new Enum(RoleEnum::class)],
-            'status' => ['required', new Enum(UserStatusEnum::class)]
+            'status' => ['required', new Enum(UserStatusEnum::class)],
         ] + ($this->isMethod('post') ? $this->store() : []);
     }
 
     public function store()
     {
         return [
-            "password" => ["required", "min:8", "confirmed"],
+            'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
 }
