@@ -68,6 +68,6 @@ class RaffleService
             ->whereBetween('created_at', [$start_date, $end_date])
             ->with('user:id,name')
             ->orderBy('id', $request['order'] ?? 'desc')
-            ->get();
+            ->paginate();
     }
 }
