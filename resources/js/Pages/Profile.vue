@@ -1,12 +1,12 @@
 <template>
-    <AppLayout title="Profile" :breads="breads">
+    <AppLayout title="Perfil" :breads="breads">
         <template #header>
             <span class="title mt-1">
-                Profile
+                Perfil
             </span>
         </template>
 
-        <FormSection title="Create" @onSubmit="onSubmit" @onCancel="onCancel" :isNew="false">
+        <FormSection title="Create" @onSubmit="onSubmit" @onCancel="onCancel">
             <InputForm text="Name" v-model="form.name" required />
             <InputForm text="Email" v-model="form.email" type="email" required />
             <InputForm text="Password" v-model="form.password" type="password" />
@@ -27,26 +27,25 @@ import { toast } from '@/Use/toast';
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.users.index'),
+        name: 'Inicio',
+        route: route('home'),
     },
     {
-        name: 'Profile',
-        route: route('dashboard.profile.index'),
+        name: 'Perfil',
+        route: route('profile.index'),
     },
 ];
 
 const props = defineProps({
-    profile: {
+    auth: {
         type: Object,
         required: true,
     },
 });
 
 const form = useForm({
-    id: props.profile.id,
-    name: props.profile.name,
-    email: props.profile.email,
+    name: props.auth.name,
+    email: props.auth.email,
     password: '',
     password_confirmation: '',
 });
@@ -57,7 +56,7 @@ function onSubmit() {
         delete form.password_confirmation;
     }
 
-    form.put(route('dashboard.profile.update', form.id), {
+    form.put(route('profile.update', form.id), {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
@@ -67,7 +66,7 @@ function onSubmit() {
 }
 
 function onCancel() {
-    router.visit(route('dashboard.dashboard.index'));
+    router.visit(route('home'));
 }
 
 </script>

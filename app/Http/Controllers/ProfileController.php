@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\ProfileRequest;
@@ -11,9 +11,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return inertia('Dashboard/Profile/Index', [
-            'profile' => auth()->user(),
-        ]);
+        return inertia('Profile');
     }
 
     public function update(ProfileRequest $request)

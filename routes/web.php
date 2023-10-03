@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Clientarea\ClientareaController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\UserRaffleController;
@@ -26,15 +26,13 @@ Route::get("/", HomeController::class)
     ->middleware(['auth:sanctum'])
     ->name('home');
 
+// ONLY ROO USERS
 Route::middleware(['auth:sanctum', 'online', 'role:root'])
     ->prefix('dashboard')
     ->name('dashboard.')
     ->group(function () {
         Route::get('/', DashboardController::class)
             ->name('index');
-
-        Route::resource('profile', ProfileController::class)
-            ->only(['index', 'update']);
 
         Route::resource('users', UserController::class)
             ->except(['edit', 'create']);
@@ -46,10 +44,17 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
             ->except(['edit', 'create', 'show']);
     });
 
+// ONLY OWNERS USERS
 Route::middleware(['auth:sanctum', 'online', 'role:owner'])
     ->prefix('clientarea')
     ->name('clientarea.')
     ->group(function () {
         Route::get('/', ClientareaController::class)
             ->name('index');
+    });
+
+//ANY USER
+Route::middleware(['auth:sanctum', 'online'])
+    ->group(function () {
+        Route::resource('profile', ProfileControlleR::class)->only(['index', 'update']);
     });
