@@ -31,7 +31,7 @@ const close = () => {
 <template>
     <Modal :show="show" :max-width="maxWidth" :closeable="closeable" @close="close">
         <form @submit.prevent="$emit('onSubmit')">
-            <div class="px-6 py-4">
+            <div class="p-4 sm:p-6">
                 <div class="text-lg font-medium text-gray-900">
                     {{ title }}
                 </div>
@@ -43,10 +43,10 @@ const close = () => {
 
             <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right gap-4">
                 <button class="secondary-button" type="button" @click="$emit('onCancel')">
-                    Cancel
+                    Cancelar
                 </button>
                 <button type="submit" class="primary-button">
-                    Save
+                    Guardar
                 </button>
             </div>
         </form>

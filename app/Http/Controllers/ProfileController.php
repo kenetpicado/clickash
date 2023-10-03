@@ -29,6 +29,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('dashboard.index');
+        return redirect()->route('home');
     }
 }

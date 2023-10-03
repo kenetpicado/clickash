@@ -1,11 +1,11 @@
 <template>
     <Link v-if="href" :href="href">
         <button class="primary-button" type="button">
-            Add
+            Agregar
         </button>
     </Link>
     <button class="primary-button" type="button" v-else>
-        Add
+        Agregar
     </button>
 </template>
 

@@ -17,12 +17,6 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'Admin',
-                'email' => 'admin@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => RoleEnum::ROOT->value,
-            ],
-            [
                 'name' => 'Kenet Picado',
                 'email' => 'kenetpicado1@gmail.com',
                 'password' => Hash::make('26051998'),
@@ -35,12 +29,12 @@ class UserSeeder extends Seeder
                 'role' => RoleEnum::ROOT->value,
             ],
             [
-                'name' => 'John Doe',
-                'email' => 'johndoe@gmail.com',
+                'name' => 'Jose Mercado',
+                'email' => 'Jmercadomorales9@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => RoleEnum::OWNER->value,
-                'sellers_limit' => 100,
-                'company_name' => 'John Doe Company',
+                'sellers_limit' => 5,
+                'company_name' => 'JM',
             ],
         ];
 
@@ -48,7 +42,7 @@ class UserSeeder extends Seeder
             $created = User::create($user + ['status' => UserStatusEnum::ENABLED]);
 
             if ($created->role === RoleEnum::OWNER->value) {
-                foreach (range(1, 10) as $index) {
+                foreach (range(1, 3) as $index) {
                     User::create([
                         'name' => 'Vendedor '.$index,
                         'email' => "vendedor{$index}@gmail.com",
@@ -56,7 +50,7 @@ class UserSeeder extends Seeder
                         'user_id' => $created->id,
                         'role' => RoleEnum::SELLER->value,
                         'status' => UserStatusEnum::ENABLED,
-                        'company_name' => 'John Doe Company',
+                        'company_name' => 'JM',
                     ]);
                 }
             }

@@ -1,14 +1,14 @@
 <template>
     <aside class="w-72 p-3 bg-white flex flex-col hidden lg:block min-h-screen">
-        <div class="flex flex-col items-center my-2">
+        <div class="flex flex-col items-center my-1">
+            <Link :href="route('home')">
             <div class="h-24 w-24">
-                <img class="h-full w-full"
-                    src="logo-simple.png"
-                    alt="" />
+                <img class="h-full w-full" src="/logo-simple.png" alt="" />
             </div>
             <h2 class="text-2xl font-extrabold text-gray-600">
                 {{ $page.props.app_name }}
             </h2>
+            </Link>
         </div>
         <ul class="space-y-2 text-gray-600">
             <li v-for="item in showItems">
@@ -42,6 +42,8 @@
 
 <script setup>
 import { Link, router, usePage } from '@inertiajs/vue3';
+import { IconGiftCard } from '@tabler/icons-vue';
+import { IconUserCog } from '@tabler/icons-vue';
 import { IconHome, IconLogout, IconUsers, IconUser, IconGift } from '@tabler/icons-vue';
 
 const DEFAULT_ICON = IconUsers;
@@ -80,6 +82,16 @@ const items = [
 const ownerItems = [
     {
         header: 'Inicio'
+    },
+    {
+        name: 'Vendedores',
+        route: route('clientarea.sellers.index'),
+        icon: IconUserCog
+    },
+    {
+        name: 'Rifas',
+        route: route('clientarea.raffles.index'),
+        icon: IconGift
     },
 ]
 

@@ -74,4 +74,18 @@ class UserService
             ->orderBy('id', $request['order'] ?? 'desc')
             ->paginate();
     }
+
+    public function toggleStatus($user)
+    {
+        $user->update([
+            'status' => $user->status === UserStatusEnum::ENABLED->value ? UserStatusEnum::DISABLED->value : UserStatusEnum::ENABLED->value,
+        ]);
+    }
+
+    public function getTeam()
+    {
+        return User::where('id', auth()->id())
+            ->orWhere('user_id', auth()->id())
+            ->pluck('id');
+    }
 }

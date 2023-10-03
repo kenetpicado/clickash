@@ -47,4 +47,24 @@
     .badge-red {
         @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-red-50 text-red-600
     }
+
+    .dot-green {
+        @apply inline-flex items-center justify-center w-3 h-3 rounded-full bg-green-400
+    }
+
+    .dot-red {
+        @apply inline-flex items-center justify-center w-3 h-3 rounded-full bg-red-400
+    }
+
+    .active-tab {
+        @apply bg-indigo-50 text-indigo-600 font-bold rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110
+    }
+
+    .inactive-tab {
+        @apply bg-gray-100 text-gray-400 font-bold rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110
+    }
+
+    .badge-gray {
+        @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-gray-50 text-gray-600
+    }
 }

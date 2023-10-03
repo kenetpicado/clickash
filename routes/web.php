@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Clientarea\ClientareaController;
+use App\Http\Controllers\Clientarea\RaffleBlockedNumberController;
+use App\Http\Controllers\Clientarea\RaffleController as ClientareaRaffleController;
+use App\Http\Controllers\Clientarea\SellerController;
+use App\Http\Controllers\Clientarea\ToggleStatusController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
@@ -51,10 +55,19 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
     ->group(function () {
         Route::get('/', ClientareaController::class)
             ->name('index');
+
+        Route::resource('sellers', SellerController::class);
+
+        Route::put('toggle-status/{seller}', ToggleStatusController::class)->name('toggle-status');
+
+        Route::resource('raffles', ClientareaRaffleController::class);
+
+        Route::resource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
+            ->only(['store', 'destroy']);
     });
 
 //ANY USER
 Route::middleware(['auth:sanctum', 'online'])
     ->group(function () {
-        Route::resource('profile', ProfileControlleR::class)->only(['index', 'update']);
+        Route::resource('profile', ProfileController::class)->only(['index', 'update']);
     });
