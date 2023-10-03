@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Clientarea\ClientareaController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\UserRaffleController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +20,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('', '/dashboard');
+// Route::redirect('', '/dashboard');
+
+Route::get("/", HomeController::class)
+    ->middleware(['auth:sanctum'])
+    ->name('home');
 
 Route::middleware(['auth:sanctum', 'online', 'role:root'])
     ->prefix('dashboard')
@@ -38,4 +44,12 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
 
         Route::resource('raffles', RaffleController::class)
             ->except(['edit', 'create', 'show']);
+    });
+
+Route::middleware(['auth:sanctum', 'online', 'role:owner'])
+    ->prefix('clientarea')
+    ->name('clientarea.')
+    ->group(function () {
+        Route::get('/', ClientareaController::class)
+            ->name('index');
     });

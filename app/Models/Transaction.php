@@ -15,7 +15,7 @@ class Transaction extends Model
 
     public function setClientAttribute($value)
     {
-        $this->attributes['client'] = strtoupper($value);
+        $this->attributes['client'] = mb_strtoupper($value, 'UTF-8');
     }
 
     public function raffle()
