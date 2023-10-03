@@ -6,6 +6,7 @@ use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RegisterController;
+use App\Http\Controllers\API\V1\ResumeController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
 use App\Http\Controllers\API\V1\TransactionController;
@@ -62,6 +63,9 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
+
+            Route::get('resume', ResumeController::class)
+                ->name('resume.index');
         });
     });
 });

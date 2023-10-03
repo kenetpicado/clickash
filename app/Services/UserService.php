@@ -62,7 +62,7 @@ class UserService
         ]);
     }
 
-    public function getTransactionsByUser(int $user_id, array $request)
+    public function getTransactions(int $user_id, array $request)
     {
         $start_date = $request['start_date'].' 00:00:00';
         $end_date = $request['end_date'].' 23:59:00';

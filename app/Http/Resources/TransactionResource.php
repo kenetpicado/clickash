@@ -14,8 +14,6 @@ class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $companyName = auth()->user()->company_name;
-
         return [
             'id' => $this->id,
             'digit' => $this->digit,
@@ -23,8 +21,8 @@ class TransactionResource extends JsonResource
             'client' => $this->client,
             'hour' => $this->hour,
             'created_at' => $this->created_at->format('d/m/y g:i A'),
-            'raffle' => $this->raffle_name,
-            'company_name' => $companyName,
+            'raffle' => RaffleNameResource::make($this->whenLoaded('raffle')),
+            'user' => UserNameResource::make($this->whenLoaded('user')),
         ];
     }
 }

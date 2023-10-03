@@ -7,7 +7,6 @@ use App\Http\Requests\API\TransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Availability;
 use App\Models\BlockedNumber;
-use App\Models\Raffle;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
 use App\Services\UserService;
@@ -21,12 +20,7 @@ class TransactionController extends Controller
             Transaction::query()
                 ->where('user_id', auth()->id())
                 ->latest('id')
-                ->addSelect([
-                    'raffle_name' => Raffle::query()
-                        ->select('name')
-                        ->whereColumn('raffle_id', 'raffles.id')
-                        ->limit(1),
-                ])
+                ->with('raffle:id,name')
                 ->where('created_at', '>=', now()->format('Y-m-d').' 00:00:00')
                 ->get()
         );
@@ -92,7 +86,7 @@ class TransactionController extends Controller
 
         $transaction = Transaction::create($request->validated() + ['user_id' => auth()->id()]);
 
-        $transaction->raffle_name = Raffle::where('id', $request->raffle_id)->value('name');
+        $transaction->load('raffle:id,name');
 
         return TransactionResource::make($transaction);
     }

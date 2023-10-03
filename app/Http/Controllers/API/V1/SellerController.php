@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\IntervalRequest;
 use App\Http\Requests\API\SellerRequest;
 use App\Http\Resources\SellerResource;
-use App\Http\Resources\UserTransactionResource;
+use App\Http\Resources\TransactionResource;
 use App\Models\User;
 use App\Services\UserService;
 
@@ -31,7 +31,9 @@ class SellerController extends Controller
 
     public function show(IntervalRequest $request, $seller)
     {
-        return UserTransactionResource::collection($this->service->getTransactionsByUser($seller, $request->validated()));
+        return TransactionResource::collection(
+            $this->service->getTransactions($seller, $request->validated())
+        );
     }
 
     public function update(SellerRequest $request, $seller)

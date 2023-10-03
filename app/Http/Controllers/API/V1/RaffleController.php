@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\IntervalRequest;
 use App\Http\Requests\API\RaffleRequest;
 use App\Http\Resources\RaffleResource;
-use App\Http\Resources\RaffleTransactionResource;
+use App\Http\Resources\TransactionResource;
 use App\Models\RaffleUser;
 use App\Services\RaffleService;
+use App\Services\TransactionService;
 
 class RaffleController extends Controller
 {
@@ -19,7 +20,9 @@ class RaffleController extends Controller
 
     public function show(IntervalRequest $request, $raffle)
     {
-        return RaffleTransactionResource::collection((new RaffleService)->getTransactions($raffle, $request->validated()));
+        return TransactionResource::collection(
+            (new TransactionService)->get($request->validated(), $raffle)
+        );
     }
 
     public function update(RaffleRequest $request, $raffle)
