@@ -9,6 +9,7 @@ use App\Models\Availability;
 use App\Models\BlockedNumber;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
+use App\Services\TransactionService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class TransactionController extends Controller
                 ->where('user_id', auth()->id())
                 ->latest('id')
                 ->with('raffle:id,name')
-                ->where('created_at', '>=', now()->format('Y-m-d').' 00:00:00')
+                ->where('created_at', '>=', now()->format('Y-m-d') . ' 00:00:00')
                 ->get()
         );
     }
@@ -49,18 +50,32 @@ class TransactionController extends Controller
                 ->addMinutes(5);
 
             if ($currentTime->between($lessFive, $plusFive)) {
-                abort(422, 'No puedes realizar transacciones entre las '.$lessFive->format('g:i A').' y las '.$plusFive->format('g:i A'));
+                abort(422, 'No puedes realizar transacciones entre las ' . $lessFive->format('g:i A') . ' y las ' . $plusFive->format('g:i A'));
             }
         }
 
-        $isBlocked = BlockedNumber::query()
+        $blockedNumber = BlockedNumber::query()
             ->where('raffle_id', $request->raffle_id)
             ->where('user_id', $user_id)
             ->where('number', $request->digit)
-            ->exists();
+            ->first();
 
-        if ($isBlocked) {
-            abort(422, 'El digito '.$request->digit.' está bloqueado');
+        $transactionService = new TransactionService();
+
+        if ($blockedNumber) {
+            if ($blockedNumber['settings']['individual_limit']) {
+                if ($request->amount > $blockedNumber['settings']['individual_limit'])
+                    abort(422, 'El monto máximo es C$' . $blockedNumber['settings']['individual_limit']);
+            }
+
+            if ($blockedNumber['settings']['general_limit']) {
+                $transactionsTotalAmount = $transactionService->getCurrentTotal($request->validated());
+
+                if ($transactionsTotalAmount + $request->amount > $blockedNumber['settings']['general_limit']) {
+                    $availableAmount = $blockedNumber['settings']['general_limit'] - $transactionsTotalAmount;
+                    abort(422, 'El monto disponible es C$' . $availableAmount);
+                }
+            }
         }
 
         $settings = RaffleUser::query()
@@ -68,24 +83,21 @@ class TransactionController extends Controller
             ->where('raffle_id', $request->raffle_id)
             ->value('settings');
 
-        $team_ids = $userService->getTeamIds($user_id);
-
         if ($settings['general_limit']) {
-            $transactionsTotalAmount = Transaction::query()
-                ->whereIn('user_id', $team_ids)
-                ->where('raffle_id', $request->raffle_id)
-                ->where('created_at', '>=', now()->format('Y-m-d').' 00:00:00')
-                ->where('hour', $request->hour)
-                ->where('digit', $request->digit)
-                ->sum('amount');
+            $transactionsTotalAmount = $transactionService->getCurrentTotal($request->validated());
 
             if ($transactionsTotalAmount + $request->amount > $settings['general_limit']) {
                 $availableAmount = $settings['general_limit'] - $transactionsTotalAmount;
-                abort(422, 'El monto disponible es C$'.$availableAmount);
+                abort(422, 'El monto disponible es C$' . $availableAmount);
             }
         }
 
-        $transaction = Transaction::create($request->validated() + ['user_id' => auth()->id()]);
+        $transaction = Transaction::create(
+            $request->validated() + [
+                'user_id' => auth()->id(),
+                'prize' => $request->amount * $settings['multiplier'],
+            ]
+        );
 
         $transaction->load('raffle:id,name');
 

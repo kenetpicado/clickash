@@ -63,21 +63,45 @@
             </template>
         </TableSection>
 
-        <template v-if="currentTab == 1">
-            <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-                <div v-for="number in blockeds" class="flex justify-between items-center bg-white px-4 py-6 rounded-xl">
-                    <div class="text-2xl font-bold">
+        <TableSection v-if="currentTab == 1">
+            <template #header>
+                <th>Numero</th>
+                <th>Limite individual</th>
+                <th>Limite general</th>
+                <th>Acciones</th>
+            </template>
+            <template #body>
+                <tr v-for="number in blockeds">
+                    <td class="font-semibold">
                         {{ number.number }}
-                    </div>
-                    <span tooltip="Eliminar" role="button">
-                        <IconTrash size="18" @click="destroyNumber(number.id)" />
-                    </span>
-                </div>
-            </div>
-            <div v-if="blockeds.length == 0" class="text-center">
-                No hay datos
-            </div>
-        </template>
+                    </td>
+                    <td>
+                        <span v-if="number.settings.individual_limit" class="badge-red">
+                            C${{ number.settings.individual_limit }}
+                        </span>
+                        <span v-else>
+                            Ninguno
+                        </span>
+                    </td>
+                    <td>
+                        <span v-if="number.settings.general_limit" class="badge-red">
+                            C${{ number.settings.general_limit }}
+                        </span>
+                        <span v-else>
+                            Ninguno
+                        </span>
+                    </td>
+                    <td>
+                        <span tooltip="Eliminar" role="button" @click="destroyNumber(number.id)">
+                            <IconTrash size="22" />
+                        </span>
+                    </td>
+                </tr>
+                <tr v-if="blockeds.length == 0">
+                    <td colspan="4" class="text-center">No hay datos</td>
+                </tr>
+            </template>
+        </TableSection>
 
         <TableSection v-if="currentTab == 2">
             <template #header>
@@ -113,6 +137,8 @@
 
         <FormModal :show="openModalNumber" title="Numero bloqueado" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Numero" v-model="form.number" type="number" required />
+            <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
+            <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
         </FormModal>
     </AppLayout>
 </template>
@@ -170,11 +196,20 @@ const openModalNumber = ref(false);
 
 const form = useForm({
     number: null,
+    settings: {
+        general_limit: null,
+        individual_limit: null,
+    }
 });
 
 const onSubmit = () => {
     if (isNaN(form.number)) {
         toast.error('Numero invalido');
+        return;
+    }
+
+    if (!form.settings.general_limit && !form.settings.individual_limit) {
+        toast.error('Debe ingresar al menos un limite');
         return;
     }
 

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blocked_numbers', function (Blueprint $table) {
+        Schema::create('winning_numbers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('raffle_id')->constrained()->onDelete('cascade');
+            $table->foreignId('raffle_id')->constrained();
             $table->string('number');
-            $table->json('settings')->nullable();
+            $table->string('hour');
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blocked_numbers');
+        Schema::dropIfExists('winning_numbers');
     }
 };

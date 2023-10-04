@@ -15,7 +15,12 @@ class RaffleController extends Controller
 {
     public function index()
     {
-        return RaffleResource::collection((new RaffleService)->getRaffles());
+        $raffles = [];
+
+        if (auth()->user()->status == 'enabled')
+            $raffles = (new RaffleService)->getRaffles();
+
+        return RaffleResource::collection($raffles);
     }
 
     public function show(IntervalRequest $request, $raffle)

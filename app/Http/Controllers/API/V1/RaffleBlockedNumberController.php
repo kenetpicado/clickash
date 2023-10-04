@@ -5,29 +5,21 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\RaffleBlockedNumberRequest;
 use App\Models\BlockedNumber;
+use App\Services\BlockedNumberService;
 use App\Services\UserService;
 
 class RaffleBlockedNumberController extends Controller
 {
     public function index($raffle)
     {
-        $user_id = (new UserService)->getUserId();
-
         return response()->json([
-            'data' => BlockedNumber::query()
-                ->where('user_id', $user_id)
-                ->where('raffle_id', $raffle)
-                ->get(["id", "number"]),
+            'data' => (new BlockedNumberService)->get($raffle),
         ]);
     }
 
     public function store(RaffleBlockedNumberRequest $request, $raffle)
     {
-        BlockedNumber::updateOrCreate([
-            'number' => $request->number,
-            'user_id' => auth()->id(),
-            'raffle_id' => $raffle,
-        ], []);
+        (new BlockedNumberService)->set($request->validated(), $raffle);
 
         return self::index($raffle);
     }

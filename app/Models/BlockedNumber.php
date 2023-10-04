@@ -11,7 +11,12 @@ class BlockedNumber extends Model
 
     protected $fillable = [
         'number',
+        'settings',
         'user_id',
         'raffle_id',
+    ];
+
+    protected $casts = [
+        'settings' => 'array',
     ];
 }

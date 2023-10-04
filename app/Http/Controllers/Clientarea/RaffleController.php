@@ -8,6 +8,7 @@ use App\Models\BlockedNumber;
 use App\Models\Raffle;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
+use App\Services\BlockedNumberService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -36,12 +37,6 @@ class RaffleController extends Controller
             ->latest('id')
             ->paginate();
 
-        $blockeds = BlockedNumber::query()
-            ->where('raffle_id', $raffle->id)
-            ->where('user_id', auth()->id())
-            ->orderBy('number')
-            ->get(['id', 'number']);
-
         $availability = Availability::query()
             ->where('raffle_id', $raffle->id)
             ->where('user_id', auth()->id())
@@ -51,7 +46,7 @@ class RaffleController extends Controller
         return inertia('Clientarea/Raffle/Show', [
             "raffle" => $raffle,
             "transactions" => $transactions,
-            "blockeds" => $blockeds,
+            "blockeds" =>  (new BlockedNumberService)->get($raffle->id),
             "availability" => $availability
         ]);
     }

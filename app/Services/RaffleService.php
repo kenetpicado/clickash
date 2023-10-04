@@ -38,12 +38,15 @@ class RaffleService
                     $query->where('user_id', $user_id)->select('id', 'raffle_id', 'user_id', 'blocked_hours');
                 },
             ])
-            ->get(['id', 'name', 'image'])
-            ->transform(function ($raffle) {
+            ->get(['id', 'name'])
+            ->transform(function ($raffle) use ($is_owner) {
                 $raffle->settings = $raffle->raffle_user->settings;
                 $raffle->blocked_hours = collect($raffle->currentAvailability->blocked_hours ?? [])
-                    ->filter(function ($value, $key) {
-                        return $value > now()->format('H:i:s');
+                    ->filter(function ($value, $key) use ($is_owner) {
+                        if ($is_owner)
+                            return $value;
+                        else
+                            return $value > now()->format('H:i:s');
                     })
                     ->values();
                 unset($raffle->raffle_user);
@@ -55,8 +58,8 @@ class RaffleService
 
     public function getTransactions($raffle_id, array $request)
     {
-        $start_date = $request['start_date'].' 00:00:00';
-        $end_date = $request['end_date'].' 23:59:59';
+        $start_date = $request['start_date'] . ' 00:00:00';
+        $end_date = $request['end_date'] . ' 23:59:59';
 
         $teamIds = User::where('id', auth()->id())
             ->orWhere('user_id', auth()->id())
