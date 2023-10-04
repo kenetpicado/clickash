@@ -7,6 +7,7 @@
             </span>
             <AddButton v-if="currentTab == 1" @click="openModalNumber = true" />
             <AddButton v-if="currentTab == 2" @click="openModalSchedule = true" />
+            <AddButton v-if="currentTab == 3" @click="openModalResult = true" />
         </template>
 
         <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-4">
@@ -17,7 +18,10 @@
                 Bloqueados
             </div>
             <div :class="currentTab == 2 ? 'active-tab' : 'inactive-tab'" @click="currentTab = 2" role="button">
-                Disponibilidad
+                Horario
+            </div>
+            <div :class="currentTab == 3 ? 'active-tab' : 'inactive-tab'" @click="currentTab = 3" role="button">
+                Resultados
             </div>
         </div>
 
@@ -27,6 +31,9 @@
 
         <Availability v-if="currentTab == 2" :availability="availability" :raffle="raffle"
             v-model:openModal="openModalSchedule" />
+
+        <WinningNumber v-if="currentTab == 3" :results="results" :raffle="raffle" v-model:openModal="openModalResult"
+            :currentBlockedHours="currentBlockedHours" />
 
     </AppLayout>
 </template>
@@ -38,6 +45,7 @@ import { ref, watch } from 'vue';
 import Availability from "./Partials/Availability.vue";
 import BlockedNumber from './Partials/BlockedNumber.vue';
 import Transaction from './Partials/Transaction.vue';
+import WinningNumber from './Partials/WinningNumber.vue';
 
 const props = defineProps({
     raffle: {
@@ -53,6 +61,10 @@ const props = defineProps({
         required: true,
     },
     availability: {
+        type: Object,
+        required: true,
+    },
+    results: {
         type: Object,
         required: true,
     },
@@ -76,9 +88,14 @@ const breads = [
 const currentTab = ref(localStorage.getItem('currentTab') || 0);
 const openModalNumber = ref(false);
 const openModalSchedule = ref(false);
+const openModalResult = ref(false);
 
 watch(currentTab, (value) => {
     localStorage.setItem('currentTab', value);
+});
+
+const currentBlockedHours = props.availability.filter((item) => {
+    return item.order == new Date().getDay();
 });
 
 </script>

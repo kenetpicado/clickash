@@ -107,7 +107,7 @@ const formSchedule = useForm({
     start_time: "07:00:00",
     end_time: "21:00:00",
     raffle_id: props.raffle.id,
-    blocked_hours: [],
+    blocked_hours: ["11:00:00", "15:00:00", "21:00:00"],
 });
 
 const emit = defineEmits(['update:openModal']);

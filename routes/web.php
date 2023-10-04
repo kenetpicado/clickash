@@ -4,6 +4,7 @@ use App\Http\Controllers\Clientarea\ClientareaController;
 use App\Http\Controllers\Clientarea\RaffleAvailabilityController;
 use App\Http\Controllers\Clientarea\RaffleBlockedNumberController;
 use App\Http\Controllers\Clientarea\RaffleController as ClientareaRaffleController;
+use App\Http\Controllers\Clientarea\RaffleWinningNumberController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
 use App\Http\Controllers\Clientarea\TransactionController;
@@ -71,6 +72,9 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->only(['store', 'update', 'destroy']);
 
         Route::resource('transactions', TransactionController::class);
+
+        Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
+            ->only(['store']);
     });
 
 //ANY USER

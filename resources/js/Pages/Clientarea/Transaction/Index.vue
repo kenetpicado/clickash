@@ -3,7 +3,7 @@
 
         <template #header>
             <span class="title">
-                Ventas
+                Todas las ventas
             </span>
         </template>
 
@@ -38,7 +38,7 @@
                     </td>
                     <td>
                         <span class="font-semibold">
-                            #{{ transaction.digit }}
+                            {{ transaction.digit }}
                         </span>
                     </td>
                 </tr>

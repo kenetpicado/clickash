@@ -27,7 +27,7 @@
                     </td>
                     <td>
                         <span class="font-semibold">
-                            #{{ transaction.digit }}
+                            {{ transaction.digit }}
                         </span>
                     </td>
                 </tr>

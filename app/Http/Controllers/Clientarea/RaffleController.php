@@ -8,6 +8,7 @@ use App\Models\BlockedNumber;
 use App\Models\Raffle;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
+use App\Models\WinningNumber;
 use App\Services\BlockedNumberService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -43,11 +44,19 @@ class RaffleController extends Controller
             ->orderBy('order')
             ->get();
 
+        $winningNumbers = WinningNumber::query()
+            ->where('raffle_id', $raffle->id)
+            ->where('user_id', auth()->id())
+            ->where('date', now()->format('Y-m-d'))
+            ->orderBy('hour')
+            ->get();
+
         return inertia('Clientarea/Raffle/Show', [
             "raffle" => $raffle,
             "transactions" => $transactions,
-            "blockeds" =>  (new BlockedNumberService)->get($raffle->id),
-            "availability" => $availability
+            "blockeds" => (new BlockedNumberService)->get($raffle->id),
+            "availability" => $availability,
+            "results" => $winningNumbers,
         ]);
     }
 
