@@ -4,7 +4,7 @@
             {{ text }}
         </label>
 
-        <select
+        <select :required="required"
             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full transition duration-300 ease-in-out"
             :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
             <slot></slot>
@@ -29,6 +29,9 @@ const props = defineProps({
     name: {
         type: String, required: false
     },
+    required: {
+        type: Boolean, default: false
+    }
 })
 
 const keyValue = computed(() => {

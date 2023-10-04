@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Clientarea\ClientareaController;
+use App\Http\Controllers\Clientarea\RaffleAvailabilityController;
 use App\Http\Controllers\Clientarea\RaffleBlockedNumberController;
 use App\Http\Controllers\Clientarea\RaffleController as ClientareaRaffleController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
+use App\Http\Controllers\Clientarea\TransactionController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
@@ -64,6 +66,11 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
 
         Route::resource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
             ->only(['store', 'destroy']);
+
+        Route::resource('raffles.availability', RaffleAvailabilityController::class)
+            ->only(['store', 'destroy']);
+
+        Route::resource('transactions', TransactionController::class);
     });
 
 //ANY USER

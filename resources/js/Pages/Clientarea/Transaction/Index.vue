@@ -1,15 +1,16 @@
 <template>
-    <AppLayout title="Vendedor" :breads="breads">
+    <AppLayout title="Ventas" :breads="breads">
 
         <template #header>
             <span class="title">
-                {{ seller.name }}
+                Ventas
             </span>
         </template>
 
         <TableSection>
             <template #header>
                 <th>Rifa</th>
+                <th>Vendedor</th>
                 <th>Turno</th>
                 <th>Monto</th>
                 <th>Numero</th>
@@ -23,6 +24,9 @@
                         <div class="mb-1 ">
                             {{ transaction.raffle.name }}
                         </div>
+                    </td>
+                    <td>
+                        {{ transaction.user.name }}
                     </td>
                     <td>
                         <span class="badge-blue whitespace-nowrap" >
@@ -57,10 +61,6 @@ import { Carbon } from '@/Use/Carbon.js';
 
 
 const props = defineProps({
-    seller: {
-        type: Object,
-        required: true,
-    },
     transactions: {
         type: Object,
         required: true,
@@ -73,13 +73,9 @@ const breads = [
         route: route('clientarea.index'),
     },
     {
-        name: 'Vendedores',
-        route: route('clientarea.sellers.index'),
+        name: 'Ventas',
+        route: route('clientarea.transactions.index'),
     },
-    {
-        name: "Ver",
-        route: route('clientarea.sellers.show', props.seller.id),
-    }
 ];
 
 </script>

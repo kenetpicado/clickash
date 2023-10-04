@@ -1,4 +1,7 @@
 <template>
+    <div class="mt-2 mb-3 text-gray-600">
+        <slot name="description" />
+    </div>
     <div class="bg-white overflow-hidden border rounded-xl">
         <div class="overflow-y-auto rounded-lg m-0">
             <table class="w-full border-collapse bg-white text-left text-sm text-gray-600">

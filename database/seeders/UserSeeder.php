@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Jose Mercado',
-                'email' => 'Jmercadomorales9@gmail.com',
+                'email' => 'jmercadomorales9@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => RoleEnum::OWNER->value,
                 'sellers_limit' => 5,

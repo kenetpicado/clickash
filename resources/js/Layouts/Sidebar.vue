@@ -42,6 +42,7 @@
 
 <script setup>
 import { Link, router, usePage } from '@inertiajs/vue3';
+import { IconMoneybag } from '@tabler/icons-vue';
 import { IconGiftCard } from '@tabler/icons-vue';
 import { IconUserCog } from '@tabler/icons-vue';
 import { IconHome, IconLogout, IconUsers, IconUser, IconGift } from '@tabler/icons-vue';
@@ -92,6 +93,11 @@ const ownerItems = [
         name: 'Rifas',
         route: route('clientarea.raffles.index'),
         icon: IconGift
+    },
+    {
+        name: 'Ventas',
+        route: route('clientarea.transactions.index'),
+        icon: IconMoneybag
     },
 ]
 

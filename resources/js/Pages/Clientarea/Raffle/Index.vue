@@ -53,19 +53,21 @@
             </template>
         </TableSection>
 
-        <FormModal :show="openModal" title="Rifa" @onCancel="resetValues" @onSubmit="onSubmit">
+        <FormModal :show="openModal" :title="form.raffle_name" @onCancel="resetValues" @onSubmit="onSubmit">
             <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
             <Checkbox v-model:checked="form.settings.date" text="Fecha" />
 
             <div class="grid grid-cols-2 gap-4" v-if="!form.settings.date">
-                <InputForm text="Minimo" v-model="form.settings.min" />
-                <InputForm text="Maximo" v-model="form.settings.max" />
+                <InputForm text="Minimo" v-model="form.settings.min" required  type="number" />
+                <InputForm text="Maximo" v-model="form.settings.max" required  type="number" />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                <InputForm text="Limite general" v-model="form.settings.general_limit" />
-                <InputForm text="Limite individual " v-model="form.settings.individual_limit" />
+                <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
+                <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
             </div>
+
+            <InputForm text="Multiplicador" v-model="form.settings.multiplier" type="number" required />
         </FormModal>
 
     </AppLayout>
@@ -91,6 +93,7 @@ defineProps({
 });
 
 const form = useForm({
+    raffle_name: null,
     raffle_id: null,
     settings: {
         super_x: true,
@@ -99,6 +102,7 @@ const form = useForm({
         max: null,
         general_limit: null,
         individual_limit: null,
+        multiplier: 70
     },
 });
 
@@ -170,6 +174,7 @@ const resetValues = () => {
 };
 
 function edit(raffle) {
+    form.raffle_name = raffle.raffle.name;
     form.raffle_id = raffle.raffle_id;
     Object.assign(form.settings, raffle.settings);
     openModal.value = true;

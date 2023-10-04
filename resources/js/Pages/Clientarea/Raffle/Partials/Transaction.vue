@@ -1,15 +1,8 @@
 <template>
-    <AppLayout title="Vendedor" :breads="breads">
-
-        <template #header>
-            <span class="title">
-                {{ seller.name }}
-            </span>
-        </template>
-
+    <div>
         <TableSection>
             <template #header>
-                <th>Rifa</th>
+                <th>Vendedor</th>
                 <th>Turno</th>
                 <th>Monto</th>
                 <th>Numero</th>
@@ -21,11 +14,11 @@
                             #{{ transaction.id }} - {{ Carbon.create(transaction.created_at).diffForHumans() }}
                         </div>
                         <div class="mb-1 ">
-                            {{ transaction.raffle.name }}
+                            {{ transaction.user.name }}
                         </div>
                     </td>
                     <td>
-                        <span class="badge-blue whitespace-nowrap" >
+                        <span class="badge-blue whitespace-nowrap">
                             {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -43,43 +36,22 @@
                 </tr>
             </template>
             <template #paginator>
-               <ThePaginator :links="transactions.links"/>
+                <ThePaginator :links="transactions.links" />
             </template>
         </TableSection>
-    </AppLayout>
+    </div>
 </template>
 
 <script setup>
 import TableSection from '@/Components/TableSection.vue';
 import ThePaginator from '@/Components/ThePaginator.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
 import { Carbon } from '@/Use/Carbon.js';
 
-
 const props = defineProps({
-    seller: {
-        type: Object,
-        required: true,
-    },
     transactions: {
         type: Object,
         required: true,
     },
 });
-
-const breads = [
-    {
-        name: 'Inicio',
-        route: route('clientarea.index'),
-    },
-    {
-        name: 'Vendedores',
-        route: route('clientarea.sellers.index'),
-    },
-    {
-        name: "Ver",
-        route: route('clientarea.sellers.show', props.seller.id),
-    }
-];
 
 </script>
