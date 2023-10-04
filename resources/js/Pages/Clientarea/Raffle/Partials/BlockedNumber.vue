@@ -40,10 +40,12 @@
             </template>
         </TableSection>
 
-        <FormModal :show="openModal" title="Numero bloqueado" @onCancel="resetValues" @onSubmit="onSubmit">
+        <FormModal :show="openModal" title="Bloquear" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Numero" v-model="form.number" type="number" required />
-            <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
-            <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
+            <div class="grid grid-cols-2 gap-2">
+                <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
+                <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
+            </div>
         </FormModal>
     </div>
 </template>
