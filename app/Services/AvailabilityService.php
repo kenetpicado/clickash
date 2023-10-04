@@ -9,10 +9,8 @@ class AvailabilityService
 {
     public function index($raffle)
     {
-        $user_id = (new UserService)->getUserId();
-
         return Availability::query()
-            ->where('user_id', $user_id)
+            ->where('user_id', auth()->id())
             ->where('raffle_id', $raffle)
             ->orderBy('order')
             ->get();
@@ -34,16 +32,12 @@ class AvailabilityService
 
     public function store(array $request, $raffle): void
     {
-        $blockedHours = array_unique($request['blocked_hours']);
-
-        sort($blockedHours);
-
         Availability::create([
             'day' => $request['day'],
             'order' => DayEnum::getDayNumber($request['day']),
             'start_time' => $request['start_time'],
             'end_time' => $request['end_time'],
-            'blocked_hours' => $blockedHours,
+            'blocked_hours' => collect($request['blocked_hours'])->unique()->sort()->values(),
             'raffle_id' => $raffle,
             'user_id' => auth()->id(),
         ]);
@@ -51,18 +45,12 @@ class AvailabilityService
 
     public function update(array $request, $id)
     {
-        $blockedHours = array_unique($request['blocked_hours']);
-
-        sort($blockedHours);
-
         Availability::query()
             ->where('id', $id)
             ->update([
-                'day' => $request['day'],
-                'order' => DayEnum::getDayNumber($request['day']),
                 'start_time' => $request['start_time'],
                 'end_time' => $request['end_time'],
-                'blocked_hours' => $blockedHours,
+                'blocked_hours' => collect($request['blocked_hours'])->unique()->sort()->values(),
             ]);
     }
 }

@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
 use App\Models\Availability;
-use Illuminate\Http\Request;
+use App\Services\AvailabilityService;
 
 class RaffleAvailabilityController extends Controller
 {
     public function store(RaffleAvailabilityRequest $request, $raffle)
     {
-        Availability::create($request->validated());
+        (new AvailabilityService)->store($request->validated(), $raffle);
+
+        return back();
+    }
+
+    public function update(RaffleAvailabilityRequest $request, $raffle, $availability)
+    {
+        (new AvailabilityService)->update($request->validated(), $availability);
 
         return back();
     }

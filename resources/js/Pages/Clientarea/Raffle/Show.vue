@@ -25,7 +25,7 @@
 
         <BlockedNumber v-if="currentTab == 1" :blockeds="blockeds" :raffle="raffle" v-model:openModal="openModalNumber" />
 
-        <Availability v-if="currentTab == 2" :availability="availability" :raffle="raffle" :auth="auth"
+        <Availability v-if="currentTab == 2" :availability="availability" :raffle="raffle"
             v-model:openModal="openModalSchedule" />
 
     </AppLayout>
@@ -34,7 +34,7 @@
 <script setup>
 import AddButton from '@/Components/Buttons/AddButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Availability from "./Partials/Availability.vue";
 import BlockedNumber from './Partials/BlockedNumber.vue';
 import Transaction from './Partials/Transaction.vue';
@@ -56,10 +56,6 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    auth: {
-        type: Object,
-        required: true,
-    },
 });
 
 const breads = [
@@ -77,8 +73,12 @@ const breads = [
     }
 ];
 
-const currentTab = ref(0);
+const currentTab = ref(localStorage.getItem('currentTab') || 0);
 const openModalNumber = ref(false);
 const openModalSchedule = ref(false);
+
+watch(currentTab, (value) => {
+    localStorage.setItem('currentTab', value);
+});
 
 </script>

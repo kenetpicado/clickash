@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->only(['store', 'destroy']);
 
         Route::resource('raffles.availability', RaffleAvailabilityController::class)
-            ->only(['store', 'destroy']);
+            ->only(['store', 'update', 'destroy']);
 
         Route::resource('transactions', TransactionController::class);
     });
