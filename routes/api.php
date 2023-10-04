@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
+use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\ResumeController;
 use App\Http\Controllers\API\V1\SellerController;
@@ -60,6 +61,9 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::apiResource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
                 ->only(['index', 'store', 'destroy']);
+
+            Route::apiResource('raffles.winning-numbers', RaffleWinningNumberController::class)
+                ->only(['index', 'store']);
 
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);

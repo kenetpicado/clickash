@@ -1,1 +1,0 @@
-import{_ as t}from"./AppLayout-8f705a52.js";import{o as r,e as a,f as s,b as o}from"./app-d3096396.js";const c=o("span",{class:"title"}," Overview ",-1),f={__name:"Index",props:{raffles:{type:Object,required:!0}},setup(i){const e=[{name:"Inicio",route:route("clientarea.index")}];return(n,_)=>(r(),a(t,{title:"Inicio",breads:e},{header:s(()=>[c]),_:1}))}};export{f as default};

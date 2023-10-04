@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('winning_numbers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('raffle_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->string('number');
             $table->string('hour');
             $table->date('date');

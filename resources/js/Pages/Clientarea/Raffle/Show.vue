@@ -6,6 +6,7 @@
                 {{ raffle.name }}
             </span>
             <AddButton v-if="currentTab == 1" @click="openModalNumber = true" />
+            <AddButton v-if="currentTab == 2" @click="openModalSchedule = true" />
         </template>
 
         <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-4">
@@ -140,6 +141,14 @@
             <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
             <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
         </FormModal>
+
+        <FormModal :show="openModalSchedule" title="Horario" @onCancel="resetValuesSchedule" @onSubmit="onSubmit">
+            <pre>{{ availableDays }}</pre>
+            <div class="grid grid-cols-2 gap-2">
+                <InputForm text="Hora incio" v-model="formSchedule.start_time" type="time" required />
+                <InputForm text="Hora fin" v-model="formSchedule.end_time" type="time" required />
+            </div>
+        </FormModal>
     </AppLayout>
 </template>
 
@@ -148,7 +157,7 @@ import TableSection from '@/Components/TableSection.vue';
 import ThePaginator from '@/Components/ThePaginator.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Carbon } from '@/Use/Carbon.js';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import AddButton from '@/Components/Buttons/AddButton.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
@@ -156,6 +165,7 @@ import { router, useForm } from '@inertiajs/vue3';
 import { toast } from '@/Use/toast';
 import { IconTrash, IconEdit } from '@tabler/icons-vue';
 import { confirmAlert } from "@/Use/helpers";
+import SelectForm from '@/Components/Form/SelectForm.vue';
 
 const props = defineProps({
     raffle: {
@@ -193,6 +203,7 @@ const breads = [
 
 const currentTab = ref(0);
 const openModalNumber = ref(false);
+const openModalSchedule = ref(false);
 
 const form = useForm({
     number: null,
@@ -200,6 +211,57 @@ const form = useForm({
         general_limit: null,
         individual_limit: null,
     }
+});
+
+const formSchedule = useForm({
+    order: null,
+    day: null,
+    start_time: "07:00:00",
+    end_time: "07:00:00",
+});
+
+const week = [
+    {
+        order: 0,
+        name: "Domingo"
+    },
+    {
+        order: 1,
+        name: "Lunes"
+    },
+    {
+        order: 2,
+        name: "Martes"
+    },
+    {
+        order: 3,
+        name: "Miercoles"
+    },
+    {
+        order: 4,
+        name: "Jueves"
+    },
+    {
+        order: 5,
+        name: "Viernes"
+    },
+    {
+        order: 6,
+        name: "Sabado"
+    },
+]
+
+//propiedad computada para obtener los dias que no existan en props.availability
+const availableDays = computed(() => {
+    let days = [];
+
+    week.forEach((item) => {
+        if (!props.availability.find((day) => day.day == item.name)) {
+            days.push(item);
+        }
+    });
+
+    return days;
 });
 
 const onSubmit = () => {
@@ -231,8 +293,14 @@ const resetValues = () => {
     openModalNumber.value = false;
 };
 
+const resetValuesSchedule = () => {
+    formSchedule.reset();
+    openModalSchedule.value = false;
+};
+
 const editDay = (day) => {
     console.log(day);
+    openModalSchedule.value = true;
 }
 
 const destroyNumber = (id) => {
