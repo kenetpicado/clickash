@@ -59,11 +59,13 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
         Route::get('/', ClientareaController::class)
             ->name('index');
 
-        Route::resource('sellers', SellerController::class);
+        Route::resource('sellers', SellerController::class)
+            ->except(['edit', 'create']);
 
         Route::put('toggle-status/{seller}', ToggleStatusController::class)->name('toggle-status');
 
-        Route::resource('raffles', ClientareaRaffleController::class);
+        Route::resource('raffles', ClientareaRaffleController::class)
+            ->only(['index', 'show', 'update']);
 
         Route::resource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
             ->only(['store', 'destroy']);
@@ -71,7 +73,8 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
         Route::resource('raffles.availability', RaffleAvailabilityController::class)
             ->only(['store', 'update', 'destroy']);
 
-        Route::resource('transactions', TransactionController::class);
+        Route::resource('transactions', TransactionController::class)
+            ->only(['index']);
 
         Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
             ->only(['store']);
