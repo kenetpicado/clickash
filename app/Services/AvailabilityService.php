@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\DayEnum;
 use App\Models\Availability;
 
 class AvailabilityService
@@ -16,25 +15,11 @@ class AvailabilityService
             ->get();
     }
 
-    public function check($day, $raffle, $availability = null)
-    {
-        $dayNumber = DayEnum::getDayNumber($day);
-
-        return Availability::query()
-            ->where('user_id', auth()->id())
-            ->where('raffle_id', $raffle)
-            ->where('order', $dayNumber)
-            ->when($availability, function ($query) use ($availability) {
-                $query->where('id', '!=', $availability);
-            })
-            ->exists();
-    }
-
     public function store(array $request, $raffle): void
     {
         Availability::create([
             'day' => $request['day'],
-            'order' => DayEnum::getDayNumber($request['day']),
+            'order' => $request['order'],
             'start_time' => $request['start_time'],
             'end_time' => $request['end_time'],
             'blocked_hours' => collect($request['blocked_hours'])->unique()->sort()->values(),

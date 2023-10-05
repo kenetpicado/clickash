@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Clientarea;
 
-use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\SellerRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class SellerController extends Controller
@@ -14,7 +12,7 @@ class SellerController extends Controller
     public function index()
     {
         return inertia('Clientarea/Seller/Index', [
-            "sellers" => User::query()
+            'sellers' => User::query()
                 ->where('user_id', auth()->id())
                 ->get(['id', 'name', 'email', 'last_login', 'status']),
         ]);
@@ -24,7 +22,7 @@ class SellerController extends Controller
     {
         if (auth()->user()->sellers()->count() >= auth()->user()->sellers_limit) {
             return back()->withErrors([
-                'message' => 'Ha alcanzado el límite de vendedores permitidos'
+                'message' => 'Ha alcanzado el límite de vendedores permitidos',
             ]);
         }
 
@@ -33,9 +31,9 @@ class SellerController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            "company_name" => auth()->user()->company_name,
-            "role" => "seller",
-            "status" => "enabled"
+            'company_name' => auth()->user()->company_name,
+            'role' => 'seller',
+            'status' => 'enabled',
         ]);
 
         return back();
@@ -49,7 +47,7 @@ class SellerController extends Controller
             ->paginate();
 
         return inertia('Clientarea/Seller/Show', [
-            "seller" => $seller,
+            'seller' => $seller,
             'transactions' => $transactions,
         ]);
     }

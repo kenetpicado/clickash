@@ -12,7 +12,6 @@ use App\Models\Transaction;
 use App\Services\TransactionService;
 use App\Services\UserService;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
@@ -23,7 +22,7 @@ class TransactionController extends Controller
                 ->where('user_id', auth()->id())
                 ->latest('id')
                 ->with('raffle:id,name')
-                ->where('created_at', '>=', now()->format('Y-m-d') . ' 00:00:00')
+                ->where('created_at', '>=', now()->format('Y-m-d').' 00:00:00')
                 ->get()
         );
     }
@@ -50,7 +49,7 @@ class TransactionController extends Controller
                 ->addMinutes(5);
 
             if ($currentTime->between($lessFive, $plusFive)) {
-                abort(422, 'No puedes realizar transacciones entre las ' . $lessFive->format('g:i A') . ' y las ' . $plusFive->format('g:i A'));
+                abort(422, 'No puedes realizar transacciones entre las '.$lessFive->format('g:i A').' y las '.$plusFive->format('g:i A'));
             }
         }
 
@@ -64,8 +63,9 @@ class TransactionController extends Controller
 
         if ($blockedNumber) {
             if ($blockedNumber['settings']['individual_limit']) {
-                if ($request->amount > $blockedNumber['settings']['individual_limit'])
-                    abort(422, 'El monto máximo es C$' . $blockedNumber['settings']['individual_limit']);
+                if ($request->amount > $blockedNumber['settings']['individual_limit']) {
+                    abort(422, 'El monto máximo es C$'.$blockedNumber['settings']['individual_limit']);
+                }
             }
 
             if ($blockedNumber['settings']['general_limit']) {
@@ -73,7 +73,7 @@ class TransactionController extends Controller
 
                 if ($transactionsTotalAmount + $request->amount > $blockedNumber['settings']['general_limit']) {
                     $availableAmount = $blockedNumber['settings']['general_limit'] - $transactionsTotalAmount;
-                    abort(422, 'El monto disponible es C$' . $availableAmount);
+                    abort(422, 'El monto disponible es C$'.$availableAmount);
                 }
             }
         }
@@ -88,7 +88,7 @@ class TransactionController extends Controller
 
             if ($transactionsTotalAmount + $request->amount > $settings['general_limit']) {
                 $availableAmount = $settings['general_limit'] - $transactionsTotalAmount;
-                abort(422, 'El monto disponible es C$' . $availableAmount);
+                abort(422, 'El monto disponible es C$'.$availableAmount);
             }
         }
 

@@ -6,7 +6,7 @@ use App\Models\BlockedNumber;
 
 class BlockedNumberService
 {
-    public function set(array $request, $raffle)
+    public function store(array $request, $raffle)
     {
         BlockedNumber::updateOrCreate([
             'number' => $request['number'],
@@ -23,6 +23,6 @@ class BlockedNumberService
             ->where('user_id', auth()->id())
             ->where('raffle_id', $raffle)
             ->latest('id')
-            ->get(["id", "number", "settings"]);
+            ->get(['id', 'number', 'settings']);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Models\Availability;
-use App\Models\BlockedNumber;
 use App\Models\Raffle;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
@@ -23,7 +22,7 @@ class RaffleController extends Controller
             ->get();
 
         return inertia('Clientarea/Raffle/Index', [
-            "raffles" => $raffles
+            'raffles' => $raffles,
         ]);
     }
 
@@ -52,11 +51,11 @@ class RaffleController extends Controller
             ->get();
 
         return inertia('Clientarea/Raffle/Show', [
-            "raffle" => $raffle,
-            "transactions" => $transactions,
-            "blockeds" => (new BlockedNumberService)->get($raffle->id),
-            "availability" => $availability,
-            "results" => $winningNumbers,
+            'raffle' => $raffle,
+            'transactions' => $transactions,
+            'blockeds' => (new BlockedNumberService)->get($raffle->id),
+            'availability' => $availability,
+            'results' => $winningNumbers,
         ]);
     }
 
@@ -66,7 +65,7 @@ class RaffleController extends Controller
             ->where('user_id', auth()->id())
             ->where('raffle_id', $raffle)
             ->update([
-                'settings' => $request->settings
+                'settings' => $request->settings,
             ]);
 
         return back();

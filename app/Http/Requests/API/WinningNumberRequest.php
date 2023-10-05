@@ -22,8 +22,8 @@ class WinningNumberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "number" => "required",
-            "hour" => "required",
+            'number' => 'required',
+            'hour' => 'required',
         ];
     }
 }

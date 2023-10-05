@@ -22,24 +22,24 @@ class RaffleAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "start_time" => "required",
-            "end_time" => "required",
-            "blocked_hours" => "required|array|min:1",
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'blocked_hours' => 'required|array|min:1',
         ] + ($this->isMethod('POST') ? $this->store() : []);
     }
 
     public function store()
     {
         return [
-            "order" => "required|numeric",
-            "day" => "required",
+            'order' => 'required|numeric',
+            'day' => 'required',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            "blocked_hours" => "sorteos",
+            'blocked_hours' => 'sorteos',
         ];
     }
 }

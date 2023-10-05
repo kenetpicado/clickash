@@ -9,8 +9,8 @@ class TransactionService
 {
     public function get(array $request, $raffle_id = null)
     {
-        $start_date = $request['start_date'] . ' 00:00:00';
-        $end_date = $request['end_date'] . ' 23:59:59';
+        $start_date = $request['start_date'].' 00:00:00';
+        $end_date = $request['end_date'].' 23:59:59';
 
         $teamIds = User::where('id', auth()->id())
             ->orWhere('user_id', auth()->id())
@@ -37,7 +37,7 @@ class TransactionService
         return Transaction::query()
             ->whereIn('user_id', $userService->getTeamIds($user_id))
             ->where('raffle_id', $request['raffle_id'])
-            ->where('created_at', '>=', now()->format('Y-m-d') . ' 00:00:00')
+            ->where('created_at', '>=', now()->format('Y-m-d').' 00:00:00')
             ->where('hour', $request['hour'])
             ->where('digit', $request['digit'])
             ->sum('amount');

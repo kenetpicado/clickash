@@ -9,11 +9,11 @@ use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
 use App\Http\Controllers\Clientarea\TransactionController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\RaffleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\UserRaffleController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::redirect('', '/dashboard');
 
-Route::get("/", HomeController::class)
+Route::get('/', HomeController::class)
     ->middleware(['auth:sanctum'])
     ->name('home');
 

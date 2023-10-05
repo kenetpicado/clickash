@@ -22,7 +22,7 @@ class RaffleSeeder extends Seeder
                     'max' => '99',
                     'general_limit' => '1000',
                     'individual_limit' => '100',
-                    'multiplier' => 70
+                    'multiplier' => 70,
                 ],
                 'availability' => [
                     [
@@ -85,7 +85,7 @@ class RaffleSeeder extends Seeder
                     'max' => '99',
                     'general_limit' => '1000',
                     'individual_limit' => null,
-                    'multiplier' => 70
+                    'multiplier' => 70,
                 ],
                 'availability' => [
                     [
@@ -106,7 +106,7 @@ class RaffleSeeder extends Seeder
                     'max' => '99',
                     'general_limit' => '1000',
                     'individual_limit' => '100',
-                    'multiplier' => 70
+                    'multiplier' => 70,
                 ],
                 'availability' => [
                     [
@@ -169,7 +169,7 @@ class RaffleSeeder extends Seeder
                     'max' => null,
                     'general_limit' => null,
                     'individual_limit' => '250',
-                    'multiplier' => 70
+                    'multiplier' => 70,
                 ],
                 'availability' => [
                     [
@@ -232,7 +232,7 @@ class RaffleSeeder extends Seeder
                     'max' => '999',
                     'general_limit' => '200',
                     'individual_limit' => null,
-                    'multiplier' => 70
+                    'multiplier' => 70,
                 ],
                 'availability' => [
                     [
@@ -295,7 +295,7 @@ class RaffleSeeder extends Seeder
                     'max' => '999',
                     'general_limit' => '200',
                     'individual_limit' => null,
-                    'multiplier' => 70
+                    'multiplier' => 70,
                 ],
                 'availability' => [
                     [

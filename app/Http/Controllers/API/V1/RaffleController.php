@@ -17,8 +17,9 @@ class RaffleController extends Controller
     {
         $raffles = [];
 
-        if (auth()->user()->status == 'enabled')
+        if (auth()->user()->status == 'enabled') {
             $raffles = (new RaffleService)->getRaffles();
+        }
 
         return RaffleResource::collection($raffles);
     }
