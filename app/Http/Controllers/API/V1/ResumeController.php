@@ -12,7 +12,7 @@ class ResumeController extends Controller
     public function __invoke(IntervalRequest $request)
     {
         return TransactionResource::collection(
-            (new TransactionService)->get($request->validated())
+            (new TransactionService)->getInterval($request->validated())
         );
     }
 }

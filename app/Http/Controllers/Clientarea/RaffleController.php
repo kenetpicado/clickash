@@ -50,12 +50,32 @@ class RaffleController extends Controller
             ->orderBy('hour')
             ->get();
 
+        $winners = [];
+
+        $team = (new UserService)->getTeam();
+
+        $winners = Transaction::query()
+            ->where('raffle_id', $raffle->id)
+            ->whereIn('user_id', $team)
+            ->where(function ($query) use ($winningNumbers) {
+                foreach ($winningNumbers as $winningNumber) {
+                    $query->orWhere(function ($query) use ($winningNumber) {
+                        $query->where('digit', $winningNumber->number)
+                            ->where('hour', $winningNumber->hour);
+                    });
+                }
+            })
+            ->with('user:id,name,last_login')
+            ->orderBy('hour', 'desc')
+            ->get();
+
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
             'transactions' => $transactions,
             'blockeds' => (new BlockedNumberService)->get($raffle->id),
             'availability' => $availability,
             'results' => $winningNumbers,
+            'winners' => $winners,
         ]);
     }
 

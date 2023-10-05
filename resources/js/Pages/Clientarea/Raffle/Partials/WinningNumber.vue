@@ -1,29 +1,57 @@
 <template>
     <div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border-2">
+                <div class="text-center">
+                    <div class="text-2xl font-bold mb-2 badge-blue">
+                        {{ result.number }}
+                    </div>
+                    <div class="text-center text-sm">
+                        {{ Carbon.create().setTime(result.hour).getTimeFormat() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <TableSection>
             <template #header>
-                <th>Fecha</th>
+                <th>Vendedor</th>
+                <th>Cliente</th>
                 <th>Turno</th>
                 <th>Numero</th>
+                <th>Premio</th>
             </template>
             <template #body>
-                <tr v-for="result in results">
+                <tr v-for="winner in winners">
                     <td>
-                        Hoy
+                        <div class="text-xs text-gray-400 mb-1">
+                            #{{ winner.id }} - {{ Carbon.create(winner.created_at).diffForHumans() }}
+                        </div>
+                        <div class="mb-1 ">
+                            {{ winner.user.name }}
+                        </div>
+                    </td>
+                    <td>
+                        {{ winner.client }}
                     </td>
                     <td>
                         <span class="badge-blue whitespace-nowrap">
-                            {{ result.hour }}
+                            {{ Carbon.create().setTime(winner.hour).getTimeFormat() }}
                         </span>
                     </td>
                     <td>
-                        <span class="text-sm badge-green">
-                            {{ result.number }}
+                        <span class="font-semibold">
+                            {{ winner.digit }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge-red text-sm">
+                            C${{ winner.prize.toLocaleString() }}
                         </span>
                     </td>
                 </tr>
-                <tr v-if="results.length == 0">
-                    <td colspan="3" class="text-center">No hay datos</td>
+                <tr v-if="winners.length == 0">
+                    <td colspan="4" class="text-center">No hay datos</td>
                 </tr>
             </template>
         </TableSection>
@@ -39,7 +67,8 @@
                 <InputForm v-model="form.number" type="number" text="Numero" />
             </div>
             <p class="text-red-500 mb-4" v-if="hours.length == 0">
-                No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en "Horario"
+                No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en
+                "Horario"
             </p>
             <p class="text-gray-400" v-else>
                 Solo puede agregar resultados del dia de hoy y 1 por turno.
@@ -72,6 +101,10 @@ const props = defineProps({
         required: true,
     },
     currentBlockedHours: {
+        type: Object,
+        required: true,
+    },
+    winners: {
         type: Object,
         required: true,
     },

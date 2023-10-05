@@ -27,7 +27,7 @@ class RaffleController extends Controller
     public function show(IntervalRequest $request, $raffle)
     {
         return TransactionResource::collection(
-            (new TransactionService)->get($request->validated(), $raffle)
+            (new TransactionService)->getInterval($request->validated(), $raffle)
         );
     }
 

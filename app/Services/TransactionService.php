@@ -7,7 +7,7 @@ use App\Models\User;
 
 class TransactionService
 {
-    public function get(array $request, $raffle_id = null)
+    public function getInterval(array $request, $raffle_id = null)
     {
         $start_date = $request['start_date'].' 00:00:00';
         $end_date = $request['end_date'].' 23:59:59';

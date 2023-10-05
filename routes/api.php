@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('register', RegisterController::class)
         ->name('register');
 
-    Route::middleware(['auth:sanctum', 'role:owner|seller', 'online'])->group(function () {
+    Route::middleware(['auth:sanctum', 'online', 'role:owner|seller'])->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
 

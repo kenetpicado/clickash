@@ -86,6 +86,7 @@ class UserService
     {
         return User::where('id', auth()->id())
             ->orWhere('user_id', auth()->id())
-            ->pluck('id');
+            ->pluck('id')
+            ->toArray();
     }
 }
