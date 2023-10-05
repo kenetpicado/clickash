@@ -51,7 +51,7 @@
                     </td>
                 </tr>
                 <tr v-if="winners.length == 0">
-                    <td colspan="4" class="text-center">No hay datos</td>
+                    <td colspan="5" class="text-center">No hay datos</td>
                 </tr>
             </template>
         </TableSection>
@@ -86,6 +86,7 @@ import InputForm from '@/Components/Form/InputForm.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
 import { Carbon } from '@/Use/Carbon.js';
 import { toast } from '@/Use/toast';
+import { confirmAlert } from '@/Use/helpers';
 
 const props = defineProps({
     results: {
@@ -136,15 +137,18 @@ const onSubmit = () => {
         return;
     }
 
-    form.post(route('clientarea.raffles.winning-numbers.store', props.raffle.id), {
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: () => {
-            resetValues();
-            toast.success('Guardado correctamente');
-        },
-        onError: (err) => {
-            toast.error(err.message);
+    confirmAlert({
+        title: 'Confirmar',
+        message: '¿Esta seguro de agregar este resultado?',
+        onConfirm: () => {
+            form.post(route('clientarea.raffles.winning-numbers.store', props.raffle.id), {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    resetValues();
+                    toast.success('Guardado correctamente');
+                },
+            });
         }
     });
 }
