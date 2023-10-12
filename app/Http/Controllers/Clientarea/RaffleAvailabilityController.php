@@ -9,16 +9,21 @@ use App\Services\AvailabilityService;
 
 class RaffleAvailabilityController extends Controller
 {
+    public function __construct(private readonly AvailabilityService $availabilityService)
+    {
+
+    }
+
     public function store(RaffleAvailabilityRequest $request, $raffle)
     {
-        (new AvailabilityService)->store($request->validated(), $raffle);
+        $this->availabilityService->store($request->validated(), $raffle);
 
         return back();
     }
 
     public function update(RaffleAvailabilityRequest $request, $raffle, $availability)
     {
-        (new AvailabilityService)->update($request->validated(), $availability);
+        $this->availabilityService->update($request->validated(), $availability);
 
         return back();
     }

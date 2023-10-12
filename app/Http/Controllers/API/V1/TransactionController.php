@@ -100,6 +100,7 @@ class TransactionController extends Controller
             $request->validated() + [
                 'user_id' => auth()->id(),
                 'prize' => $total,
+                'status' => 'PURCHASED'
             ]
         );
 

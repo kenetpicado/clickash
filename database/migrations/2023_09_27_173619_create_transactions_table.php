@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('prize')->nullable();
             $table->string('client')->nullable();
             $table->time('hour')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

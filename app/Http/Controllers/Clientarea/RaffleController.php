@@ -60,14 +60,14 @@ class RaffleController extends Controller
                 ->where('raffle_id', $raffle->id)
                 ->whereIn('user_id', $team)
                 ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-                ->where(function ($query) use ($winningNumbers) {
-                    foreach ($winningNumbers as $winningNumber) {
-                        $query->orWhere(function ($query) use ($winningNumber) {
-                            $query->where('digit', $winningNumber->number)
-                                ->where('hour', $winningNumber->hour);
-                        });
-                    }
-                })
+                // ->where(function ($query) use ($winningNumbers) {
+                //     foreach ($winningNumbers as $winningNumber) {
+                //         $query->orWhere(function ($query) use ($winningNumber) {
+                //             $query->where('digit', $winningNumber->number)
+                //                 ->where('hour', $winningNumber->hour);
+                //         });
+                //     }
+                // })
                 ->with('user:id,name,last_login')
                 ->orderBy('hour', 'desc')
                 ->get();

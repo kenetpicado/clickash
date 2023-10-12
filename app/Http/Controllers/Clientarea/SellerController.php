@@ -2,53 +2,44 @@
 
 namespace App\Http\Controllers\Clientarea;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Clientarea\SellerRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
+use App\Repositories\TransactionRepository;
+use App\Http\Requests\Clientarea\SellerRequest;
 
 class SellerController extends Controller
 {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly TransactionRepository $transactionRepository
+    ) {
+        //
+    }
+
     public function index()
     {
         return inertia('Clientarea/Seller/Index', [
-            'sellers' => User::query()
-                ->where('user_id', auth()->id())
-                ->get(['id', 'name', 'email', 'last_login', 'status']),
+            'sellers' => $this->userRepository->getSellers(),
         ]);
     }
 
     public function store(SellerRequest $request)
     {
-        if (auth()->user()->sellers()->count() >= auth()->user()->sellers_limit) {
-            return back()->withErrors([
-                'message' => 'Ha alcanzado el límite de vendedores permitidos',
-            ]);
+        if ($this->userRepository->hasReachedSellerLimit()) {
+            return back()->withErrors(['message' => 'Ha alcanzado el límite de vendedores permitidos']);
         }
 
-        User::create([
-            'user_id' => auth()->id(),
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'company_name' => auth()->user()->company_name,
-            'role' => 'seller',
-            'status' => 'enabled',
-        ]);
+        $this->userRepository->createSeller($request->validated());
 
         return back();
     }
 
     public function show(User $seller)
     {
-        $transactions = $seller->transactions()
-            ->with('raffle:id,name')
-            ->latest('id')
-            ->paginate();
-
         return inertia('Clientarea/Seller/Show', [
             'seller' => $seller,
-            'transactions' => $transactions,
+            'transactions' => $this->transactionRepository->getUserTransactions($seller),
         ]);
     }
 
