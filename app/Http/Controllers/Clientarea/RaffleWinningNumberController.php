@@ -16,7 +16,7 @@ class RaffleWinningNumberController extends Controller
 
     public function store(WinningNumberRequest $request, $raffle)
     {
-        if (Carbon::parse($request->hour) > Carbon::now()) {
+        if (Carbon::parse($request->hour)->isFuture()) {
             return back()->withErrors(['message' => 'No puedes registrar una turno que no ha pasado']);
         }
 
