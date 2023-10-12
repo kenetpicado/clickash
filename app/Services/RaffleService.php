@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Raffle;
-use App\Models\Transaction;
-use App\Models\User;
 use Carbon\Carbon;
 
 class RaffleService
@@ -56,23 +54,5 @@ class RaffleService
 
                 return $raffle;
             });
-    }
-
-    public function getTransactions($raffle_id, array $request)
-    {
-        $start_date = $request['start_date'].' 00:00:00';
-        $end_date = $request['end_date'].' 23:59:59';
-
-        $teamIds = User::where('id', auth()->id())
-            ->orWhere('user_id', auth()->id())
-            ->pluck('id');
-
-        return Transaction::query()
-            ->where('raffle_id', $raffle_id)
-            ->whereIn('user_id', $teamIds)
-            ->whereBetween('created_at', [$start_date, $end_date])
-            ->with('user:id,name')
-            ->orderBy('id', $request['order'] ?? 'desc')
-            ->paginate();
     }
 }

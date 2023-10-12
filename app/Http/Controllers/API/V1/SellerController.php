@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Http\Resources\SellerResource;
 use App\Http\Requests\API\SellerRequest;
-use App\Http\Requests\API\IntervalRequest;
 use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
 
@@ -35,9 +34,9 @@ class SellerController extends Controller
         return self::index();
     }
 
-    public function show(IntervalRequest $request, User $seller)
+    public function show(User $seller)
     {
-        return TransactionResource::collection($this->transactionRepository->getByUser($seller, $request->validated()));
+        return TransactionResource::collection($this->transactionRepository->getByUser($seller));
     }
 
     public function update(SellerRequest $request, $seller)

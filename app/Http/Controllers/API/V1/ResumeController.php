@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\IntervalRequest;
 use App\Http\Resources\TransactionResource;
-use App\Services\TransactionService;
+use App\Repositories\TransactionRepository;
 
 class ResumeController extends Controller
 {
-    public function __invoke(IntervalRequest $request)
+    public function __construct(
+        private readonly TransactionRepository $transactionRepository,
+    ) {
+    }
+
+    public function __invoke()
     {
-        return TransactionResource::collection(
-            (new TransactionService)->getInterval($request->validated())
-        );
+        return TransactionResource::collection($this->transactionRepository->getByTeam());
     }
 }

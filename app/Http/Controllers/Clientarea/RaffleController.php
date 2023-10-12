@@ -33,7 +33,7 @@ class RaffleController extends Controller
     {
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
-            'transactions' => $this->transactionRepository->getByRaffle($raffle->id),
+            'transactions' => $this->transactionRepository->getTeamByRaffle($raffle->id),
             'blockeds' => $this->blockedNumberRepository->getByRaffle($raffle->id),
             'availability' => $this->availabilityRepository->getByRaffle($raffle->id),
             'results' => $this->winningNumberRepository->getByRaffle($raffle->id),
