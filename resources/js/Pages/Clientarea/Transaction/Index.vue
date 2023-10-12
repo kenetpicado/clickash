@@ -38,7 +38,7 @@
                         </span>
                     </td>
                     <td>
-                        {{ Carbon.create(transaction.created_at).format('d/m/Y') }} {{ Carbon.create(transaction.created_at).getTimeFormat() }}
+                        {{ Carbon.create(transaction.created_at).format('d/m/Y') }}
                     </td>
                 </tr>
                 <tr v-if="transactions.data.length == 0">

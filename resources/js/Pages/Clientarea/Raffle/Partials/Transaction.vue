@@ -6,16 +6,12 @@
                 <th>Turno</th>
                 <th>Monto</th>
                 <th>Numero</th>
+                <th>Fecha</th>
             </template>
             <template #body>
                 <tr v-for="transaction in transactions.data">
                     <td>
-                        <div class="text-xs text-gray-400 mb-1">
-                            #{{ transaction.id }} - {{ Carbon.create(transaction.created_at).diffForHumans() }}
-                        </div>
-                        <div class="mb-1 ">
-                            {{ transaction.user.name }}
-                        </div>
+                        {{ transaction.user.name }}
                     </td>
                     <td>
                         <span class="badge-blue whitespace-nowrap">
@@ -30,9 +26,12 @@
                             {{ transaction.digit }}
                         </span>
                     </td>
+                    <td>
+                        {{ Carbon.create(transaction.created_at).format('d/m/Y') }}
+                    </td>
                 </tr>
                 <tr v-if="transactions.data.length == 0">
-                    <td colspan="4" class="text-center">No hay datos</td>
+                    <td colspan="5" class="text-center">No hay datos</td>
                 </tr>
             </template>
             <template #paginator>

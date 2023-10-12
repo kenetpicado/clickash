@@ -20,16 +20,12 @@
                 <th>Turno</th>
                 <th>Numero</th>
                 <th>Premio</th>
+                <th>Fecha</th>
             </template>
             <template #body>
                 <tr v-for="winner in winners">
                     <td>
-                        <div class="text-xs text-gray-400 mb-1">
-                            #{{ winner.id }} - {{ Carbon.create(winner.created_at).diffForHumans() }}
-                        </div>
-                        <div class="mb-1 ">
-                            {{ winner.user.name }}
-                        </div>
+                        {{ winner.user.name }}
                     </td>
                     <td>
                         {{ winner.client }}
@@ -46,12 +42,15 @@
                     </td>
                     <td>
                         <span class="badge-red text-sm">
-                            C${{ winner.prize.toLocaleString() }}
+                            C${{ winner.prize }}
                         </span>
+                    </td>
+                    <td>
+                        {{ Carbon.create(winner.created_at).format('d/m/Y') }}
                     </td>
                 </tr>
                 <tr v-if="winners.length == 0">
-                    <td colspan="5" class="text-center">No hay datos</td>
+                    <td colspan="6" class="text-center">No hay datos</td>
                 </tr>
             </template>
         </TableSection>
