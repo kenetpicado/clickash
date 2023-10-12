@@ -9,27 +9,23 @@
 
         <TableSection>
             <template #header>
-                <th>Rifa</th>
                 <th>Vendedor</th>
+                <th>Rifa</th>
                 <th>Turno</th>
                 <th>Monto</th>
                 <th>Numero</th>
+                <th>Fecha</th>
             </template>
             <template #body>
                 <tr v-for="transaction in transactions.data">
                     <td>
-                        <div class="text-xs text-gray-400 mb-1">
-                            #{{ transaction.id }} - {{ Carbon.create(transaction.created_at).diffForHumans() }}
-                        </div>
-                        <div class="mb-1 ">
-                            {{ transaction.raffle.name }}
-                        </div>
-                    </td>
-                    <td>
                         {{ transaction.user.name }}
                     </td>
                     <td>
-                        <span class="badge-blue whitespace-nowrap" >
+                        {{ transaction.raffle.name }}
+                    </td>
+                    <td>
+                        <span class="badge-blue whitespace-nowrap">
                             {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -37,9 +33,12 @@
                         C${{ transaction.amount }}
                     </td>
                     <td>
-                        <span class="font-semibold">
+                        <span class="badge-blue">
                             {{ transaction.digit }}
                         </span>
+                    </td>
+                    <td>
+                        {{ Carbon.create(transaction.created_at).format('d/m/Y') }} {{ Carbon.create(transaction.created_at).getTimeFormat() }}
                     </td>
                 </tr>
                 <tr v-if="transactions.data.length == 0">
@@ -47,7 +46,7 @@
                 </tr>
             </template>
             <template #paginator>
-               <ThePaginator :links="transactions.links"/>
+                <ThePaginator :links="transactions.links" />
             </template>
         </TableSection>
     </AppLayout>

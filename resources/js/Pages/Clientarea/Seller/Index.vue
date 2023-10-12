@@ -23,7 +23,7 @@
                         </div>
                     </td>
                     <td>
-                        <span class="text-xs whitespace-nowrap badge-green">{{ seller.online }}</span>
+                        <span class="whitespace-nowrap">{{ seller.online }}</span>
                     </td>
                     <td>
                         <label class="relative inline-flex items-center cursor-pointer">
@@ -37,7 +37,7 @@
                     <td>
                         <div class="flex items-center gap-3">
                             <Link :href="route('clientarea.sellers.show', seller.id)" tooltip="Ventas">
-                            <IconEye size="22"/>
+                            <IconCurrencyDollar size="22"/>
                             </Link>
                             <span tooltip="Editar" role="button" @click="edit(seller)">
                                 <IconEdit size="22"/>
@@ -76,7 +76,7 @@ import { ref } from 'vue';
 import TableSection from '@/Components/TableSection.vue';
 import { IconEye } from '@tabler/icons-vue';
 import { Link } from '@inertiajs/vue3';
-import { IconEdit, IconTrash } from '@tabler/icons-vue';
+import { IconEdit, IconTrash, IconEyeDollar, IconCurrencyDollar } from '@tabler/icons-vue';
 
 defineProps({
     sellers: {
