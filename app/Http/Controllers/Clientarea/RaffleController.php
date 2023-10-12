@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Clientarea;
 
 use App\Models\Raffle;
-use App\Models\RaffleUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\AvailabilityRepository;
 use App\Repositories\BlockedNumberRepository;
+use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WinningNumberRepository;
 
@@ -18,18 +18,14 @@ class RaffleController extends Controller
         private readonly BlockedNumberRepository $blockedNumberRepository,
         private readonly WinningNumberRepository $winningNumberRepository,
         private readonly TransactionRepository $transactionRepository,
+        private readonly RaffleUserRepository $raffleUserRepository,
     ) {
     }
 
     public function index()
     {
-        $raffles = RaffleUser::query()
-            ->where('user_id', auth()->id())
-            ->with('raffle:id,name')
-            ->get();
-
         return inertia('Clientarea/Raffle/Index', [
-            'raffles' => $raffles,
+            'raffles' => $this->raffleUserRepository->getRaffles(),
         ]);
     }
 
@@ -47,12 +43,7 @@ class RaffleController extends Controller
 
     public function update(Request $request, $raffle)
     {
-        RaffleUser::query()
-            ->where('user_id', auth()->id())
-            ->where('raffle_id', $raffle)
-            ->update([
-                'settings' => $request->settings,
-            ]);
+        $this->raffleUserRepository->updateSettings($raffle, $request->settings);
 
         return back();
     }
