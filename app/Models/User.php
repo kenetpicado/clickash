@@ -102,4 +102,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function isOwner(): bool
+    {
+        return $this->role == 'owner';
+    }
+
+    public function isSeller(): bool
+    {
+        return $this->role == 'seller';
+    }
+
+    public function getOwnerId()
+    {
+        if ($this->isOwner()) {
+            return $this->id;
+        }
+
+        return $this->user_id;
+    }
+
+    public function isEnabled()
+    {
+        return $this->status == 'enabled';
+    }
 }

@@ -13,25 +13,17 @@ use App\Services\RaffleService;
 class RaffleController extends Controller
 {
     public function __construct(
-        private readonly RaffleUserRepository $raffleUserRepository,
+        private readonly RaffleService $raffleService,
         private readonly TransactionRepository $transactionRepository,
+        private readonly RaffleUserRepository $raffleUserRepository,
     ) {
     }
 
     public function index()
     {
-        $raffles = [];
-
-        if (auth()->user()->status == 'enabled') {
-            $raffles = (new RaffleService)->getRaffles();
-        }
-
-        return RaffleResource::collection($raffles);
+        return RaffleResource::collection($this->raffleService->getRaffles());
     }
 
-    /*
-    *   Get all transactions by raffle
-    */
     public function show($raffle)
     {
         return TransactionResource::collection($this->transactionRepository->getTeamByRaffle($raffle));

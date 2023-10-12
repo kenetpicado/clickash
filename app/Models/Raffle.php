@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,6 +20,7 @@ class Raffle extends Model
 
     protected $casts = [
         'settings' => 'array',
+        'custom_settings' => 'array',
     ];
 
     public function availability()
@@ -28,7 +30,7 @@ class Raffle extends Model
 
     public function currentAvailability()
     {
-        return $this->hasOne(Availability::class)->where('order', now()->dayOfWeek);
+        return $this->hasOne(Availability::class)->where('order', Carbon::now()->dayOfWeek);
     }
 
     public function users()
@@ -44,5 +46,12 @@ class Raffle extends Model
     public function blockedNumbers()
     {
         return $this->hasMany(BlockedNumber::class);
+    }
+
+    public function scopeHasUser($query, $user_id)
+    {
+        return $query->whereHas('users', function ($query) use ($user_id) {
+            $query->where('raffle_user.user_id', $user_id);
+        });
     }
 }

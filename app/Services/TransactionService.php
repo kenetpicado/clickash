@@ -26,10 +26,9 @@ class TransactionService
         $blockedNumberRepository = new BlockedNumberRepository();
         $raffleUserRepository = new RaffleUserRepository();
 
-        $userService = new UserService();
         $dateTimeService = new DateTimeService();
 
-        $ownerId = $userService->getOwnerId();
+        $ownerId = auth()->user()->getOwnerId();
 
         // CHECK IF THE TIME IS BLOCKED
         $blockedHours = $availabilityRepository->getTodayBlockedHours($request['raffle_id'], $ownerId);

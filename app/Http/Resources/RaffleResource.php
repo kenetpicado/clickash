@@ -14,6 +14,11 @@ class RaffleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'settings' => $this->settings,
+            'blocked_hours' => $this->blocked_hours,
+        ];
     }
 }
