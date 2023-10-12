@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers\Clientarea;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
 use App\Models\Availability;
-use App\Services\AvailabilityService;
+use App\Http\Controllers\Controller;
+use App\Repositories\AvailabilityRepository;
+use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
 
 class RaffleAvailabilityController extends Controller
 {
-    public function __construct(private readonly AvailabilityService $availabilityService)
-    {
-
+    public function __construct(
+        private readonly AvailabilityRepository $availabilityRepository
+    ) {
     }
 
     public function store(RaffleAvailabilityRequest $request, $raffle)
     {
-        $this->availabilityService->store($request->validated(), $raffle);
+        $this->availabilityRepository->store($request->validated(), $raffle);
 
         return back();
     }
 
     public function update(RaffleAvailabilityRequest $request, $raffle, $availability)
     {
-        $this->availabilityService->update($request->validated(), $availability);
+        $this->availabilityRepository->update($request->validated(), $availability);
 
         return back();
     }
