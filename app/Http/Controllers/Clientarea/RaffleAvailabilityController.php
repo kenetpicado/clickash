@@ -16,7 +16,7 @@ class RaffleAvailabilityController extends Controller
 
     public function store(RaffleAvailabilityRequest $request, $raffle)
     {
-        $this->availabilityRepository->store($request->validated(), $raffle);
+        $this->availabilityRepository->updateOrCreate($request->validated(), $raffle);
 
         return back();
     }

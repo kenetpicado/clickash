@@ -19,7 +19,7 @@ class WinningNumberRepository
 
     public function store(array $request, int $raffle)
     {
-        WinningNumber::create([
+        return WinningNumber::create([
             'raffle_id' => $raffle,
             'user_id' => auth()->id(),
             'number' => $request['number'],

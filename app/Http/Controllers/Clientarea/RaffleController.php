@@ -37,7 +37,7 @@ class RaffleController extends Controller
             'blockeds' => $this->blockedNumberRepository->getByRaffle($raffle->id),
             'availability' => $this->availabilityRepository->getByRaffle($raffle->id),
             'results' => $this->winningNumberRepository->getByRaffle($raffle->id),
-            'winners' => [],
+            'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
         ]);
     }
 

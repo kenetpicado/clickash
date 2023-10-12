@@ -7,11 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\WinningNumberResource;
 use App\Repositories\WinningNumberRepository;
 use App\Http\Requests\API\WinningNumberRequest;
+use App\Repositories\TransactionRepository;
 
 class RaffleWinningNumberController extends Controller
 {
     public function __construct(
-        private readonly WinningNumberRepository $winningNumberRepository
+        private readonly WinningNumberRepository $winningNumberRepository,
+        private readonly TransactionRepository $transactionRepository
     ) {
     }
 
@@ -26,7 +28,9 @@ class RaffleWinningNumberController extends Controller
             abort(403, 'No puedes registrar una turno que no ha pasado');
         }
 
-        $this->winningNumberRepository->store($request->validated(), $raffle);
+        $winningNumber = $this->winningNumberRepository->store($request->validated(), $raffle);
+
+        $this->transactionRepository->markWinners($winningNumber);
 
         return self::index($raffle);
     }

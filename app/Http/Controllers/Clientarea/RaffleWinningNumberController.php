@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Repositories\WinningNumberRepository;
 use App\Http\Requests\API\WinningNumberRequest;
+use App\Repositories\TransactionRepository;
 
 class RaffleWinningNumberController extends Controller
 {
     public function __construct(
-        private WinningNumberRepository $winningNumberRepository
+        private readonly WinningNumberRepository $winningNumberRepository,
+        private readonly TransactionRepository $transactionRepository
     ) {
     }
 
@@ -20,7 +22,9 @@ class RaffleWinningNumberController extends Controller
             return back()->withErrors(['message' => 'No puedes registrar una turno que no ha pasado']);
         }
 
-        $this->winningNumberRepository->store($request->validated(), $raffle);
+        $winningNumber = $this->winningNumberRepository->store($request->validated(), $raffle);
+
+        $this->transactionRepository->markWinners($winningNumber);
 
         return back();
     }

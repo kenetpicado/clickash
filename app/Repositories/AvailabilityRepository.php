@@ -17,16 +17,17 @@ class AvailabilityRepository
             ->get(['id', 'order', 'day', 'start_time', 'end_time', 'blocked_hours']);
     }
 
-    public function store(array $request, $raffle): void
+    public function updateOrCreate(array $request, $raffle): void
     {
-        Availability::create([
+        Availability::updateOrCreate([
             'day' => $request['day'],
             'order' => $request['order'],
+            'raffle_id' => $raffle,
+            'user_id' => auth()->id(),
+        ], [
             'start_time' => $request['start_time'],
             'end_time' => $request['end_time'],
             'blocked_hours' => (new DateTimeService)->formatHours($request['blocked_hours']),
-            'raffle_id' => $raffle,
-            'user_id' => auth()->id(),
         ]);
     }
 

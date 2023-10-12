@@ -62,4 +62,24 @@ class TransactionRepository
             'status' => 'PURCHASED',
         ]);
     }
+
+    public function markWinners($winningNumber)
+    {
+        self::setTeam()
+            ->where('raffle_id', $winningNumber->raffle_id)
+            ->where('hour', $winningNumber->hour)
+            ->where('digit', $winningNumber->number)
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->update(['status' => 'WINNER']);
+    }
+
+    public function getWinnersByRaffle($raffle_id)
+    {
+        return Transaction::where('raffle_id', $raffle_id)
+            ->where('status', 'WINNER')
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->with('user:id,name')
+            ->orderBy('hour')
+            ->get();
+    }
 }
