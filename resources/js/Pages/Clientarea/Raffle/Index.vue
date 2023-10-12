@@ -6,7 +6,46 @@
             </span>
         </template>
 
-        <TableSection>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div v-for="raffle in raffles" class="p-6 bg-white rounded-xl border">
+                <div class="flex flex-col justify-between h-full">
+                    <div class="mb-2">
+                        <Link :href="route('clientarea.raffles.show', raffle.raffle_id)" tooltip="Detalles">
+                        <span class="font-bold text-xl mb-2"> {{ raffle.raffle.name }}</span>
+                        </Link>
+                        <div class="text-gray-500 space-y-1 mb-5 text-sm antialiased">
+                            <div v-if="raffle.settings.super_x">
+                                SuperX
+                            </div>
+                            <div v-if="raffle.settings.individual_limit">
+                                lim. individual: C${{ raffle.settings.individual_limit }}
+                            </div>
+                            <div v-if="raffle.settings.general_limit">
+                                lim. general: C${{ raffle.settings.general_limit }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <div v-if="raffle.settings.date">
+                            <span
+                                class="rounded-full px-3 py-1 font-semibold tracking-wider text-sm bg-green-50 text-green-600">Fecha</span>
+                        </div>
+                        <div v-else>
+                            <span
+                                class="rounded-full px-3 py-1 font-semibold tracking-wider text-sm bg-green-50 text-green-600">
+                                max: {{ raffle.settings.max }}
+                            </span>
+                        </div>
+                        <div tooltip="Editar" role="button" @click="edit(raffle)">
+                            <IconEdit size="22" class="text-gray-400" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <TableSection>
             <template #header>
                 <th>Nombre</th>
                 <th>Detalles</th>
@@ -39,10 +78,10 @@
                     <td>
                         <div class="flex items-center gap-3">
                             <Link :href="route('clientarea.raffles.show', raffle.raffle_id)" tooltip="Detalles">
-                            <IconEye size="22"/>
+                            <IconEye size="22" />
                             </Link>
                             <span tooltip="Editar" role="button" @click="edit(raffle)">
-                                <IconEdit size="22"/>
+                                <IconEdit size="22" />
                             </span>
                         </div>
                     </td>
@@ -51,15 +90,15 @@
                     <td colspan="2" class="text-center">No hay datos</td>
                 </tr>
             </template>
-        </TableSection>
+        </TableSection> -->
 
         <FormModal :show="openModal" :title="form.raffle_name" @onCancel="resetValues" @onSubmit="onSubmit">
             <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
             <Checkbox v-model:checked="form.settings.date" text="Fecha" />
 
             <div class="grid grid-cols-2 gap-4" v-if="!form.settings.date">
-                <InputForm text="Minimo" v-model="form.settings.min" required  type="number" />
-                <InputForm text="Maximo" v-model="form.settings.max" required  type="number" />
+                <InputForm text="Minimo" v-model="form.settings.min" required type="number" />
+                <InputForm text="Maximo" v-model="form.settings.max" required type="number" />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -81,7 +120,7 @@ import { ref, watch } from 'vue';
 import TableSection from '@/Components/TableSection.vue';
 import { IconEye } from '@tabler/icons-vue';
 import { Link, useForm } from '@inertiajs/vue3';
-import { IconEdit } from '@tabler/icons-vue';
+import { IconEdit, IconArrowRight} from '@tabler/icons-vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
 import { toast } from '@/Use/toast';
 

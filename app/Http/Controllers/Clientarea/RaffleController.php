@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\WinningNumber;
 use App\Services\BlockedNumberService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RaffleController extends Controller
@@ -41,14 +42,14 @@ class RaffleController extends Controller
             ->where('raffle_id', $raffle->id)
             ->where('user_id', auth()->id())
             ->orderBy('order')
-            ->get();
+            ->get(['id', 'day', 'order', 'blocked_hours', 'start_time', 'end_time']);
 
         $winningNumbers = WinningNumber::query()
             ->where('raffle_id', $raffle->id)
             ->where('user_id', auth()->id())
             ->where('date', now()->format('Y-m-d'))
             ->orderBy('hour')
-            ->get();
+            ->get(['id', 'number', 'hour']);
 
         $winners = [];
 
@@ -58,6 +59,7 @@ class RaffleController extends Controller
             $winners = Transaction::query()
                 ->where('raffle_id', $raffle->id)
                 ->whereIn('user_id', $team)
+                ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
                 ->where(function ($query) use ($winningNumbers) {
                     foreach ($winningNumbers as $winningNumber) {
                         $query->orWhere(function ($query) use ($winningNumber) {

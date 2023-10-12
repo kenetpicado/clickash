@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Raffle;
 use App\Models\Transaction;
 use App\Models\User;
+use Carbon\Carbon;
 
 class RaffleService
 {
@@ -14,7 +15,7 @@ class RaffleService
         $user_id = $userService->getUserId();
         $is_owner = $userService->isOwner();
 
-        $time = now()->format('H:i:s');
+        $time = Carbon::now()->format('H:i:s');
 
         return Raffle::query()
             ->whereHas('users', function ($query) use ($user_id) {
@@ -46,7 +47,7 @@ class RaffleService
                         if ($is_owner) {
                             return $value;
                         } else {
-                            return $value > now()->format('H:i:s');
+                            return $value > Carbon::now()->format('H:i:s');
                         }
                     })
                     ->values();

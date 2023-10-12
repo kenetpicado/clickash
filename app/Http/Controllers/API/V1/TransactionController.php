@@ -23,7 +23,7 @@ class TransactionController extends Controller
                 ->latest('id')
                 ->with('raffle:id,name')
                 ->where('created_at', '>=', now()->format('Y-m-d') . ' 00:00:00')
-                ->get()
+                ->get(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id'])
         );
     }
 

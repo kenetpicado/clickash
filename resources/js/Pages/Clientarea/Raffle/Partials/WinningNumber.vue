@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border-2">
+            <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border">
                 <div class="text-center">
                     <div class="text-2xl font-bold mb-2 badge-blue">
                         {{ result.number }}
@@ -72,6 +72,11 @@
             </p>
             <p class="text-gray-400" v-else>
                 Solo puede agregar resultados del dia de hoy y 1 por turno.
+            <div class="mt-4">
+                Verifique que los datos ingresados
+                sean correctos antes de guardar, ya que para garantizar la integridad de los datos no se permite eliminar ni
+                editar los resultados.
+            </div>
             </p>
         </FormModal>
     </div>
