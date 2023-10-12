@@ -57,6 +57,10 @@
                 {{ $page.props.errors['blocked_hours'] }}
             </p>
 
+            <div class="mt-4">
+                Sorteos agregados
+            </div>
+
             <div class="flex gap-3 mt-5">
                 <div v-for="(hour, index) in formSchedule.blocked_hours"
                     class="text-xs inline-flex items-center font-bold leading-sm px-3 py-1 bg-indigo-200 text-indigo-700 rounded-full">
@@ -164,6 +168,8 @@ watch(() => formSchedule.order, (value) => {
 
 const resetValuesSchedule = () => {
     formSchedule.reset();
+    isNew.value = true;
+    selectedHour.value = null;
     emit('update:openModal', false);
 };
 
