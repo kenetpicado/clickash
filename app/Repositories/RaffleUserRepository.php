@@ -19,4 +19,11 @@ class RaffleUserRepository
                 'settings' => $settings,
             ]);
     }
+
+    public function getSettings($user_id, $raffle_id)
+    {
+        return RaffleUser::where('user_id', $user_id)
+            ->where('raffle_id', $raffle_id)
+            ->value('settings');
+    }
 }

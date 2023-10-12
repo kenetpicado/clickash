@@ -21,4 +21,13 @@ class BlockedNumberRepository
             'settings' => $request['settings'],
         ]);
     }
+
+    public function findWhere($rafffle_id, $user_id, $number)
+    {
+        return BlockedNumber::query()
+            ->where('raffle_id', $rafffle_id)
+            ->where('user_id', $user_id)
+            ->where('number', $number)
+            ->first();
+    }
 }
