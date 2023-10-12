@@ -14,7 +14,6 @@ class SellerController extends Controller
         private readonly UserRepository $userRepository,
         private readonly TransactionRepository $transactionRepository
     ) {
-        //
     }
 
     public function index()

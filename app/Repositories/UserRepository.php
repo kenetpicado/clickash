@@ -39,4 +39,11 @@ class UserRepository
     {
         return auth()->user()->sellers()->count() >= auth()->user()->sellers_limit;
     }
+
+    public function toggleStatus($user)
+    {
+        $user->update([
+            'status' => $user->status === 'enabled' ? 'disabled' : 'enabled',
+        ]);
+    }
 }
