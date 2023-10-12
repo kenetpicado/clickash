@@ -46,4 +46,17 @@ class UserRepository
             'status' => $user->status === 'enabled' ? 'disabled' : 'enabled',
         ]);
     }
+
+    public function registerFreeAccount(array $request)
+    {
+        return User::create([
+            'name' => $request['name'],
+            'company_name' => $request['company_name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'role' => 'owner',
+            'sellers_limit' => 2,
+            'status' => 'enabled',
+        ]);
+    }
 }

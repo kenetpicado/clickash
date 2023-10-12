@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Transaction;
+use Carbon\Carbon;
 
 class TransactionRepository
 {
@@ -37,6 +38,16 @@ class TransactionRepository
     {
         $team = (new UserRepository)->getTeam();
 
-        return Transaction::query()->where('raffle_id', $raffle_id)->whereIn('user_id', $team)->with('user:id,name')->latest('id')->paginate();
+        return Transaction::where('raffle_id', $raffle_id)->whereIn('user_id', $team)->with('user:id,name')->latest('id')->paginate();
+    }
+
+    public function getToday()
+    {
+        return Transaction::where('user_id', auth()->id())
+            ->latest('id')
+            ->with('raffle:id,name')
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id'])
+            ->paginate();
     }
 }

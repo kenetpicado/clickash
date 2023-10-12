@@ -3,10 +3,7 @@
 namespace App\Services;
 
 use App\Enums\RoleEnum;
-use App\Enums\UserStatusEnum;
-use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -29,26 +26,5 @@ class UserService
     public function isOwner(): bool
     {
         return auth()->user()->role == RoleEnum::OWNER->value;
-    }
-
-    public function registerFreeAccount(array $request)
-    {
-        return User::create([
-            'name' => $request['name'],
-            'company_name' => $request['company_name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-            'role' => RoleEnum::OWNER->value,
-            'sellers_limit' => 2,
-            'status' => UserStatusEnum::ENABLED,
-        ]);
-    }
-
-    public function getTeam()
-    {
-        return User::where('id', auth()->id())
-            ->orWhere('user_id', auth()->id())
-            ->pluck('id')
-            ->toArray();
     }
 }

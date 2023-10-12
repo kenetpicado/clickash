@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\AuthenticatedUserResource;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 
@@ -15,18 +16,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = (new AuthService)->setRequest($request)->login();
 
-        $firstName = explode(' ', $user->name)[0];
-
-        return response()->json([
-            'message' => "Bienvenido {$firstName}",
-            'auth_token' => $user->createToken('authToken')->plainTextToken,
-            'name' => $user->name,
-            'email' => $user->email,
-            'company_name' => $user->company_name,
-            'sellers_limit' => $user->sellers_limit,
-            'role' => $user->role,
-            'status' => $user->status,
-        ]);
+        return AuthenticatedUserResource::make($user);
     }
 
     public function destroy(Request $request)

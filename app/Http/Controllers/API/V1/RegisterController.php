@@ -4,20 +4,20 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\RegisterRequest;
-use App\Services\UserService;
+use App\Http\Resources\AuthenticatedUserResource;
+use App\Repositories\UserRepository;
 
 class RegisterController extends Controller
 {
+    public function __construct(
+        private readonly UserRepository $userRepository
+    ) {
+    }
+
     public function __invoke(RegisterRequest $request)
     {
-        $user = (new UserService)->registerFreeAccount($request->validated());
+        $user = $this->userRepository->registerFreeAccount($request->validated());
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => "Bienvenido {$user->name}",
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+        return AuthenticatedUserResource::make($user);
     }
 }

@@ -9,22 +9,21 @@ use App\Models\Availability;
 use App\Models\BlockedNumber;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
+use App\Repositories\TransactionRepository;
 use App\Services\TransactionService;
 use App\Services\UserService;
 use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
+    public function __construct(
+        private readonly TransactionRepository $transactionRepository
+    ) {
+    }
+
     public function index()
     {
-        return TransactionResource::collection(
-            Transaction::query()
-                ->where('user_id', auth()->id())
-                ->latest('id')
-                ->with('raffle:id,name')
-                ->where('created_at', '>=', now()->format('Y-m-d') . ' 00:00:00')
-                ->get(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id'])
-        );
+        return TransactionResource::collection($this->transactionRepository->getToday());
     }
 
     public function store(TransactionRequest $request)
