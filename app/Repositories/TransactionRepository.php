@@ -32,4 +32,11 @@ class TransactionRepository
 
         return Transaction::whereIn('user_id', $team)->with(['user:id,name', 'raffle:id,name'])->latest()->paginate();
     }
+
+    public function getByRaffle($raffle_id)
+    {
+        $team = (new UserRepository)->getTeam();
+
+        return Transaction::query()->where('raffle_id', $raffle_id)->whereIn('user_id', $team)->with('user:id,name')->latest('id')->paginate();
+    }
 }
