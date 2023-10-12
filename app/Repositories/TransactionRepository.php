@@ -48,4 +48,18 @@ class TransactionRepository
             ->where('digit', $request['digit'])
             ->sum('amount');
     }
+
+    public function store(array $request)
+    {
+        return Transaction::create([
+            'user_id' => auth()->id(),
+            'raffle_id' => $request['raffle_id'],
+            'digit' => $request['digit'],
+            'amount' =>  $request['amount'],
+            'hour' =>  $request['hour'],
+            'client' => $request['client'],
+            'prize' => $request['prize'],
+            'status' => 'PURCHASED',
+        ]);
+    }
 }

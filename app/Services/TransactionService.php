@@ -2,60 +2,58 @@
 
 namespace App\Services;
 
-use App\Models\Availability;
 use App\Models\BlockedNumber;
 use App\Models\RaffleUser;
-use App\Models\Transaction;
+use App\Repositories\AvailabilityRepository;
 use App\Repositories\TransactionRepository;
 use Carbon\Carbon;
 
 class TransactionService
 {
+    private $currentTime;
+
+    public function __construct()
+    {
+        $this->currentTime = Carbon::now();
+    }
+
     public function store(array $request)
     {
-        $transactionRepository = new TransactionRepository();
-
-        $userService = new UserService();
+        $transactionRepository  = new TransactionRepository();
+        $availabilityRepository = new AvailabilityRepository();
+        $userService            = new UserService();
+        $dateTimeService        = new DateTimeService();
 
         $user_id = $userService->getOwnerId();
 
-        $blockedHours = Availability::query()
-            ->where('raffle_id', $request['raffle_id'])
-            ->where('user_id', $user_id)
-            ->where('order', now()->dayOfWeek)
-            ->value('blocked_hours');
-
-        $currentTime = Carbon::now();
-
+        // Check if the time is blocked
+        $blockedHours = $availabilityRepository->getTodayBlockedHours($request['raffle_id'], $user_id);
         foreach ($blockedHours as $blockedHour) {
-            $lessFive = Carbon::createFromFormat('H:i:s', $blockedHour)
-                ->subMinutes(5);
+            $message = $dateTimeService->getBlockedHourMessage($this->currentTime, $blockedHour);
 
-            $plusFive = Carbon::createFromFormat('H:i:s', $blockedHour)
-                ->addMinutes(5);
-
-            if ($currentTime->between($lessFive, $plusFive)) {
-                abort(422, 'No puedes realizar transacciones entre las ' . $lessFive->format('g:i A') . ' y las ' . $plusFive->format('g:i A'));
+            if ($message) {
+                abort(422, $message);
             }
         }
 
+        // Check if the number is blocked
         $blockedNumber = BlockedNumber::query()
             ->where('raffle_id', $request['raffle_id'])
             ->where('user_id', $user_id)
-            ->where('number', $request->digit)
+            ->where('number', $request['digit'])
             ->first();
 
         if ($blockedNumber) {
             if ($blockedNumber['settings']['individual_limit']) {
-                if ($request->amount > $blockedNumber['settings']['individual_limit']) {
+                if ($request['amount'] > $blockedNumber['settings']['individual_limit']) {
                     abort(422, 'El monto máximo es C$' . $blockedNumber['settings']['individual_limit']);
                 }
             }
 
             if ($blockedNumber['settings']['general_limit']) {
-                $transactionsTotalAmount = $transactionRepository->getTeamCurrentTotal($request->validated());
+                $transactionsTotalAmount = $transactionRepository->getTeamCurrentTotal($request);
 
-                if ($transactionsTotalAmount + $request->amount > $blockedNumber['settings']['general_limit']) {
+                if ($transactionsTotalAmount + $request['amount'] > $blockedNumber['settings']['general_limit']) {
                     $availableAmount = $blockedNumber['settings']['general_limit'] - $transactionsTotalAmount;
                     abort(422, 'El monto disponible es C$' . $availableAmount);
                 }
@@ -64,32 +62,27 @@ class TransactionService
 
         $settings = RaffleUser::query()
             ->where('user_id', $user_id)
-            ->where('raffle_id', $request->raffle_id)
+            ->where('raffle_id', $request['raffle_id'])
             ->value('settings');
 
         if ($settings['general_limit']) {
             $transactionsTotalAmount = $transactionRepository->getTeamCurrentTotal($request);
 
-            if ($transactionsTotalAmount + $request->amount > $settings['general_limit']) {
+            if ($transactionsTotalAmount + $request['amount'] > $settings['general_limit']) {
                 $availableAmount = $settings['general_limit'] - $transactionsTotalAmount;
                 abort(422, 'El monto disponible es C$' . $availableAmount);
             }
         }
 
-        $total = $settings['super_x']
-            ? ($request->amount * $settings['multiplier']) * 2
-            : $request->amount * $settings['multiplier'];
-
-        $transaction = Transaction::create(
-            $request + [
-                'user_id' => auth()->id(),
-                'prize' => $total,
-                'status' => 'PURCHASED'
-            ]
-        );
+        $transaction = $transactionRepository->store($request + ['prize' => self::calculatePrize($settings, $request['amount'])]);
 
         $transaction->load('raffle:id,name');
 
         return $transaction;
+    }
+
+    public function calculatePrize(array $settings, $amount)
+    {
+        return $settings['super_x'] ? ($amount * $settings['multiplier']) * 2 : $amount * $settings['multiplier'];
     }
 }
