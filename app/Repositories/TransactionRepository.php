@@ -38,4 +38,14 @@ class TransactionRepository
             ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id'])
             ->paginate();
     }
+
+    public function getTeamCurrentTotal(array $request)
+    {
+        return self::setTeam()
+            ->where('raffle_id', $request['raffle_id'])
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->where('hour', $request['hour'])
+            ->where('digit', $request['digit'])
+            ->sum('amount');
+    }
 }

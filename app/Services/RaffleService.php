@@ -10,7 +10,7 @@ class RaffleService
     public function getRaffles()
     {
         $userService = new UserService;
-        $user_id = $userService->getUserId();
+        $user_id = $userService->getOwnerId();
         $is_owner = $userService->isOwner();
 
         $time = Carbon::now()->format('H:i:s');
