@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Availability;
+use App\Services\DateTimeService;
 use Carbon\Carbon;
 
 class AvailabilityRepository
@@ -18,18 +19,12 @@ class AvailabilityRepository
 
     public function store(array $request, $raffle): void
     {
-        $parsedHours = collect($request['blocked_hours'])
-            ->transform(fn ($hour) => Carbon::parse($hour)->format('H:i:s'))
-            ->unique()
-            ->sort()
-            ->values();
-
         Availability::create([
             'day' => $request['day'],
             'order' => $request['order'],
             'start_time' => $request['start_time'],
             'end_time' => $request['end_time'],
-            'blocked_hours' => $parsedHours,
+            'blocked_hours' => (new DateTimeService)->formatHours($request['blocked_hours']),
             'raffle_id' => $raffle,
             'user_id' => auth()->id(),
         ]);
@@ -37,18 +32,11 @@ class AvailabilityRepository
 
     public function update(array $request, $id)
     {
-        $parsedHours = collect($request['blocked_hours'])
-            ->transform(fn ($hour) => Carbon::parse($hour)->format('H:i:s'))
-            ->unique()
-            ->sort()
-            ->values();
-
-        Availability::query()
-            ->where('id', $id)
+        Availability::where('id', $id)
             ->update([
                 'start_time' => $request['start_time'],
                 'end_time' => $request['end_time'],
-                'blocked_hours' => $parsedHours,
+                'blocked_hours' => (new DateTimeService)->formatHours($request['blocked_hours']),
             ]);
     }
 

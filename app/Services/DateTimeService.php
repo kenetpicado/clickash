@@ -18,4 +18,13 @@ class DateTimeService
 
         return null;
     }
+
+    public function formatHours($hours)
+    {
+        return collect($hours)
+            ->transform(fn ($hour) => Carbon::parse($hour)->format('H:i:s'))
+            ->unique()
+            ->sort()
+            ->values();
+    }
 }
