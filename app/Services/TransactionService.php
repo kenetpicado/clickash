@@ -37,9 +37,8 @@ class TransactionService
         foreach ($blockedHours as $blockedHour) {
             $message = $dateTimeService->getBlockedHourMessage($this->currentTime, $blockedHour);
 
-            if ($message) {
+            if ($message)
                 abort(422, $message);
-            }
         }
 
         // CHECK IF THE NUMBER IS BLOCKED
