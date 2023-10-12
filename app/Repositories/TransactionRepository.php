@@ -6,12 +6,27 @@ use App\Models\Transaction;
 
 class TransactionRepository
 {
-    public function getUserTransactions($user)
+    public function getByUser($user, array $request = [])
     {
-        return $user->transactions()->with('raffle:id,name')->latest('id')->paginate();
+        $interval = null;
+
+        if (isset($request['start_date']) && isset($request['end_date'])) {
+            $start_date = $request['start_date'] . ' 00:00:00';
+            $end_date = $request['end_date'] . ' 23:59:00';
+
+            $interval = [$start_date,  $end_date];
+        }
+
+        return $user->transactions()
+            ->with('raffle:id,name')
+            ->when($interval, function ($query, $interval) {
+                return $query->whereBetween('created_at', $interval);
+            })
+            ->orderBy('id', $request['order'] ?? 'desc')
+            ->paginate();
     }
 
-    public function getTeamTransactions()
+    public function getByTeam()
     {
         $team = (new UserRepository)->getTeam();
 

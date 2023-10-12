@@ -15,7 +15,7 @@ class TransactionController extends Controller
     public function index()
     {
         return inertia('Clientarea/Transaction/Index', [
-            'transactions' => $this->transactionRepository->getTeamTransactions(),
+            'transactions' => $this->transactionRepository->getByTeam(),
         ]);
     }
 }

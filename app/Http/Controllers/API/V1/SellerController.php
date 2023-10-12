@@ -2,38 +2,42 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\IntervalRequest;
-use App\Http\Requests\API\SellerRequest;
-use App\Http\Resources\SellerResource;
-use App\Http\Resources\TransactionResource;
 use App\Models\User;
-use App\Services\UserService;
+use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
+use App\Http\Resources\SellerResource;
+use App\Http\Requests\API\SellerRequest;
+use App\Http\Requests\API\IntervalRequest;
+use App\Http\Resources\TransactionResource;
+use App\Repositories\TransactionRepository;
 
 class SellerController extends Controller
 {
     public function __construct(
-        private readonly UserService $service
+        private readonly UserRepository $userRepository,
+        private readonly TransactionRepository $transactionRepository
     ) {
     }
 
     public function index()
     {
-        return SellerResource::collection(auth()->user()->sellers);
+        return SellerResource::collection($this->userRepository->getSellers());
     }
 
     public function store(SellerRequest $request)
     {
-        $this->service->createSeller($request->validated());
+        if ($this->userRepository->hasReachedSellerLimit()) {
+            abort(403, 'Ha alcanzado el límite de vendedores permitidos');
+        }
+
+        $this->userRepository->createSeller($request->validated());
 
         return self::index();
     }
 
-    public function show(IntervalRequest $request, $seller)
+    public function show(IntervalRequest $request, User $seller)
     {
-        return TransactionResource::collection(
-            $this->service->getTransactions($seller, $request->validated())
-        );
+        return TransactionResource::collection($this->transactionRepository->getByUser($seller, $request->validated()));
     }
 
     public function update(SellerRequest $request, $seller)

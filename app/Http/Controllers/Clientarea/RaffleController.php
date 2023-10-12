@@ -8,6 +8,7 @@ use App\Models\Raffle;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
 use App\Models\WinningNumber;
+use App\Repositories\AvailabilityRepository;
 use App\Services\BlockedNumberService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -15,6 +16,11 @@ use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {
+    public function __construct(
+        private readonly AvailabilityRepository $availabilityRepository
+    ) {
+    }
+
     public function index()
     {
         $raffles = RaffleUser::query()
@@ -38,12 +44,6 @@ class RaffleController extends Controller
             ->latest('id')
             ->paginate();
 
-        $availability = Availability::query()
-            ->where('raffle_id', $raffle->id)
-            ->where('user_id', auth()->id())
-            ->orderBy('order')
-            ->get(['id', 'day', 'order', 'blocked_hours', 'start_time', 'end_time']);
-
         $winningNumbers = WinningNumber::query()
             ->where('raffle_id', $raffle->id)
             ->where('user_id', auth()->id())
@@ -52,8 +52,6 @@ class RaffleController extends Controller
             ->get(['id', 'number', 'hour']);
 
         $winners = [];
-
-        $team = (new UserService)->getTeam();
 
         if ($winningNumbers->count() > 0) {
             $winners = Transaction::query()
@@ -77,7 +75,7 @@ class RaffleController extends Controller
             'raffle' => $raffle,
             'transactions' => $transactions,
             'blockeds' => (new BlockedNumberService)->get($raffle->id),
-            'availability' => $availability,
+            'availability' => $this->availabilityRepository->getByRaffle($raffle->id),
             'results' => $winningNumbers,
             'winners' => $winners,
         ]);

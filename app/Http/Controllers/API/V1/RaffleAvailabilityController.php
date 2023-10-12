@@ -2,24 +2,22 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
-use App\Http\Resources\AvailabilityResource;
 use App\Models\Availability;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\AvailabilityResource;
 use App\Repositories\AvailabilityRepository;
-use App\Services\AvailabilityService;
+use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
 
 class RaffleAvailabilityController extends Controller
 {
     public function __construct(
-        private readonly AvailabilityService $availabilityService,
         private readonly AvailabilityRepository $availabilityRepository
     ) {
     }
 
     public function index($raffle)
     {
-        return AvailabilityResource::collection((new AvailabilityService)->index($raffle));
+        return AvailabilityResource::collection($this->availabilityRepository->getByRaffle($raffle));
     }
 
     public function store(RaffleAvailabilityRequest $request, $raffle)

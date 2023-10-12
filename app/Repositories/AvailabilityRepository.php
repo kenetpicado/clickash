@@ -6,6 +6,15 @@ use App\Models\Availability;
 
 class AvailabilityRepository
 {
+    public function getByRaffle($raffle)
+    {
+        return Availability::query()
+            ->where('user_id', auth()->id())
+            ->where('raffle_id', $raffle)
+            ->orderBy('order')
+            ->get(['id', 'order', 'day', 'start_time', 'end_time', 'blocked_hours']);
+    }
+
     public function store(array $request, $raffle): void
     {
         Availability::create([

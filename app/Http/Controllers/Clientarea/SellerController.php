@@ -38,7 +38,7 @@ class SellerController extends Controller
     {
         return inertia('Clientarea/Seller/Show', [
             'seller' => $seller,
-            'transactions' => $this->transactionRepository->getUserTransactions($seller),
+            'transactions' => $this->transactionRepository->getByUser($seller),
         ]);
     }
 
