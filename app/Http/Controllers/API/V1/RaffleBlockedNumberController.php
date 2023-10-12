@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\RaffleBlockedNumberRequest;
 use App\Models\BlockedNumber;
-use App\Services\BlockedNumberService;
+use App\Http\Controllers\Controller;
+use App\Repositories\BlockedNumberRepository;
+use App\Http\Requests\API\RaffleBlockedNumberRequest;
 
 class RaffleBlockedNumberController extends Controller
 {
+    public function __construct(
+        private readonly BlockedNumberRepository $blockedNumberRepository
+    ) {
+    }
+
     public function index($raffle)
     {
         return response()->json([
-            'data' => (new BlockedNumberService)->get($raffle),
+            'data' => $this->blockedNumberRepository->getByRaffle($raffle),
         ]);
     }
 
     public function store(RaffleBlockedNumberRequest $request, $raffle)
     {
-        (new BlockedNumberService)->store($request->validated(), $raffle);
+        $this->blockedNumberRepository->updateOrCreate($request->validated(), $raffle);
 
         return self::index($raffle);
     }

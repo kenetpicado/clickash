@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
-use App\Models\Availability;
 use App\Models\Raffle;
 use App\Models\RaffleUser;
 use App\Models\Transaction;
 use App\Models\WinningNumber;
 use App\Repositories\AvailabilityRepository;
-use App\Services\BlockedNumberService;
+use App\Repositories\BlockedNumberRepository;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +16,8 @@ use Illuminate\Http\Request;
 class RaffleController extends Controller
 {
     public function __construct(
-        private readonly AvailabilityRepository $availabilityRepository
+        private readonly AvailabilityRepository $availabilityRepository,
+        private readonly BlockedNumberRepository $blockedNumberRepository,
     ) {
     }
 
@@ -74,7 +74,7 @@ class RaffleController extends Controller
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
             'transactions' => $transactions,
-            'blockeds' => (new BlockedNumberService)->get($raffle->id),
+            'blockeds' => $this->blockedNumberRepository->getByRaffle($raffle->id),
             'availability' => $this->availabilityRepository->getByRaffle($raffle->id),
             'results' => $winningNumbers,
             'winners' => $winners,
