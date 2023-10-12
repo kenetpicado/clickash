@@ -6,73 +6,51 @@
             </span>
         </template>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div v-for="raffle in raffles" class="p-6 bg-white rounded-xl border">
-                <div class="flex flex-col justify-between h-full">
-                    <div class="mb-2">
-                        <Link :href="route('clientarea.raffles.show', raffle.raffle_id)" tooltip="Detalles">
-                        <span class="font-bold text-xl mb-2"> {{ raffle.raffle.name }}</span>
-                        </Link>
-                        <div class="text-gray-500 space-y-1 mb-5 text-sm">
-                            <div v-if="raffle.settings.super_x">
-                                SuperX
-                            </div>
-                            <div v-if="raffle.settings.individual_limit">
-                                lim. individual: C${{ raffle.settings.individual_limit }}
-                            </div>
-                            <div v-if="raffle.settings.general_limit">
-                                lim. general: C${{ raffle.settings.general_limit }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between">
-                        <div v-if="raffle.settings.date">
-                            <span
-                                class="rounded-full px-3 py-1 font-semibold tracking-wider text-sm bg-green-50 text-green-600">Fecha</span>
-                        </div>
-                        <div v-else>
-                            <span
-                                class="rounded-full px-3 py-1 font-semibold tracking-wider text-sm bg-green-50 text-green-600">
-                                max: {{ raffle.settings.max }}
-                            </span>
-                        </div>
-                        <div tooltip="Editar" role="button" @click="edit(raffle)">
-                            <IconEdit size="22" class="text-gray-400" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- <TableSection>
+        <TableSection>
             <template #header>
                 <th>Nombre</th>
-                <th>Detalles</th>
+                <th>Multiplicador</th>
+                <th>Rango</th>
+                <th>Limite Individual</th>
+                <th>Limite General</th>
+                <th>Super X</th>
                 <th>Acciones</th>
             </template>
             <template #body>
                 <tr v-for="raffle in raffles">
                     <td>
-                        <div class="font-semibold mb-1">
-                            {{ raffle.raffle.name }}
+                        {{ raffle.raffle.name }}
+                    </td>
+                    <td>
+                        <span class="badge-blue"> C${{ raffle.settings.multiplier }}</span>
+                    </td>
+                    <td>
+                        <div v-if="raffle.settings.date">
+                            Fecha
+                        </div>
+                        <div v-else>
+                            {{ raffle.settings.min }} - {{ raffle.settings.max }}
                         </div>
                     </td>
                     <td>
-                        <div v-if="raffle.settings.super_x" class="badge-blue m-1">
+                        <div v-if="raffle.settings.individual_limit" class="badge-blue">
+                            C${{ raffle.settings.individual_limit }}
+                        </div>
+                        <div v-else class="text-xs text-gray-400">
+                            Ninguno
+                        </div>
+                    </td>
+                    <td>
+                        <div v-if="raffle.settings.general_limit" class="badge-blue">
+                            C${{ raffle.settings.general_limit }}
+                        </div>
+                        <div v-else class="text-xs text-gray-400">
+                            Ninguno
+                        </div>
+                    </td>
+                    <td>
+                        <div v-if="raffle.settings.super_x" class="badge-blue">
                             Super X
-                        </div>
-                        <div v-if="raffle.settings.date" class="badge-blue m-1">
-                            Fecha
-                        </div>
-                        <div v-else class="badge-green whitespace-nowrap text-xs m-1">
-                            Desde {{ raffle.settings.min }} hasta {{ raffle.settings.max }}
-                        </div>
-                        <div v-if="raffle.settings.individual_limit" class="badge-blue whitespace-nowrap text-xs m-1">
-                            Limite individual: C${{ raffle.settings.individual_limit }}
-                        </div>
-                        <div v-if="raffle.settings.general_limit" class="badge-blue whitespace-nowrap text-x m-1">
-                            Limite general: C${{ raffle.settings.general_limit }}
                         </div>
                     </td>
                     <td>
@@ -90,7 +68,7 @@
                     <td colspan="2" class="text-center">No hay datos</td>
                 </tr>
             </template>
-        </TableSection> -->
+        </TableSection>
 
         <FormModal :show="openModal" :title="form.raffle_name" @onCancel="resetValues" @onSubmit="onSubmit">
             <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
@@ -113,16 +91,15 @@
 </template>
 
 <script setup>
+import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref, watch } from 'vue';
 import TableSection from '@/Components/TableSection.vue';
-import { IconEye } from '@tabler/icons-vue';
-import { Link, useForm } from '@inertiajs/vue3';
-import { IconEdit, IconArrowRight} from '@tabler/icons-vue';
-import Checkbox from '@/Components/Form/Checkbox.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import { toast } from '@/Use/toast';
+import { Link, useForm } from '@inertiajs/vue3';
+import { IconEdit, IconEye } from '@tabler/icons-vue';
+import { ref, watch } from 'vue';
 
 defineProps({
     raffles: {
@@ -166,38 +143,6 @@ const breads = [
 const openModal = ref(false);
 
 function onSubmit() {
-    if (!form.settings.date) {
-        if (form.settings.min == null) {
-            toast.error('Minimo es requerido');
-            return;
-        }
-
-        if (form.settings.max == null) {
-            toast.error('Maximo es requerido');
-            return;
-        }
-
-        if (isNaN(form.settings.min)) {
-            toast.error('Minimo debe ser un numero valido');
-            return;
-        }
-
-        if (isNaN(form.settings.max)) {
-            toast.error('Maximo debe ser un numero valido');
-            return;
-        }
-    }
-
-    if (isNaN(form.settings.general_limit)) {
-        toast.error('Limite general debe ser un numero valido');
-        return;
-    }
-
-    if (isNaN(form.settings.individual_limit)) {
-        toast.error('Limite individual debe ser un numero valido');
-        return;
-    }
-
     form.put(route('clientarea.raffles.update', form.raffle_id), {
         preserveScroll: true,
         onSuccess: () => {
