@@ -152,6 +152,9 @@ const onSubmit = () => {
                     resetValues();
                     toast.success('Guardado correctamente');
                 },
+                onError: (err) => {
+                    toast.error(err.message);
+                }
             });
         }
     });
