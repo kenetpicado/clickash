@@ -29,6 +29,9 @@ class RaffleController extends Controller
         return RaffleResource::collection($raffles);
     }
 
+    /*
+    *   Get all transactions by raffle
+    */
     public function show($raffle)
     {
         return TransactionResource::collection($this->transactionRepository->getTeamByRaffle($raffle));

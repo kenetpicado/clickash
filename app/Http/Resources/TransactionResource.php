@@ -20,6 +20,7 @@ class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'client' => $this->client,
             'hour' => $this->hour,
+            'status' => $this->status,
             'created_at' => $this->created_at->format('d/m/y g:i A'),
             'raffle' => RaffleNameResource::make($this->whenLoaded('raffle')),
             'user' => UserNameResource::make($this->whenLoaded('user')),

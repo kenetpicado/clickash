@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-use App\Repositories\RaffleUserRepository;
-use App\Repositories\TransactionRepository;
 use App\Repositories\AvailabilityRepository;
 use App\Repositories\BlockedNumberRepository;
+use App\Repositories\RaffleUserRepository;
+use App\Repositories\TransactionRepository;
+use Carbon\Carbon;
 
 class TransactionService
 {
@@ -24,10 +24,10 @@ class TransactionService
     {
         $availabilityRepository = new AvailabilityRepository();
         $blockedNumberRepository = new BlockedNumberRepository();
-        $raffleUserRepository   = new RaffleUserRepository();
+        $raffleUserRepository = new RaffleUserRepository();
 
-        $userService            = new UserService();
-        $dateTimeService        = new DateTimeService();
+        $userService = new UserService();
+        $dateTimeService = new DateTimeService();
 
         $ownerId = $userService->getOwnerId();
 
@@ -37,29 +37,34 @@ class TransactionService
         foreach ($blockedHours as $blockedHour) {
             $message = $dateTimeService->getBlockedHourMessage($this->currentTime, $blockedHour);
 
-            if ($message)
+            if ($message) {
                 abort(422, $message);
+            }
         }
 
         // CHECK IF THE NUMBER IS BLOCKED
         $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $ownerId, $request['digit']);
 
         if ($blockedNumber) {
-            if ($blockedNumber['settings']['individual_limit'])
+            if ($blockedNumber['settings']['individual_limit']) {
                 self::checkIndividualLimit($request['amount'], $blockedNumber['settings']['individual_limit']);
+            }
 
-            if ($blockedNumber['settings']['general_limit'])
+            if ($blockedNumber['settings']['general_limit']) {
                 self::checkGeneralLimit($request, $blockedNumber['settings']['general_limit']);
+            }
         }
 
         // CHECK IS SETTINGS ARE BLOCKED
         $settings = $raffleUserRepository->getSettings($ownerId, $request['raffle_id']);
 
-        if ($settings['individual_limit'])
+        if ($settings['individual_limit']) {
             self::checkIndividualLimit($request['amount'], $settings['individual_limit']);
+        }
 
-        if ($settings['general_limit'])
+        if ($settings['general_limit']) {
             self::checkGeneralLimit($request, $settings['general_limit']);
+        }
 
         // STORE TRANSACTION
         $transaction = $this->transactionRepository->store($request + ['prize' => self::calculatePrize($settings, $request['amount'])]);
@@ -77,7 +82,7 @@ class TransactionService
     public function checkIndividualLimit($amount, $limit)
     {
         if ($amount > $limit) {
-            abort(422, 'El monto máximo es C$' . $limit);
+            abort(422, 'El monto máximo es C$'.$limit);
         }
     }
 
@@ -87,7 +92,7 @@ class TransactionService
 
         if ($transactionsTotalAmount + $request['amount'] > $limit) {
             $availableAmount = $limit - $transactionsTotalAmount;
-            abort(422, 'El monto disponible es C$' . $availableAmount);
+            abort(422, 'El monto disponible es C$'.$availableAmount);
         }
     }
 }

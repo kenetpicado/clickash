@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Services\TransactionService;
+use App\Http\Requests\API\TransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Repositories\TransactionRepository;
-use App\Http\Requests\API\TransactionRequest;
+use App\Services\TransactionService;
 
 class TransactionController extends Controller
 {

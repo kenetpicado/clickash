@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Clientarea;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Repositories\UserRepository;
 
 class ToggleStatusController extends Controller

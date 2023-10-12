@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
-use App\Http\Resources\SellerResource;
 use App\Http\Requests\API\SellerRequest;
+use App\Http\Resources\SellerResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\User;
 use App\Repositories\TransactionRepository;
+use App\Repositories\UserRepository;
 
 class SellerController extends Controller
 {

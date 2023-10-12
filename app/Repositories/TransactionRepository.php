@@ -35,7 +35,7 @@ class TransactionRepository
             ->latest('id')
             ->with('raffle:id,name')
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-            ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id'])
+            ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id', 'status'])
             ->paginate();
     }
 
@@ -55,8 +55,8 @@ class TransactionRepository
             'user_id' => auth()->id(),
             'raffle_id' => $request['raffle_id'],
             'digit' => $request['digit'],
-            'amount' =>  $request['amount'],
-            'hour' =>  $request['hour'],
+            'amount' => $request['amount'],
+            'hour' => $request['hour'],
             'client' => $request['client'],
             'prize' => $request['prize'],
             'status' => 'PURCHASED',

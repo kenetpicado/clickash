@@ -13,7 +13,7 @@ class DateTimeService
         $plusFive = Carbon::createFromFormat('H:i:s', $blockedHour)->addMinutes(5);
 
         if ($currentTime->between($lessFive, $plusFive)) {
-            return 'No puedes realizar transacciones entre las ' . $lessFive->format('g:i A') . ' y las ' . $plusFive->format('g:i A');
+            return 'No puedes realizar transacciones entre las '.$lessFive->format('g:i A').' y las '.$plusFive->format('g:i A');
         }
 
         return null;

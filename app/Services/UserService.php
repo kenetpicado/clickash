@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\RoleEnum;
-
 class UserService
 {
     public function getOwnerId(): int
@@ -15,6 +13,6 @@ class UserService
 
     public function isOwner(): bool
     {
-        return auth()->user()->role == RoleEnum::OWNER->value;
+        return auth()->user()->role == 'owner';
     }
 }

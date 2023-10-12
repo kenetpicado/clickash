@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Clientarea;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
-use App\Repositories\TransactionRepository;
 use App\Http\Requests\Clientarea\SellerRequest;
+use App\Models\User;
+use App\Repositories\TransactionRepository;
+use App\Repositories\UserRepository;
 
 class SellerController extends Controller
 {

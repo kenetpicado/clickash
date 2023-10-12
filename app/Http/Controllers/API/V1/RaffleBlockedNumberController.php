@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Models\BlockedNumber;
 use App\Http\Controllers\Controller;
-use App\Repositories\BlockedNumberRepository;
 use App\Http\Requests\API\RaffleBlockedNumberRequest;
+use App\Models\BlockedNumber;
+use App\Repositories\BlockedNumberRepository;
 
 class RaffleBlockedNumberController extends Controller
 {

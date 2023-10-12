@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Models\Availability;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AvailabilityResource;
-use App\Repositories\AvailabilityRepository;
 use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
+use App\Http\Resources\AvailabilityResource;
+use App\Models\Availability;
+use App\Repositories\AvailabilityRepository;
 
 class RaffleAvailabilityController extends Controller
 {
