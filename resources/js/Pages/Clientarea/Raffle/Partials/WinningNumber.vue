@@ -64,20 +64,20 @@
                         {{ Carbon.create().setTime(hour).getTimeFormat() }}
                     </option>
                 </SelectForm>
-                <InputForm v-model="form.number" type="number" text="Numero" />
+                <InputForm v-model="form.number" type="number" text="Numero" required />
             </div>
-            <p class="text-red-500 mb-4" v-if="hours.length == 0">
+
+            <div class="text-red-500 mb-4" v-if="hours.length == 0">
                 No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en
                 "Horario"
-            </p>
-            <p class="text-gray-400" v-else>
-                Solo puede agregar resultados del dia de hoy y 1 por turno.
-            <div class="mt-4">
+            </div>
+            <div class="text-gray-400" v-else>
                 Verifique que los datos ingresados
-                sean correctos antes de guardar, ya que para garantizar la integridad de los datos no se permite eliminar ni
+                sean correctos antes de guardar, ya que para garantizar la integridad de los datos no se permite
+                eliminar ni
                 editar los resultados.
             </div>
-            </p>
+
         </FormModal>
     </div>
 </template>

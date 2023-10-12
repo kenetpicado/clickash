@@ -10,7 +10,7 @@
             <template #body>
                 <tr v-for="day in availability">
                     <td>
-                        {{ day.order }} - {{ day.day }}
+                        {{ day.day }}
                     </td>
                     <td>
                         <span class="whitespace-nowrap">

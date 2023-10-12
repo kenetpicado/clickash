@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
@@ -28,6 +30,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        $isSeller = User::where('email', $request->email)->where('role', 'seller')->exists();
+
+        if ($isSeller) {
+            throw ValidationException::withMessages(['email' => 'No tienes permisos para acceder a esta plataforma']);
+        }
+
         $request->authenticate();
 
         $request->session()->regenerate();

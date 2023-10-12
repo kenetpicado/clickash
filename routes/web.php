@@ -16,24 +16,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::redirect('', '/dashboard');
-
 Route::get('/', HomeController::class)
     ->middleware(['auth:sanctum'])
     ->name('home');
 
-// ONLY ROO USERS
 Route::middleware(['auth:sanctum', 'online', 'role:root'])
     ->prefix('dashboard')
     ->name('dashboard.')
@@ -51,7 +37,6 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
             ->except(['edit', 'create', 'show']);
     });
 
-// ONLY OWNERS USERS
 Route::middleware(['auth:sanctum', 'online', 'role:owner'])
     ->prefix('clientarea')
     ->name('clientarea.')
@@ -80,7 +65,6 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->only(['store']);
     });
 
-//ANY USER
 Route::middleware(['auth:sanctum', 'online'])
     ->group(function () {
         Route::resource('profile', ProfileController::class)->only(['index', 'update']);

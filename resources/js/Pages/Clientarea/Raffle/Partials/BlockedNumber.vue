@@ -2,16 +2,13 @@
     <div>
         <TableSection>
             <template #header>
-                <th>Numero</th>
                 <th>Limite individual</th>
                 <th>Limite general</th>
+                <th>Numero</th>
                 <th>Acciones</th>
             </template>
             <template #body>
                 <tr v-for="number in blockeds">
-                    <td class="font-semibold">
-                        {{ number.number }}
-                    </td>
                     <td>
                         <span v-if="number.settings.individual_limit" class="badge-red">
                             C${{ number.settings.individual_limit }}
@@ -27,6 +24,9 @@
                         <span v-else>
                             Ninguno
                         </span>
+                    </td>
+                    <td>
+                        <span class="badge-blue">{{ number.number }}</span>
                     </td>
                     <td>
                         <span tooltip="Eliminar" role="button" @click="destroyNumber(number.id)">

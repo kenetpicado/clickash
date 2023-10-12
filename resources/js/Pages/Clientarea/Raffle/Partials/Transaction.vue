@@ -26,7 +26,7 @@
                         C${{ transaction.amount }}
                     </td>
                     <td>
-                        <span class="font-semibold">
+                        <span class="badge-blue">
                             {{ transaction.digit }}
                         </span>
                     </td>

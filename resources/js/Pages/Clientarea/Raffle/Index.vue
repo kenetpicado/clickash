@@ -13,7 +13,7 @@
                         <Link :href="route('clientarea.raffles.show', raffle.raffle_id)" tooltip="Detalles">
                         <span class="font-bold text-xl mb-2"> {{ raffle.raffle.name }}</span>
                         </Link>
-                        <div class="text-gray-500 space-y-1 mb-5 text-sm antialiased">
+                        <div class="text-gray-500 space-y-1 mb-5 text-sm">
                             <div v-if="raffle.settings.super_x">
                                 SuperX
                             </div>
