@@ -174,7 +174,7 @@ const onSubmit = () => {
 
 watch(selectedDate, (value) => {
     if (value) {
-        form.number = Carbon.create(value).format('d-m');
+        form.number = Carbon.create(value).format('d/m');
     } else
         form.number = null;
 });
