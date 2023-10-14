@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border">
                 <div class="text-center">
-                    <div class="text-2xl font-bold mb-2 badge-primary">
+                    <div class="text-2xl font-bold mb-2 badge-primary text-basic">
                         {{ result.number }}
                     </div>
                     <div class="text-center text-sm">
@@ -63,18 +63,23 @@
                         {{ Carbon.create().setTime(hour).getTimeFormat() }}
                     </option>
                 </SelectForm>
-                <InputForm v-model="form.number" type="number" text="Numero" required />
+                <InputForm v-if="settings.date" v-model="selectedDate" type="date" text="Fecha" required />
+                <InputForm v-else v-model="form.number" type="number" text="Numero" required />
             </div>
 
             <div class="text-red-500 mb-4" v-if="hours.length == 0">
                 No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en
                 "Horario"
             </div>
-            <div class="text-gray-400" v-else>
+            <div class="text-gray-400 text-sm" v-else>
                 Verifique que los datos ingresados
                 sean correctos antes de guardar, ya que para garantizar la integridad de los datos no se permite
                 eliminar ni
                 editar los resultados.
+            </div>
+
+            <div class="mt-5 text-basic" v-if="form.number && form.hour">
+                Agregando el numero ganador: <span class="font-bold">{{ form.number }}</span> a la rifa {{ raffle.name }} para el turno de las {{ Carbon.create().setTime(form.hour).getTimeFormat() }} del corriente dia: {{ Carbon.create().format('d/m/Y') }}.
             </div>
 
         </FormModal>
@@ -84,7 +89,7 @@
 <script setup>
 import TableSection from '@/Components/TableSection.vue';
 import { useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
@@ -113,12 +118,18 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    settings: {
+        type: Object,
+        required: true,
+    },
 });
 
 const form = useForm({
     number: null,
     hour: null,
 });
+
+const selectedDate = ref(null);
 
 const emit = defineEmits(['update:openModal']);
 
@@ -159,5 +170,12 @@ const onSubmit = () => {
         }
     });
 }
+
+watch(selectedDate, (value) => {
+    if (value) {
+        form.number = Carbon.create(value).format('d-m');
+    } else
+        form.number = null;
+});
 
 </script>

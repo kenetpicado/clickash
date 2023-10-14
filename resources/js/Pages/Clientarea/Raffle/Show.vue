@@ -33,7 +33,7 @@
             v-model:openModal="openModalSchedule" />
 
         <WinningNumber v-if="currentTab == 3" :results="results" :raffle="raffle" v-model:openModal="openModalResult"
-            :currentBlockedHours="currentBlockedHours" :winners="winners" />
+            :currentBlockedHours="currentBlockedHours" :winners="winners" :settings="settings" />
     </AppLayout>
 </template>
 
@@ -68,6 +68,10 @@ const props = defineProps({
         required: true,
     },
     winners: {
+        type: Object,
+        required: true,
+    },
+    settings: {
         type: Object,
         required: true,
     },

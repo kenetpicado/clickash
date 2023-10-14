@@ -38,6 +38,7 @@ class RaffleController extends Controller
             'availability' => $this->availabilityRepository->getByRaffle($raffle->id),
             'results' => $this->winningNumberRepository->getByRaffle($raffle->id),
             'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
+            'settings' => $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $raffle->id),
         ]);
     }
 
