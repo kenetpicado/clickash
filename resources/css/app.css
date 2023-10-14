@@ -41,7 +41,7 @@
     }
 
     .inactive-tab {
-        @apply bg-gray-100 text-gray-400 rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110
+        @apply bg-white text-gray-400 rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110
     }
 
     .badge-gray {
