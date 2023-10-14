@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\RaffleRequest;
 use App\Models\Raffle;
 use App\Repositories\AvailabilityRepository;
 use App\Repositories\BlockedNumberRepository;
 use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WinningNumberRepository;
-use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {
@@ -41,9 +41,9 @@ class RaffleController extends Controller
         ]);
     }
 
-    public function update(Request $request, $raffle)
+    public function update(RaffleRequest $request, $raffle)
     {
-        $this->raffleUserRepository->updateSettings($raffle, $request->settings);
+        $this->raffleUserRepository->updateSettings($raffle, $request->validated()['settings']);
 
         return back();
     }

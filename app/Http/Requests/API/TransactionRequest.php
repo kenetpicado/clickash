@@ -27,6 +27,7 @@ class TransactionRequest extends FormRequest
             'amount' => ['required', 'numeric'],
             'hour' => ['required', 'date_format:H:i:s'],
             'client' => ['required'],
+            'super_x' => ['required', 'boolean'],
         ];
     }
 }

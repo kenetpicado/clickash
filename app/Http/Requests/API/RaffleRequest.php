@@ -23,6 +23,26 @@ class RaffleRequest extends FormRequest
     {
         return [
             'settings' => 'required|array',
+            'settings.individual_limit' => 'required|integer',
+            'settings.general_limit' => 'required|integer',
+            'settings.multiplier' => 'required|integer',
+            'settings.min' => 'required',
+            'settings.max' => 'required',
+            'settings.super_x' => 'required|boolean',
+            'settings.date' => 'required|boolean',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'settings.individual_limit' => 'límite individual',
+            'settings.general_limit' => 'límite general',
+            'settings.multiplier' => 'multiplicador',
+            'settings.min' => 'mínimo',
+            'settings.max' => 'máximo',
+            'settings.super_x' => 'super x',
+            'settings.date' => 'fecha',
         ];
     }
 }
