@@ -22,7 +22,7 @@
                         {{ raffle.raffle.name }}
                     </td>
                     <td>
-                        <span class="badge-blue"> C${{ raffle.settings.multiplier }}</span>
+                        <span class="badge-primary"> C${{ raffle.settings.multiplier }}</span>
                     </td>
                     <td>
                         <div v-if="raffle.settings.date">
@@ -33,7 +33,7 @@
                         </div>
                     </td>
                     <td>
-                        <div v-if="raffle.settings.individual_limit" class="badge-blue">
+                        <div v-if="raffle.settings.individual_limit" class="badge-primary">
                             C${{ raffle.settings.individual_limit }}
                         </div>
                         <div v-else class="text-xs text-gray-400">
@@ -41,7 +41,7 @@
                         </div>
                     </td>
                     <td>
-                        <div v-if="raffle.settings.general_limit" class="badge-blue">
+                        <div v-if="raffle.settings.general_limit" class="badge-primary">
                             C${{ raffle.settings.general_limit }}
                         </div>
                         <div v-else class="text-xs text-gray-400">
@@ -49,7 +49,7 @@
                         </div>
                     </td>
                     <td>
-                        <div v-if="raffle.settings.super_x" class="badge-blue">
+                        <div v-if="raffle.settings.super_x" class="badge-primary">
                             Super X
                         </div>
                     </td>

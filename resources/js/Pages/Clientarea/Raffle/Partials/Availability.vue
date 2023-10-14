@@ -19,7 +19,7 @@
                         {{ Carbon.create().setTime(day.end_time).getTimeFormat() }}
                     </td>
                     <td>
-                        <div v-for="hour in day.blocked_hours" class="badge-blue m-1 whitespace-nowrap">
+                        <div v-for="hour in day.blocked_hours" class="badge-primary m-1 whitespace-nowrap">
                             {{ Carbon.create().setTime(hour).getTimeFormat() }}
                         </div>
                     </td>

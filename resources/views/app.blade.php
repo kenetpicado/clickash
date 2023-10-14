@@ -15,9 +15,16 @@
     @routes
     @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
     @inertiaHead
+
+    {{-- todas las etiquetas svg tendran el color --}}
+    <style>
+        svg {
+            color: #535353;
+        }
+    </style>
 </head>
 
-<body class="font-sans antialiased bg-gray-50">
+<body class="font-sans antialiased bg-card">
     @inertia
 </body>
 

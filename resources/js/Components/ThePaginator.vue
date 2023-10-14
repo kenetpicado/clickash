@@ -5,7 +5,7 @@
                 <IconChevronLeft />
             </span>
             <span v-for="item in pageList" @click="getThisPage(item.url)" class="px-3 rounded-md"
-                :class="{ 'bg-indigo-600 text-white': item.active, 'hover:bg-indigo-50': !item.active }" role="button">
+                :class="{ 'bg-primary text-basic': item.active, 'hover:bg-indigo-50': !item.active }" role="button">
                 {{ item.label }}
             </span>
             <button v-if="nextUrl" @click="getThisPage(nextUrl)" class="px-3 hover:bg-gray-100 rounded-md" type="button">
@@ -18,8 +18,6 @@
 <script setup>
 import { router } from "@inertiajs/vue3";
 import { computed } from "vue";
-//import prev icon
-//import next icon
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-vue";
 
 const props = defineProps({

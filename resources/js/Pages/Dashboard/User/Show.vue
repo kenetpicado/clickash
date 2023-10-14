@@ -42,7 +42,7 @@
                         {{ user.email }}
                     </td>
                     <td>
-                        <span v-if="user.online == 'Now'" class="badge-green">
+                        <span v-if="user.online == 'Now'" class="badge-primary">
                             {{ user.online }}
                         </span>
 

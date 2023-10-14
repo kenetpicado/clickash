@@ -28,7 +28,7 @@ defineProps({
                 <li class="flex items-center" v-for="(bread, index) in breads">
                     <IconChevronRight v-if="index != 0" class="text-gray-300" />
                     <Link :href="bread.route">
-                    <span class="text-sm me-2 tracking-wider text-gray-500">
+                    <span class="text-sm me-2 tracking-wider text-basic">
                         {{ bread.name }}
                     </span>
                     </Link>
@@ -36,7 +36,7 @@ defineProps({
             </ol>
 
             <div class="w-full">
-                <div class="flex items-center justify-between h-10 mb-6">
+                <div class="flex items-center justify-between h-10 mb-6 text-basic">
                     <slot name="header" />
                 </div>
                 <slot />

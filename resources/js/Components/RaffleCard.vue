@@ -12,13 +12,13 @@
             </div>
             <div class="flex items-center justify-between">
                 <div>
-                    <span v-if="raffle.fields.date" class="badge-blue me-2">
+                    <span v-if="raffle.fields.date" class="badge-primary me-2">
                         Date
                     </span>
-                    <span v-if="raffle.fields.number" class="badge-blue me-2">
+                    <span v-if="raffle.fields.number" class="badge-primary me-2">
                         {{ raffle.fields.number }} numbers
                     </span>
-                    <span v-if="raffle.fields.super_x" class="badge-blue me-2">
+                    <span v-if="raffle.fields.super_x" class="badge-primary me-2">
                         Super X
                     </span>
                 </div>

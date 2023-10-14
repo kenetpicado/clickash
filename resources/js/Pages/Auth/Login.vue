@@ -28,17 +28,17 @@ const submit = () => {
 <template>
     <Head title="Log in" />
 
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 px-4 lg:px-0">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-card px-4 lg:px-0">
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-xl">
             <div>
                 <img class="mx-auto h-20 w-auto"
                     src="logo-simple.png"
                     alt="Workflow" />
-                <h2 class="mt-4 text-center text-2xl font-extrabold text-gray-900">
+                <h2 class="mt-4 text-center text-2xl font-extrabold text-basic">
                     {{ app_name }}
                 </h2>
-                <p class="mt-2 text-center text-sm text-gray-600">
+                <p class="mt-2 text-center text-sm text-basic">
                     Inicia sesión con tu cuenta
                 </p>
             </div>

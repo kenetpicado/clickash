@@ -38,18 +38,12 @@
                         {{ user.sellers_count }} / {{ user.sellers_limit }}
                     </td>
                     <td>
-                        <span class="badge-blue uppercase" v-if="user.role">
+                        <span class="badge-primary uppercase" v-if="user.role">
                             {{ user.role }}
                         </span>
                     </td>
                     <td>
-                        <span v-if="user.online == 'Now'" class="badge-green">
-                            {{ user.online }}
-                        </span>
-
-                        <span v-else class="badge-red">
-                            {{ user.online }}
-                        </span>
+                        {{ user.online }}
                     </td>
                     <td> <span class="uppercase">{{ user.status }}</span></td>
                     <td>

@@ -10,7 +10,7 @@
             <template #body>
                 <tr v-for="number in blockeds">
                     <td>
-                        <span v-if="number.settings.individual_limit" class="badge-red">
+                        <span v-if="number.settings.individual_limit">
                             C${{ number.settings.individual_limit }}
                         </span>
                         <span v-else>
@@ -18,7 +18,7 @@
                         </span>
                     </td>
                     <td>
-                        <span v-if="number.settings.general_limit" class="badge-red">
+                        <span v-if="number.settings.general_limit">
                             C${{ number.settings.general_limit }}
                         </span>
                         <span v-else>
@@ -26,7 +26,7 @@
                         </span>
                     </td>
                     <td>
-                        <span class="badge-blue">{{ number.number }}</span>
+                        <span class="badge-primary">{{ number.number }}</span>
                     </td>
                     <td>
                         <span tooltip="Eliminar" role="button" @click="destroyNumber(number.id)">

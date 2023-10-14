@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border">
                 <div class="text-center">
-                    <div class="text-2xl font-bold mb-2 badge-blue">
+                    <div class="text-2xl font-bold mb-2 badge-primary">
                         {{ result.number }}
                     </div>
                     <div class="text-center text-sm">
@@ -31,7 +31,7 @@
                         {{ winner.client }}
                     </td>
                     <td>
-                        <span class="badge-blue whitespace-nowrap">
+                        <span class="badge-primary whitespace-nowrap">
                             {{ Carbon.create().setTime(winner.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -41,7 +41,7 @@
                         </span>
                     </td>
                     <td>
-                        <span class="badge-red text-sm">
+                        <span class="text-sm">
                             C${{ winner.prize }}
                         </span>
                     </td>

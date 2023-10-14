@@ -5,12 +5,12 @@
             <div class="h-24 w-24">
                 <img class="h-full w-full" src="/logo-simple.png" alt="" />
             </div>
-            <h2 class="text-2xl font-extrabold text-gray-600">
+            <h2 class="text-2xl font-extrabold text-basic">
                 {{ $page.props.app_name }}
             </h2>
             </Link>
         </div>
-        <ul class="space-y-2 text-gray-600">
+        <ul class="space-y-2 text-basic">
             <li v-for="item in showItems">
                 <span v-if="item.header" class="block text-xs text-gray-400 uppercase tracking-wider mt-2 px-2">
                     {{ item.header }}

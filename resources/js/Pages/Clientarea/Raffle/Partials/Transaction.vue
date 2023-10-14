@@ -14,7 +14,7 @@
                         {{ transaction.user.name }}
                     </td>
                     <td>
-                        <span class="badge-blue whitespace-nowrap">
+                        <span class="badge-primary whitespace-nowrap">
                             {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -22,7 +22,7 @@
                         C${{ transaction.amount }}
                     </td>
                     <td>
-                        <span class="badge-blue">
+                        <span class="badge-primary">
                             {{ transaction.digit }}
                         </span>
                     </td>
