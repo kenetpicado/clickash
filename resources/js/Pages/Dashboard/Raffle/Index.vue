@@ -11,7 +11,6 @@
         <TableSection>
             <template #header>
                 <th>ID</th>
-                <th>Image</th>
                 <th>Nombre</th>
                 <th>Settings</th>
                 <th>Accciones</th>
@@ -23,10 +22,7 @@
                         {{ raffle.id }}
                     </td>
                     <td>
-                        <img :src="getImageSrc(raffle.image)" alt="" class="w-20 h-20 object-cover rounded-lg">
-                    </td>
-                    <td>
-                        <span class="font-bold">{{ raffle.name }}</span>
+                        {{ raffle.name }}
                     </td>
                     <td>
                         <pre>{{ raffle.settings }}</pre>

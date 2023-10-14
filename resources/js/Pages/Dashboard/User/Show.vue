@@ -8,20 +8,16 @@
             <AddButton v-if="selectedTab == 'raffles'" @click="openModal = true" />
         </template>
 
-        <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 mb-4">
-            <li class="mr-2">
-                <span role="button" @click="selectedTab = 'sellers'" :class="getClass('sellers')">
-                    Sellers
-                </span>
-            </li>
-            <li class="mr-2">
-                <span role="button" @click="selectedTab = 'raffles'" :class="getClass('raffles')">
-                    Raffles
-                </span>
-            </li>
-        </ul>
+        <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-4">
+            <div :class="selectedTab == 0 ? 'active-tab' : 'inactive-tab'" @click="selectedTab = 0" role="button">
+                Vendedores
+            </div>
+            <div :class="selectedTab == 1 ? 'active-tab' : 'inactive-tab'" @click="selectedTab = 1" role="button">
+                Rifas
+            </div>
+        </div>
 
-        <TableSection v-if="selectedTab == 'sellers'">
+        <TableSection v-if="selectedTab == 0">
             <template #header>
                 <th>ID</th>
                 <th>Nombre</th>
@@ -60,10 +56,9 @@
             </template>
         </TableSection>
 
-        <TableSection v-if="selectedTab == 'raffles'">
+        <TableSection v-if="selectedTab == 1">
             <template #header>
                 <th>ID</th>
-                <th>Imagen</th>
                 <th>Nombre</th>
                 <th>Settings</th>
                 <th>Acciones</th>
@@ -73,9 +68,6 @@
                 <tr v-for="(raffle, index) in raffles" class="hover:bg-gray-50">
                     <td>
                         {{ index + 1 }}
-                    </td>
-                    <td>
-                        <img :src="getImageSrc(raffle.image)" alt="" class="w-20 h-20 object-cover rounded-lg">
                     </td>
                     <td>
                         <span class="font-bold">{{ raffle.name }}</span>
@@ -148,23 +140,9 @@ const breads = [
     }
 ];
 
-const selectedTab = ref('sellers');
+const selectedTab = ref(0);
 const openModal = ref(false);
 const raffle = ref(null);
-
-function getClass(tab) {
-    return selectedTab.value == tab
-        ? 'inline-block px-4 py-2 text-white bg-gray-800 rounded-lg'
-        : 'inline-block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100';
-}
-
-function getImageSrc(value) {
-    if (value) {
-        return value;
-    }
-
-    return "https://media.istockphoto.com/id/1211282980/es/vector/ganadores-afortunados-girando-tambor-de-la-rifa.jpg?s=612x612&w=0&k=20&c=1jJPxjaVHqPFA_DQGDV3QEBQ6_C3pbhjs8Ies2kR-44="
-}
 
 function destroy(id) {
     confirmAlert({
@@ -202,4 +180,5 @@ pre {
     background-color: rgb(241, 241, 241);
     padding: 1rem;
     border-radius: 1rem;
-}</style>
+}
+</style>

@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         return inertia('Dashboard/User/Index', [
-            'users' => User::whereNull('user_id')->withCount('sellers')->get(),
+            'users' => User::whereNull('user_id')->where('role', '!=', 'root')->withCount('sellers')->get(),
             'roles' => RoleEnum::cases(),
             'statuses' => UserStatusEnum::cases(),
         ]);
