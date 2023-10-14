@@ -42,7 +42,7 @@
                 <option value="" disabled selected>Seleccione un dia</option>
                 <option v-for="day in availableDays" :value="day.order">{{ day.name }}</option>
             </SelectForm>
-            <p class="text-sm text-red-600 mb-4" v-if="availableDays.length == 0 && isNew">
+            <p class="text-sm text-primaryDark mb-4" v-if="availableDays.length == 0 && isNew">
                 Ya se ha registrado todos los dias
             </p>
             <div class="grid grid-cols-2 gap-2">
@@ -53,7 +53,7 @@
             <button type="button" class="primary-button" @click="pushToBlockedHours">
                 Agregar
             </button>
-            <p class="text-sm text-red-600 mt-1" v-if="$page.props.errors['blocked_hours']">
+            <p class="text-sm text-primaryDark mt-1" v-if="$page.props.errors['blocked_hours']">
                 {{ $page.props.errors['blocked_hours'] }}
             </p>
 
@@ -63,7 +63,7 @@
 
             <div class="flex gap-3 mt-5">
                 <div v-for="(hour, index) in formSchedule.blocked_hours"
-                    class="text-xs inline-flex items-center font-bold leading-sm px-3 py-1 bg-indigo-200 text-indigo-700 rounded-full">
+                    class="text-xs inline-flex items-center font-bold leading-sm px-3 py-1 bg-primary text-basic rounded-full">
                     <span class="mr-3"> {{ Carbon.create().setTime(hour).getTimeFormat() }}</span>
                     <span role="button" tooltip="Eliminar">
                         <IconTrash size="15" @click="popHour(index)" />
