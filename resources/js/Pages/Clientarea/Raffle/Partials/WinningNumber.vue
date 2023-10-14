@@ -143,6 +143,7 @@ const hours = computed(() => {
 
 const resetValues = () => {
     form.reset();
+    selectedDate.value = null;
     emit('update:openModal', false);
 };
 
