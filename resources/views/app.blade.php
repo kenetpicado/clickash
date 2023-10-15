@@ -24,7 +24,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased bg-card">
+<body class="font-sans antialiased bg-gray-50">
     @inertia
 </body>
 

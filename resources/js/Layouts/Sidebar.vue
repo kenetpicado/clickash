@@ -1,5 +1,5 @@
 <template>
-    <aside class="w-72 p-3 bg-white flex flex-col hidden lg:block min-h-screen">
+    <aside class="w-72 p-3 bg-white flex flex-col hidden lg:block min-h-screen border-r">
         <div class="flex flex-col items-center my-1">
             <Link :href="route('home')">
             <div class="h-24 w-24">

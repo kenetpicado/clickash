@@ -17,7 +17,7 @@
 
 @layer components {
     .primary-button {
-        @apply inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-xl font-medium text-sm text-basic hover:bg-primaryLight focus:bg-primaryLight active:bg-primaryDark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150;
+        @apply inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-xl font-medium text-sm text-gray-200 hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150;
     }
 
     .secondary-button {

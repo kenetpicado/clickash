@@ -39,12 +39,10 @@
 
         <FormModal :show="openModal" title="Horario" @onCancel="resetValuesSchedule" @onSubmit="onSubmit">
             <SelectForm v-model="formSchedule.order" text="Dia" required v-if="isNew">
-                <option value="" disabled selected>Seleccione un dia</option>
+                <option v-if="availableDays.length > 0" value="" disabled selected>Seleccione un dia</option>
+                <option v-else value="" disabled selected>No hay dias disponibles</option>
                 <option v-for="day in availableDays" :value="day.order">{{ day.name }}</option>
             </SelectForm>
-            <p class="text-sm text-primaryDark mb-4" v-if="availableDays.length == 0 && isNew">
-                Ya se ha registrado todos los dias
-            </p>
             <div class="grid grid-cols-2 gap-2">
                 <InputForm text="Hora incio" v-model="formSchedule.start_time" type="time" required />
                 <InputForm text="Hora fin" v-model="formSchedule.end_time" type="time" required />
