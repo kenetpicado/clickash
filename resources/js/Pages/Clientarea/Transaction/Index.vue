@@ -25,7 +25,7 @@
                         {{ transaction.raffle.name }}
                     </td>
                     <td>
-                        <span class="badge-primary whitespace-nowrap">
+                        <span class="whitespace-nowrap">
                             {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -33,9 +33,7 @@
                         C${{ transaction.amount }}
                     </td>
                     <td>
-                        <span class="badge-primary">
-                            {{ transaction.digit }}
-                        </span>
+                        {{ transaction.digit }}
                     </td>
                     <td>
                         {{ Carbon.create(transaction.created_at).format('d/m/Y') }}

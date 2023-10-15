@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border">
                 <div class="text-center">
-                    <div class="text-2xl font-bold mb-2 badge-primary text-basic">
+                    <div class="text-4xl font-bold mb-2 text-basic">
                         {{ result.number }}
                     </div>
                     <div class="text-center text-sm">
@@ -31,7 +31,7 @@
                         {{ winner.client }}
                     </td>
                     <td>
-                        <span class="badge-primary whitespace-nowrap">
+                        <span class="whitespace-nowrap">
                             {{ Carbon.create().setTime(winner.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -52,6 +52,20 @@
                 <tr v-if="winners.length == 0">
                     <td colspan="6" class="text-center">No hay datos</td>
                 </tr>
+            </template>
+
+            <template #footer>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Total
+                        </th>
+                        <th>
+                            C${{ total.toLocaleString() }}
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </template>
         </TableSection>
 
@@ -177,6 +191,10 @@ watch(selectedDate, (value) => {
         form.number = Carbon.create(value).format('d/m');
     } else
         form.number = null;
+});
+
+const total = computed(() => {
+    return props.winners.reduce((acc, item) => acc + parseFloat(item.prize), 0);
 });
 
 </script>

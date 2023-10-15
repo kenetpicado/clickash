@@ -20,6 +20,7 @@ class ProfileController extends Controller
         $user->fill([
             'name' => $request->name,
             'email' => $request->email,
+            'company_name' => $request->company_name
         ]);
 
         if ($request->password) {

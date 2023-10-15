@@ -13,6 +13,7 @@
                 <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                     <slot name="body" />
                 </tbody>
+                <slot name="footer" />
             </table>
         </div>
         <slot name="paginator" />

@@ -21,7 +21,7 @@
                         {{ transaction.raffle.name }}
                     </td>
                     <td>
-                        <span class="badge-primary whitespace-nowrap" >
+                        <span class="whitespace-nowrap" >
                             {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -29,16 +29,14 @@
                         C${{ transaction.amount }}
                     </td>
                     <td>
-                        <span class="badge-primary">
-                            {{ transaction.digit }}
-                        </span>
+                        {{ transaction.digit }}
                     </td>
                     <td>
                         {{ Carbon.create(transaction.created_at).format('d/m/Y') }}
                     </td>
                 </tr>
                 <tr v-if="transactions.data.length == 0">
-                    <td colspan="4" class="text-center">No hay datos</td>
+                    <td colspan="5" class="text-center">No hay datos</td>
                 </tr>
             </template>
             <template #paginator>
