@@ -117,7 +117,7 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
-    currentBlockedHours: {
+    hours: {
         type: Object,
         required: true,
     },
@@ -139,14 +139,6 @@ const form = useForm({
 const selectedDate = ref(null);
 
 const emit = defineEmits(['update:openModal']);
-
-const hours = computed(() => {
-    if (props.currentBlockedHours.length == 0) {
-        return [];
-    }
-
-    return props.currentBlockedHours[0].blocked_hours;
-});
 
 const resetValues = () => {
     form.reset();

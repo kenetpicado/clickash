@@ -10,6 +10,7 @@ use App\Repositories\BlockedNumberRepository;
 use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WinningNumberRepository;
+use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {
@@ -29,8 +30,14 @@ class RaffleController extends Controller
         ]);
     }
 
-    public function show(Raffle $raffle)
+    public function show(Request $request, Raffle $raffle)
     {
+        $daily_sales_resume = [];
+
+        if ($request->has('hour')) {
+            $daily_sales_resume = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $request->get('hour'));
+        }
+
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
             'daily_transactions' => $this->transactionRepository->getDailyTotalByRaffle($raffle->id),
@@ -40,6 +47,7 @@ class RaffleController extends Controller
             'results' => $this->winningNumberRepository->getByRaffle($raffle->id),
             'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
             'settings' => $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $raffle->id),
+            'daily_sales_resume' => $daily_sales_resume,
         ]);
     }
 

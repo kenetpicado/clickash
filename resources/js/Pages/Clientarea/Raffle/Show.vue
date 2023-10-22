@@ -23,6 +23,9 @@
             <div :class="currentTab == 3 ? 'active-tab' : 'inactive-tab'" @click="currentTab = 3" role="button">
                 Resultados
             </div>
+            <div :class="currentTab == 4 ? 'active-tab' : 'inactive-tab'" @click="currentTab = 4" role="button">
+                Reporte de ventas
+            </div>
         </div>
 
         <template v-if="currentTab == 0">
@@ -43,8 +46,24 @@
                 <StatCard v-for="s in result_stats" :stat="s" :key="s.title" />
             </div>
 
-            <WinningNumber :results="results" :raffle="raffle" v-model:openModal="openModalResult"
-                :currentBlockedHours="currentBlockedHours" :winners="winners" :settings="settings" />
+            <WinningNumber :results="results" :raffle="raffle" v-model:openModal="openModalResult" :hours="hours"
+                :winners="winners" :settings="settings" />
+        </template>
+
+        <template v-if="currentTab == 4">
+            <div class="grid grid-cols-4 gap-4">
+                <SelectForm v-model="selectedHour" text="Turno" required>
+                    <option v-if="hours.length > 0" value="" disabled selected>Seleccione un turno</option>
+                    <option v-else value="" disabled selected>No hay dias disponibles</option>
+                    <option v-for="item in hours" :value="item">{{ Carbon.create().setTime(item).getTimeFormat() }}</option>
+                </SelectForm>
+            </div>
+            <div class="grid grid-cols-4 gap-4">
+                <StatCard
+                    :stat="{ title: 'Total', value: 'C$' + daily_sales_resume.reduce((acc, item) => acc + item.total, 0).toLocaleString(), icon: IconCurrencyDollar }" />
+            </div>
+
+            <DailySalesResume :sales="daily_sales_resume" />
         </template>
     </AppLayout>
 </template>
@@ -61,6 +80,9 @@ import StatCard from '@/Components/StatCard.vue';
 import { IconCurrencyDollar } from '@tabler/icons-vue';
 import { Carbon } from '@/Use/Carbon';
 import { IconCurrencyDollarOff } from '@tabler/icons-vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
+import DailySalesResume from './Partials/DailySalesResume.vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     raffle: {
@@ -92,6 +114,10 @@ const props = defineProps({
         required: true,
     },
     daily_transactions: {
+        type: Number,
+        required: true,
+    },
+    daily_sales_resume: {
         type: Object,
         required: true,
     },
@@ -116,6 +142,7 @@ const currentTab = ref(localStorage.getItem('currentTab') || 0);
 const openModalNumber = ref(false);
 const openModalSchedule = ref(false);
 const openModalResult = ref(false);
+const selectedHour = ref(null);
 
 watch(currentTab, (value) => {
     localStorage.setItem('currentTab', value);
@@ -123,6 +150,14 @@ watch(currentTab, (value) => {
 
 const currentBlockedHours = props.availability.filter((item) => {
     return item.order == new Date().getDay();
+});
+
+const hours = computed(() => {
+    if (currentBlockedHours.length == 0) {
+        return [];
+    }
+
+    return currentBlockedHours[0].blocked_hours;
 });
 
 const stats = computed(() => {
@@ -149,5 +184,19 @@ const result_stats = computed(() => {
         }
     })
 })
+
+watch(() => selectedHour.value, (value) => {
+    router.get(route('clientarea.raffles.show', props.raffle.id), { hour: value }, {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['daily_sales_resume'],
+    });
+});
+
+const searchParams = new URLSearchParams(window.location.search);
+
+if (searchParams.get("hour")) {
+    selectedHour.value = searchParams.get("hour");
+}
 
 </script>
