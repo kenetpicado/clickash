@@ -12,6 +12,7 @@ use App\Http\Controllers\API\V1\ResumeController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
 use App\Http\Controllers\API\V1\TransactionController;
+use App\Http\Controllers\API\V1\TransactionMarkAsPaid;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('transactions', TransactionController::class)
             ->only(['index', 'store']);
+
+        Route::put('transactions/{transaction}/mark-as-paid', TransactionMarkAsPaid::class)
+            ->name('transactions.mark-as-paid');
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {

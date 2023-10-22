@@ -7,6 +7,7 @@
                 <th>Turno</th>
                 <th>Numero</th>
                 <th>Premio</th>
+                <th>Estado</th>
                 <th>Fecha</th>
             </template>
             <template #body>
@@ -33,7 +34,12 @@
                         </span>
                     </td>
                     <td>
-                        {{ Carbon.create(winner.created_at).format('d/m/Y') }}
+                        <span class="badge-primary">
+                            {{ winner.status }}
+                        </span>
+                    </td>
+                    <td>
+                        {{ Carbon.create(winner.created_at).format('d/m/Y H:i') }}
                     </td>
                 </tr>
                 <tr v-if="winners.length == 0">

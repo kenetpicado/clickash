@@ -18,7 +18,7 @@ class TransactionController extends Controller
 
     public function index()
     {
-        return TransactionResource::collection($this->transactionRepository->getToday());
+        return TransactionResource::collection($this->transactionRepository->getMyDaily());
     }
 
     public function store(TransactionRequest $request)

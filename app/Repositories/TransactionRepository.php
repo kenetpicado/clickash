@@ -8,6 +8,11 @@ use Carbon\Carbon;
 
 class TransactionRepository
 {
+    public function markAsPaid($transaction)
+    {
+        Transaction::where('id', $transaction)->update(['status' => TransactionStatusEnum::PAID->value]);
+    }
+
     public function getByUser($user)
     {
         return $user->transactions()->with('raffle:id,name')->latest('id')->paginate();
@@ -30,7 +35,7 @@ class TransactionRepository
         return self::setTeam()->where('raffle_id', $raffle_id)->with('user:id,name')->latest('id')->paginate();
     }
 
-    public function getToday()
+    public function getMyDaily()
     {
         return Transaction::where('user_id', auth()->id())
             ->latest('id')
@@ -77,7 +82,8 @@ class TransactionRepository
 
     public function getWinnersByRaffle($raffle_id)
     {
-        return Transaction::where('raffle_id', $raffle_id)
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
             ->where('status',  TransactionStatusEnum::PRIZE->value)
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
             ->with('user:id,name')
