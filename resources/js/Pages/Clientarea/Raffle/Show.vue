@@ -53,7 +53,7 @@
         <template v-if="currentTab == 4">
             <div class="grid grid-cols-4 gap-4">
                 <SelectForm v-model="selectedHour" text="Turno" required>
-                    <option v-if="hours.length > 0" value="" disabled selected>Seleccione un turno</option>
+                    <option v-if="hours.length > 0" value="" selected>Ninguno</option>
                     <option v-else value="" disabled selected>No hay dias disponibles</option>
                     <option v-for="item in hours" :value="item">{{ Carbon.create().setTime(item).getTimeFormat() }}</option>
                 </SelectForm>

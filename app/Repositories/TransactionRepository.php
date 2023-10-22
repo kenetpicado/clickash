@@ -43,9 +43,9 @@ class TransactionRepository
     public function getMyDaily()
     {
         return Transaction::where('user_id', auth()->id())
-            ->latest('id')
-            ->with('raffle:id,name')
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->with('raffle:id,name')
+            ->latest('id')
             ->paginate();
     }
 
