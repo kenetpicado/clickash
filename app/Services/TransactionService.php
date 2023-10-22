@@ -66,18 +66,18 @@ class TransactionService
         }
 
         // STORE TRANSACTION
-        $transaction = $this->transactionRepository->store($request+ [
-            'prize' => self::calculatePrize($request['super_x'], $request['amount'], $settings['multiplier']),
-        ]);
+        $request['prize'] = $request['amount'] * $settings['multiplier'];
+
+        if ($request['super_x']) {
+            $request['amount'] = $request['amount'] * 2;
+            $request['prize'] = $request['prize'] * 2;
+        }
+
+        $transaction = $this->transactionRepository->store($request);
 
         $transaction->load('raffle:id,name');
 
         return $transaction;
-    }
-
-    public function calculatePrize(bool $super_x, $amount, $multiplier)
-    {
-        return $super_x ? ($amount * $multiplier) * 2 : $amount * $multiplier;
     }
 
     public function checkIndividualLimit($amount, $limit)
