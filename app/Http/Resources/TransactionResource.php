@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,9 +20,9 @@ class TransactionResource extends JsonResource
             'digit' => $this->digit,
             'amount' => $this->amount,
             'client' => $this->client,
-            'hour' => $this->hour,
+            'hour' => Carbon::parse($this->hour)->format('g:i A'),
             'status' => $this->status,
-            'prize' => $this->prize,
+            'prize' => 'C$' . $this->prize,
             'super_x' => $this->super_x,
             'created_at' => $this->created_at->format('d/m/y g:i A'),
             'raffle' => RaffleNameResource::make($this->whenLoaded('raffle')),

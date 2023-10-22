@@ -41,7 +41,6 @@ class TransactionRepository
             ->latest('id')
             ->with('raffle:id,name')
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-            ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id', 'status', 'super_x'])
             ->paginate();
     }
 
