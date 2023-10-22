@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['raffle_id', 'digit', 'amount', 'client', 'hour', 'user_id', 'created_at', 'prize', 'status'];
+    protected $fillable = ['raffle_id', 'digit', 'amount', 'client', 'hour', 'user_id', 'created_at', 'prize', 'status', 'super_x'];
 
     protected $hidden = ['updated_at'];
 

@@ -17,23 +17,15 @@
 
 @layer components {
     .primary-button {
-        @apply inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-xl font-medium text-sm text-gray-200 hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150;
+        @apply inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-lg font-medium text-sm text-gray-200 hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 transition ease-in-out duration-150;
     }
 
     .secondary-button {
-        @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-medium text-sm text-basic hover:bg-gray-50 focus:bg-gray-50 active:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150;
-    }
-
-    .circle-button {
-        @apply inline-flex items-center justify-center w-6 h-6 bg-gray-800 border border-transparent rounded-full text-white hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150;
+        @apply inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium text-sm text-basic hover:bg-gray-50 focus:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150;
     }
 
     .title {
         @apply text-center text-2xl font-extrabold text-gray-600;
-    }
-
-    .danger-button {
-        @apply inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150;
     }
 
     .active-tab {
@@ -44,11 +36,7 @@
         @apply bg-white text-gray-400 rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110
     }
 
-    .badge-gray {
-        @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-gray-50 text-gray-600
-    }
-
     .badge-primary {
-        @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-primary text-basic
+        @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold bg-indigo-50 text-indigo-600
     }
 }

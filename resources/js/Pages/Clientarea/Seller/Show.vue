@@ -7,6 +7,10 @@
             </span>
         </template>
 
+        <div class="grid grid-cols-4 gap-4 mb-4">
+            <StatCard v-for="stat in stats" :stat="stat" :key="stat.title" />
+        </div>
+
         <TableSection>
             <template #header>
                 <th>Rifa</th>
@@ -21,7 +25,7 @@
                         {{ transaction.raffle.name }}
                     </td>
                     <td>
-                        <span class="whitespace-nowrap" >
+                        <span class="whitespace-nowrap">
                             {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}
                         </span>
                     </td>
@@ -32,7 +36,7 @@
                         {{ transaction.digit }}
                     </td>
                     <td>
-                        {{ Carbon.create(transaction.created_at).format('d/m/Y') }}
+                        {{ Carbon.create(transaction.created_at).format('d/m/Y H:i') }}
                     </td>
                 </tr>
                 <tr v-if="transactions.data.length == 0">
@@ -40,18 +44,20 @@
                 </tr>
             </template>
             <template #paginator>
-               <ThePaginator :links="transactions.links"/>
+                <ThePaginator :links="transactions.links" />
             </template>
         </TableSection>
     </AppLayout>
 </template>
 
 <script setup>
+import StatCard from '@/Components/StatCard.vue';
 import TableSection from '@/Components/TableSection.vue';
 import ThePaginator from '@/Components/ThePaginator.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Carbon } from '@/Use/Carbon.js';
-
+import { IconCurrencyDollar } from '@tabler/icons-vue';
+import { computed } from 'vue';
 
 const props = defineProps({
     seller: {
@@ -62,6 +68,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    daily_transactions: {
+        type: Object,
+        required: true,
+    }
 });
 
 const breads = [
@@ -78,5 +88,15 @@ const breads = [
         route: route('clientarea.sellers.show', props.seller.id),
     }
 ];
+
+const stats = computed(() => {
+    return [
+        {
+            title: 'Ventas del dia',
+            value: "C$" + props.daily_transactions.toLocaleString(),
+            icon: IconCurrencyDollar,
+        },
+    ]
+})
 
 </script>

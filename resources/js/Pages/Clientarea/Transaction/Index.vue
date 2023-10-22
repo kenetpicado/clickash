@@ -3,9 +3,13 @@
 
         <template #header>
             <span class="title">
-                Todas las ventas
+                Ventas
             </span>
         </template>
+
+        <div class="grid grid-cols-4 gap-4 mb-4">
+            <StatCard v-for="stat in stats" :stat="stat" :key="stat.title" />
+        </div>
 
         <TableSection>
             <template #header>
@@ -36,7 +40,7 @@
                         {{ transaction.digit }}
                     </td>
                     <td>
-                        {{ Carbon.create(transaction.created_at).format('d/m/Y') }}
+                        {{ Carbon.create(transaction.created_at).format('d/m/Y H:i') }}
                     </td>
                 </tr>
                 <tr v-if="transactions.data.length == 0">
@@ -51,14 +55,21 @@
 </template>
 
 <script setup>
+import StatCard from '@/Components/StatCard.vue';
 import TableSection from '@/Components/TableSection.vue';
 import ThePaginator from '@/Components/ThePaginator.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Carbon } from '@/Use/Carbon.js';
+import { IconCurrencyDollar } from '@tabler/icons-vue';
+import { computed } from 'vue';
 
 
 const props = defineProps({
     transactions: {
+        type: Object,
+        required: true,
+    },
+    daily_transactions: {
         type: Object,
         required: true,
     },
@@ -74,5 +85,15 @@ const breads = [
         route: route('clientarea.transactions.index'),
     },
 ];
+
+const stats = computed(() => {
+    return [
+        {
+            title: 'Ventas del dia',
+            value: "C$" + props.daily_transactions.toLocaleString(),
+            icon: IconCurrencyDollar,
+        },
+    ]
+})
 
 </script>

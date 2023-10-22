@@ -25,26 +25,42 @@
             </div>
         </div>
 
-        <Transaction v-if="currentTab == 0" :transactions="transactions" />
+        <template v-if="currentTab == 0">
+            <div class="grid grid-cols-4 gap-4 mb-4">
+                <StatCard v-for="stat in stats" :stat="stat" :key="stat.title" />
+            </div>
+
+            <Transaction :transactions="transactions" />
+        </template>
 
         <BlockedNumber v-if="currentTab == 1" :blockeds="blockeds" :raffle="raffle" v-model:openModal="openModalNumber" />
 
         <Availability v-if="currentTab == 2" :availability="availability" :raffle="raffle"
             v-model:openModal="openModalSchedule" />
 
-        <WinningNumber v-if="currentTab == 3" :results="results" :raffle="raffle" v-model:openModal="openModalResult"
-            :currentBlockedHours="currentBlockedHours" :winners="winners" :settings="settings" />
+        <template v-if="currentTab == 3">
+            <div class="grid grid-cols-4 gap-4 mb-4">
+                <StatCard v-for="s in result_stats" :stat="s" :key="s.title" />
+            </div>
+
+            <WinningNumber :results="results" :raffle="raffle" v-model:openModal="openModalResult"
+                :currentBlockedHours="currentBlockedHours" :winners="winners" :settings="settings" />
+        </template>
     </AppLayout>
 </template>
 
 <script setup>
 import AddButton from '@/Components/Buttons/AddButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Availability from "./Partials/Availability.vue";
 import BlockedNumber from './Partials/BlockedNumber.vue';
 import Transaction from './Partials/Transaction.vue';
 import WinningNumber from './Partials/WinningNumber.vue';
+import StatCard from '@/Components/StatCard.vue';
+import { IconCurrencyDollar } from '@tabler/icons-vue';
+import { Carbon } from '@/Use/Carbon';
+import { IconCurrencyDollarOff } from '@tabler/icons-vue';
 
 const props = defineProps({
     raffle: {
@@ -72,6 +88,10 @@ const props = defineProps({
         required: true,
     },
     settings: {
+        type: Object,
+        required: true,
+    },
+    daily_transactions: {
         type: Object,
         required: true,
     },
@@ -104,5 +124,30 @@ watch(currentTab, (value) => {
 const currentBlockedHours = props.availability.filter((item) => {
     return item.order == new Date().getDay();
 });
+
+const stats = computed(() => {
+    return [
+        {
+            title: 'Ventas del dia',
+            value: "C$" + props.daily_transactions.toLocaleString(),
+            icon: IconCurrencyDollar,
+        },
+        {
+            title: 'Premios del dia',
+            value: "C$" + props.winners.reduce((acc, item) => acc + parseFloat(item.prize), 0).toLocaleString(),
+            icon: IconCurrencyDollarOff,
+        }
+    ]
+})
+
+const result_stats = computed(() => {
+    return props.results.map((result) => {
+        return {
+            title: Carbon.create().setTime(result.hour).getTimeFormat(),
+            value: result.number,
+            icon: IconCurrencyDollar,
+        }
+    })
+})
 
 </script>

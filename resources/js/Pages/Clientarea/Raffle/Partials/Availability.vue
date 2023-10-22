@@ -61,10 +61,10 @@
 
             <div class="flex gap-3 mt-5">
                 <div v-for="(hour, index) in formSchedule.blocked_hours"
-                    class="text-xs inline-flex items-center font-bold leading-sm px-3 py-1 bg-primary text-basic rounded-full">
-                    <span class="mr-3"> {{ Carbon.create().setTime(hour).getTimeFormat() }}</span>
+                    class="badge-primary">
+                    <span> {{ Carbon.create().setTime(hour).getTimeFormat() }}</span>
                     <span role="button" tooltip="Eliminar">
-                        <IconTrash size="15" @click="popHour(index)" />
+                        <IconTrash size="15" @click="popHour(index)" class="text-rose-600" />
                     </span>
                 </div>
             </div>
@@ -188,7 +188,7 @@ const pushToBlockedHours = () => {
     }
 
     if (selectedHour.value) {
-        if (!formSchedule.blocked_hours.find((item) => item == selectedHour.value)) {
+        if (!formSchedule.blocked_hours.find((item) => item == selectedHour.value + ":00")) {
             formSchedule.blocked_hours.push(selectedHour.value + ":00");
         }
         selectedHour.value = null;

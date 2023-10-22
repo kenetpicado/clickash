@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\TransactionStatusEnum;
 use App\Models\Transaction;
 use Carbon\Carbon;
 
@@ -35,7 +36,7 @@ class TransactionRepository
             ->latest('id')
             ->with('raffle:id,name')
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-            ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id', 'status'])
+            ->select(['id', 'digit', 'amount', 'client', 'hour', 'created_at', 'raffle_id', 'user_id', 'status', 'super_x'])
             ->paginate();
     }
 
@@ -59,7 +60,8 @@ class TransactionRepository
             'hour' => $request['hour'],
             'client' => $request['client'],
             'prize' => $request['prize'],
-            'status' => 'PURCHASED',
+            'status' => TransactionStatusEnum::SOLD->value,
+            'super_x' => $request['super_x'],
         ]);
     }
 
@@ -70,16 +72,38 @@ class TransactionRepository
             ->where('hour', $winningNumber->hour)
             ->where('digit', $winningNumber->number)
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-            ->update(['status' => 'WINNER']);
+            ->update(['status' => TransactionStatusEnum::PRIZE->value]);
     }
 
     public function getWinnersByRaffle($raffle_id)
     {
         return Transaction::where('raffle_id', $raffle_id)
-            ->where('status', 'WINNER')
+            ->where('status',  TransactionStatusEnum::PRIZE->value)
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
             ->with('user:id,name')
             ->orderBy('hour')
             ->get();
+    }
+
+    public function getDailyTotalByUser($user)
+    {
+        return $user->transactions()
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->sum('amount');
+    }
+
+    public function getDailyTotalByRaffle($raffle_id)
+    {
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->sum('amount');
+    }
+
+    public function getDailyTotalByTeam()
+    {
+        return self::setTeam()
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->sum('amount');
     }
 }

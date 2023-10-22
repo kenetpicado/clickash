@@ -5,7 +5,7 @@
                 <IconChevronLeft />
             </span>
             <span v-for="item in pageList" @click="getThisPage(item.url)" class="px-3 rounded-md"
-                :class="{ 'bg-primary text-basic': item.active, 'hover:bg-indigo-50': !item.active }" role="button">
+                :class="{ 'bg-rose-50 text-rose-600': item.active, 'hover:bg-rose-50': !item.active }" role="button">
                 {{ item.label }}
             </span>
             <button v-if="nextUrl" @click="getThisPage(nextUrl)" class="px-3 hover:bg-gray-100 rounded-md" type="button">

@@ -1,18 +1,5 @@
 <template>
     <div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div v-for="result in results" class="bg-white p-8 rounded-xl items-center flex justify-center border">
-                <div class="text-center">
-                    <div class="text-4xl font-bold mb-2 text-basic">
-                        {{ result.number }}
-                    </div>
-                    <div class="text-center text-sm">
-                        {{ Carbon.create().setTime(result.hour).getTimeFormat() }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <TableSection>
             <template #header>
                 <th>Vendedor</th>
@@ -42,7 +29,7 @@
                     </td>
                     <td>
                         <span class="text-sm">
-                            C${{ winner.prize }}
+                            C${{ winner.prize.toLocaleString() }}
                         </span>
                     </td>
                     <td>

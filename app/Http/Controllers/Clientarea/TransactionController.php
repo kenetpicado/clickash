@@ -16,6 +16,7 @@ class TransactionController extends Controller
     {
         return inertia('Clientarea/Transaction/Index', [
             'transactions' => $this->transactionRepository->getByTeam(),
+            'daily_transactions' => $this->transactionRepository->getDailyTotalByTeam(),
         ]);
     }
 }

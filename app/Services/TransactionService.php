@@ -66,7 +66,7 @@ class TransactionService
         }
 
         // STORE TRANSACTION
-        $transaction = $this->transactionRepository->store($request + [
+        $transaction = $this->transactionRepository->store($request+ [
             'prize' => self::calculatePrize($request['super_x'], $request['amount'], $settings['multiplier']),
         ]);
 
