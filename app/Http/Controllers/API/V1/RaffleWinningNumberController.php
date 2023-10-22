@@ -28,6 +28,10 @@ class RaffleWinningNumberController extends Controller
             abort(403, 'No puedes registrar una turno que no ha pasado');
         }
 
+        if ($this->winningNumberRepository->alreadyExists($raffle, $request->hour)) {
+            abort(403, 'Ya existe registro para esta hora');
+        }
+
         $winningNumber = $this->winningNumberRepository->store($request->validated(), $raffle);
 
         $this->transactionRepository->markWinners($winningNumber);

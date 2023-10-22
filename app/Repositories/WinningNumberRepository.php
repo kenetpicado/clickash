@@ -27,4 +27,12 @@ class WinningNumberRepository
             'date' => Carbon::now()->format('Y-m-d'),
         ]);
     }
+
+    public function alreadyExists($raffle, $hour)
+    {
+        return WinningNumber::where('raffle_id', $raffle)
+            ->where('hour', $hour)
+            ->where('date', Carbon::now()->format('Y-m-d'))
+            ->exists();
+    }
 }
