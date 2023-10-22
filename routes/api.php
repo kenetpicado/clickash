@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
+use App\Http\Controllers\API\V1\DailySalesController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
@@ -47,7 +48,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('raffles.index');
 
         Route::apiResource('transactions', TransactionController::class)
-            ->only(['index', 'store']);
+            ->only(['index', 'store', 'destroy']);
 
         Route::put('transactions/{transaction}/mark-as-paid', TransactionMarkAsPaid::class)
             ->name('transactions.mark-as-paid');
@@ -78,6 +79,9 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::get('resume', ResumeController::class)
                 ->name('resume.index');
+
+            Route::get('raffles/{raffle}/daily-sales', DailySalesController::class)
+                ->name('daily.sales');
         });
     });
 });

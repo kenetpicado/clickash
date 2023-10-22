@@ -8,6 +8,11 @@ use Carbon\Carbon;
 
 class TransactionRepository
 {
+    public function delete($transaction)
+    {
+        $transaction->delete();
+    }
+
     public function markAsPaid($transaction)
     {
         Transaction::where('id', $transaction)->update(['status' => TransactionStatusEnum::PAID->value]);
@@ -83,10 +88,13 @@ class TransactionRepository
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
-            ->where('status',  TransactionStatusEnum::PRIZE->value)
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
             ->with('user:id,name')
             ->orderBy('hour')
+            ->where(function ($query) {
+                $query->where('status', TransactionStatusEnum::PRIZE->value)
+                    ->orWhere('status', TransactionStatusEnum::PAID->value);
+            })
             ->get();
     }
 
@@ -110,5 +118,17 @@ class TransactionRepository
         return self::setTeam()
             ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
             ->sum('amount');
+    }
+
+    public function getDailyTotalByRaffleAndHour($raffle_id, $hour)
+    {
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->where('hour', $hour)
+            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->selectRaw('digit, sum(amount) as total, count(digit) as count')
+            ->groupBy('digit')
+            ->orderBy('digit')
+            ->get();
     }
 }

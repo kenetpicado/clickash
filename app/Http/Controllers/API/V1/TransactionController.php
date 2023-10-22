@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\TransactionRequest;
 use App\Http\Resources\TransactionResource;
+use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use App\Services\TransactionService;
 
@@ -26,5 +27,12 @@ class TransactionController extends Controller
         $transaction = $this->transactionService->store($request->validated());
 
         return TransactionResource::make($transaction);
+    }
+
+    public function destroy(Transaction $transaction)
+    {
+        $this->transactionService->destroy($transaction);
+
+        return self::index();
     }
 }

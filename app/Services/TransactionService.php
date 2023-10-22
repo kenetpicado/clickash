@@ -96,4 +96,13 @@ class TransactionService
             abort(422, 'El monto disponible es C$'.$availableAmount);
         }
     }
+
+    public function destroy($transaction)
+    {
+        if (Carbon::parse($transaction->hour)->isPast()) {
+            abort(403, 'No puedes eliminar una transacción que ya pasó');
+        }
+
+        $this->transactionRepository->delete($transaction);
+    }
 }
