@@ -11,7 +11,13 @@ class UserObserver
     public function created(User $user)
     {
         if ($user->role === 'owner') {
-            $raffles = Raffle::with('availability')->get(['id', 'settings']);
+            $raffles = Raffle::query()
+                ->with([
+                    'availability' => function ($query) {
+                        $query->whereNull('user_id');
+                    }
+                ])
+                ->get(['id', 'settings']);
 
             $raffles->each(function ($raffle) use ($user) {
                 RaffleUser::create([
