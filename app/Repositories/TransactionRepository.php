@@ -131,4 +131,37 @@ class TransactionRepository
             ->orderBy('digit')
             ->get();
     }
+
+    public function getBalanceTeam($request = [])
+    {
+        return self::setTeam()
+            ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($request['date'])->format('Y-m-d 00:00:00'),
+                    Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
+                ]);
+            }, function ($query) {
+                $query->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'));
+            })
+            ->selectRaw('SUM(CASE WHEN status = "VENDIDO" THEN amount ELSE 0 END) as income, SUM(CASE WHEN status != "VENDIDO" THEN amount ELSE 0 END) as expenditure')
+            ->first();
+    }
+
+    public function getBalanceByUser($user_id, $request = [])
+    {
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($request['date'])->format('Y-m-d 00:00:00'),
+                    Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
+                ]);
+            }, function ($query) {
+                $query->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'));
+            })
+            ->selectRaw('SUM(CASE WHEN status = "VENDIDO" THEN amount ELSE 0 END) as income, SUM(CASE WHEN status != "VENDIDO" THEN amount ELSE 0 END) as expenditure')
+            ->first();
+    }
 }
