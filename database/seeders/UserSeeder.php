@@ -28,14 +28,6 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('jey131322'),
                 'role' => RoleEnum::ROOT->value,
             ],
-            [
-                'name' => 'Jose Mercado',
-                'email' => 'jmercadomorales9@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => RoleEnum::OWNER->value,
-                'sellers_limit' => 5,
-                'company_name' => 'JM',
-            ],
         ];
 
         foreach ($users as $user) {

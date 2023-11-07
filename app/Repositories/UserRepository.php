@@ -55,7 +55,7 @@ class UserRepository
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
             'role' => 'owner',
-            'sellers_limit' => 2,
+            'sellers_limit' => 0,
             'status' => 'enabled',
         ]);
     }
