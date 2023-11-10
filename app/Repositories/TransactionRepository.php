@@ -142,7 +142,7 @@ class TransactionRepository
                     Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
                 ]);
             }, function ($query) {
-                $query->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'));
+                $query->where('created_at', '>=', Carbon::now()->startOfWeek()->format('Y-m-d 00:00:00'));
             })
             ->selectRaw('SUM(amount) as income, SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END) as expenditure')
             ->first();
@@ -159,7 +159,7 @@ class TransactionRepository
                     Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
                 ]);
             }, function ($query) {
-                $query->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'));
+                $query->where('created_at', '>=', Carbon::now()->startOfWeek()->format('Y-m-d 00:00:00'));
             })
             ->selectRaw('SUM(amount) as income, SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END) as expenditure')
             ->first();

@@ -13,7 +13,7 @@ class BalanceController extends Controller
     public function __invoke(Request $request)
     {
         $balance = null;
-        $date = Carbon::now()->format('d M Y');
+        $endOfWeek = Carbon::now()->endOfWeek()->format('d M Y');
 
         if (auth()->user()->role === 'seller')
             $balance = (new TransactionRepository)->getBalanceByUser(auth()->id(), $request->all());
@@ -24,7 +24,7 @@ class BalanceController extends Controller
 
         return BalanceResource::make($balance)
             ->additional([
-                'date' => isset($request['date']) ? Carbon::parse($request['date'])->format('d M Y') : $date,
+                'date' => isset($request['date']) ? Carbon::parse($request['date'])->format('d M Y') : "Total desde {$endOfWeek}",
             ]);
     }
 }
