@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\BalanceController;
+use App\Http\Controllers\API\V1\BulkTransaction;
 use App\Http\Controllers\API\V1\DailySalesController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RaffleAvailabilityController;
@@ -50,6 +51,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('transactions', TransactionController::class)
             ->only(['index', 'store', 'destroy']);
+
+        Route::post('bulk-transactions', BulkTransaction::class)
+            ->name('bulk.transactions');
 
         Route::put('transactions/{transaction}/mark-as-paid', TransactionMarkAsPaid::class)
             ->name('transactions.mark-as-paid');

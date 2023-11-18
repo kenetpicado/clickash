@@ -26,4 +26,13 @@ class RaffleUserRepository
             ->where('raffle_id', $raffle_id)
             ->value('settings');
     }
+
+    public function getMultiplier($user_id, $raffle_id)
+    {
+        $settings = RaffleUser::where('user_id', $user_id)
+            ->where('raffle_id', $raffle_id)
+            ->value('settings');
+
+        return $settings['multiplier'] ?? 70;
+    }
 }

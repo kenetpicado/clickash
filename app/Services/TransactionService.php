@@ -80,10 +80,60 @@ class TransactionService
         return $transaction;
     }
 
+    public function validateBulkTransactions(array $request)
+    {
+        $availabilityRepository = new AvailabilityRepository();
+        $blockedNumberRepository = new BlockedNumberRepository();
+        $raffleUserRepository = new RaffleUserRepository();
+        $dateTimeService = new DateTimeService();
+
+        $ownerId = auth()->user()->getOwnerId();
+
+        $raffleSettings = $raffleUserRepository->getSettings($ownerId, $request['raffle_id']);
+
+        // CHECK IF THE TIME IS BLOCKED
+        $blockedHours = $availabilityRepository->getTodayBlockedHours($request['raffle_id'], $ownerId);
+
+        foreach ($blockedHours as $blockedHour) {
+            $message = $dateTimeService->getBlockedHourMessage($this->currentTime, $blockedHour);
+
+            if ($message) {
+                abort(422, $message);
+            }
+        }
+
+        foreach ($request['data'] as $transaction) {
+
+            // CHECK IF THE NUMBER IS BLOCKED
+            $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $ownerId, $transaction['digit']);
+
+            if ($blockedNumber) {
+                if ($blockedNumber['settings']['individual_limit']) {
+                    self::checkIndividualLimit($transaction['amount'], $blockedNumber['settings']['individual_limit']);
+                }
+
+                if ($blockedNumber['settings']['general_limit']) {
+                    self::checkGeneralLimit($transaction + ['raffle_id' => $request['raffle_id']], $blockedNumber['settings']['general_limit']);
+                }
+            }
+
+            // CHECK IS SETTINGS ARE BLOCKED
+            if ($raffleSettings['individual_limit']) {
+                self::checkIndividualLimit($transaction['amount'], $raffleSettings['individual_limit']);
+            }
+
+            if ($raffleSettings['general_limit']) {
+                self::checkGeneralLimit($transaction + ['raffle_id' => $request['raffle_id']], $raffleSettings['general_limit']);
+            }
+        }
+
+        return $raffleSettings;
+    }
+
     public function checkIndividualLimit($amount, $limit)
     {
         if ($amount > $limit) {
-            abort(422, 'El monto máximo es C$'.$limit);
+            abort(422, 'El monto máximo es C$' . $limit);
         }
     }
 
@@ -93,7 +143,7 @@ class TransactionService
 
         if ($transactionsTotalAmount + $request['amount'] > $limit) {
             $availableAmount = $limit - $transactionsTotalAmount;
-            abort(422, 'El monto disponible es C$'.$availableAmount);
+            abort(422, 'El monto disponible es C$' . $availableAmount);
         }
     }
 
