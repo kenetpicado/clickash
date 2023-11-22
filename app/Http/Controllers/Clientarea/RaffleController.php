@@ -35,7 +35,7 @@ class RaffleController extends Controller
         $daily_sales_resume = [];
 
         if ($request->has('hour')) {
-            $daily_sales_resume = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $request->get('hour'));
+            $daily_sales_resume = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $request->all());
         }
 
         return inertia('Clientarea/Raffle/Show', [

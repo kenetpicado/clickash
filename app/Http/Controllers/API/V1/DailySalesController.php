@@ -20,9 +20,10 @@ class DailySalesController extends Controller
     {
         $validated = $request->validate([
             'hour' => 'required',
+            'date' => 'nullable|date_format:Y-m-d',
         ]);
 
-        $sales = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $validated['hour']);
+        $sales = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $validated);
 
         return DailySalesResource::collection($sales)
             ->additional([
@@ -30,6 +31,7 @@ class DailySalesController extends Controller
                 'hour' => Carbon::parse($validated['hour'])->format('g:i A'),
                 'current_time' => Carbon::now()->format('g:i A'),
                 'total' => "C$ " . number_format($sales->sum('total')),
+                'message' => isset($validated['date']) ? "Reporte de ventas del " . Carbon::parse($validated['hour'])->format('d/m/Y') : 'Reporte de ventas de la semana',
             ]);
     }
 }

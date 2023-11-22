@@ -120,12 +120,19 @@ class TransactionRepository
             ->sum('amount');
     }
 
-    public function getDailyTotalByRaffleAndHour($raffle_id, $hour)
+    public function getDailyTotalByRaffleAndHour($raffle_id, $request)
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
-            ->where('hour', $hour)
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->where('hour', $request['hour'])
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($request['date'])->format('Y-m-d 00:00:00'),
+                    Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
+                ]);
+            }, function ($query) {
+                $query->where('created_at', '>=', Carbon::now()->startOfWeek()->format('Y-m-d 00:00:00'));
+            })
             ->selectRaw('digit, sum(amount) as total, count(digit) as count')
             ->groupBy('digit')
             ->orderBy('digit')
