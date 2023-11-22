@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\ArchingController;
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\BalanceController;
 use App\Http\Controllers\API\V1\BulkTransaction;
@@ -94,6 +95,9 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::get('raffles/{raffle}/hours', RaffleHourController::class)
                 ->name('raffles.hours');
+
+            Route::apiResource('archings', ArchingController::class)
+                ->only(['index', 'store', 'destroy']);
         });
     });
 });

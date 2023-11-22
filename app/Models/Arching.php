@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Arching extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'type',
+        'amount',
+        'seller_id',
+        'user_id',
+        'current_balance',
+    ];
+
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
 }

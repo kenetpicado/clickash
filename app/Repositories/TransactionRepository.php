@@ -161,12 +161,9 @@ class TransactionRepository
             ->where('user_id', $user_id)
             ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
             ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($request['date'])->format('Y-m-d 00:00:00'),
-                    Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
-                ]);
+                $query->whereDate('created_at', $request['date']);
             }, function ($query) {
-                $query->where('created_at', '>=', Carbon::now()->startOfWeek()->format('Y-m-d 00:00:00'));
+                $query->where('created_at', '>=', Carbon::now()->startOfWeek());
             })
             ->selectRaw('SUM(amount) as income, SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END) as expenditure')
             ->first();
