@@ -88,7 +88,7 @@ class TransactionRepository
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->whereDate('created_at', Carbon::today())
             ->with('user:id,name')
             ->orderBy('hour')
             ->where(function ($query) {
@@ -109,7 +109,7 @@ class TransactionRepository
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->whereDate('created_at', Carbon::today())
             ->sum('amount');
     }
 
@@ -117,7 +117,6 @@ class TransactionRepository
     {
         return self::setTeam()
             // ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-            //where date today
             ->whereDate('created_at', Carbon::today())
             ->sum('amount');
     }

@@ -12,7 +12,7 @@ class WinningNumberRepository
         return WinningNumber::where('raffle_id', $raffle_id)
             ->where('user_id', auth()->id())
             ->when($loadRaffle, fn ($query) => $query->with('raffle:id,name'))
-            ->where('date', Carbon::now()->format('Y-m-d'))
+            ->whereDate('date', Carbon::today())
             ->orderBy('hour')
             ->get(['id', 'number', 'hour', 'date', 'raffle_id']);
     }

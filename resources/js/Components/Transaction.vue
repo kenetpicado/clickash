@@ -8,13 +8,15 @@
             {{ transaction.user.name }}
         </span>
         <div class="text-gray-600 grid grid-cols-2 gap-1 text-sm">
-            <span>Rifa: {{ transaction.raffle.name }}</span>
+            <span v-if="transaction.raffle">
+                Rifa: {{ transaction.raffle.name }}
+            </span>
             <span>Hora: {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}</span>
             <span>Digito: {{ transaction.digit }}</span>
             <span>Super X: {{ transaction.super_x ? 'Si' : 'No' }}</span>
             <span>Monto: C${{ transaction.super_x ? transaction.amount / 2 : transaction.amount }}</span>
-            <span>Total: C${{ transaction.amount.toLocaleString() }}</span>
-            <span>Premio: C${{ transaction.prize.toLocaleString() }}</span>
+            <strong>Total: C${{ transaction.amount.toLocaleString() }}</strong>
+            <strong>Premio: C${{ transaction.prize.toLocaleString() }}</strong>
         </div>
     </div>
 </template>

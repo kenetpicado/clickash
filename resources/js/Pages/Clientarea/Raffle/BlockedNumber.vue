@@ -1,44 +1,38 @@
 <template>
-    <div>
-        <TableSection>
-            <template #header>
-                <th>Limite individual</th>
-                <th>Limite general</th>
-                <th>Numero</th>
-                <th>Acciones</th>
-            </template>
-            <template #body>
-                <tr v-for="number in blockeds">
-                    <td>
-                        <span v-if="number.settings.individual_limit">
-                            C${{ number.settings.individual_limit }}
-                        </span>
-                        <span v-else>
-                            Ninguno
-                        </span>
-                    </td>
-                    <td>
-                        <span v-if="number.settings.general_limit">
-                            C${{ number.settings.general_limit }}
-                        </span>
-                        <span v-else>
-                            Ninguno
-                        </span>
-                    </td>
-                    <td>
-                        <span class="badge-primary">{{ number.number }}</span>
-                    </td>
-                    <td>
-                        <span tooltip="Eliminar" role="button" @click="destroyNumber(number.id)">
-                            <IconTrash size="22" />
-                        </span>
-                    </td>
-                </tr>
-                <tr v-if="blockeds.length == 0">
-                    <td colspan="4" class="text-center">No hay datos</td>
-                </tr>
-            </template>
-        </TableSection>
+    <ClientareaLayout title="Bloqueados">
+        <template #header>
+            <span class="title">
+                Bloqueados
+            </span>
+            <button type="button" class="simple-button" @click="openModal = true">
+                Nuevo
+            </button>
+        </template>
+        <div v-if="blockeds.length == 0" class="w-full text-center text-gray-400">
+            No hay números bloqueados
+        </div>
+        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+            <div v-for="i in blockeds" class="bg-card p-3 rounded-xl text-gray-600">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xl font-bold">{{ i.number }}</span>
+                    <IconTrash class="text-primary" @click="destroy(i.id)" />
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div v-if="i.settings.general_limit">
+                        <strong class="text-sm">Limite general C$</strong>
+                        <div>
+                            C${{ i.settings.general_limit }}
+                        </div>
+                    </div>
+                    <div v-if="i.settings.individual_limit">
+                        <strong class="text-sm">Limite indiv. C$</strong>
+                        <div>
+                            C${{ i.settings.individual_limit }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <FormModal :show="openModal" title="Bloquear" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Numero" v-model="form.number" type="number" required />
@@ -47,34 +41,29 @@
                 <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
             </div>
         </FormModal>
-    </div>
+    </ClientareaLayout>
 </template>
 
 <script setup>
 import InputForm from '@/Components/Form/InputForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
-import TableSection from '@/Components/TableSection.vue';
-import { confirmAlert } from "@/Use/helpers";
+import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
+import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
 import { IconTrash } from '@tabler/icons-vue';
+import { defineProps, ref } from 'vue';
 
 const props = defineProps({
-    raffle: {
-        type: Object,
-        required: true,
-    },
     blockeds: {
         type: Object,
         required: true,
     },
-    openModal: {
-        type: Boolean,
+    raffle: {
+        type: Object,
         required: true,
     },
-});
-
-const emit = defineEmits(['update:openModal']);
+})
 
 const form = useForm({
     number: null,
@@ -83,6 +72,8 @@ const form = useForm({
         individual_limit: null,
     }
 });
+
+const openModal = ref(false)
 
 const onSubmit = () => {
     if (!form.settings.general_limit && !form.settings.individual_limit) {
@@ -100,17 +91,17 @@ const onSubmit = () => {
         preserveState: true,
         onSuccess: () => {
             resetValues();
-            toast.success('Numero bloqueado');
+            toast.success('Agregado correctamente');
         }
     });
 }
 
 const resetValues = () => {
     form.reset();
-    emit('update:openModal', false);
+    openModal.value = false
 };
 
-const destroyNumber = (id) => {
+const destroy = (id) => {
     confirmAlert({
         message: "¿Está seguro de eliminar este registro?",
         onConfirm: () => {
@@ -119,9 +110,6 @@ const destroyNumber = (id) => {
                 preserveState: true,
                 onSuccess: () => {
                     toast.success("Eliminado correctamente");
-                },
-                onError: (err) => {
-                    console.log(err);
                 },
             });
         },

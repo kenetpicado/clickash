@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\WinningNumberRequest;
+use App\Models\Raffle;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WinningNumberRepository;
 use Carbon\Carbon;
@@ -14,6 +15,15 @@ class RaffleWinningNumberController extends Controller
         private readonly WinningNumberRepository $winningNumberRepository,
         private readonly TransactionRepository $transactionRepository
     ) {
+    }
+
+    public function index(Raffle $raffle)
+    {
+        return inertia('Clientarea/Raffle/WinningNumber', [
+            'raffle' => $raffle,
+            'winning_numbers' => $this->winningNumberRepository->getByRaffle($raffle->id),
+            'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
+        ]);
     }
 
     public function store(WinningNumberRequest $request, $raffle)

@@ -55,13 +55,13 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->only(['show', 'update']);
 
         Route::resource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
-            ->only(['store', 'destroy']);
+            ->only(['index', 'store', 'destroy']);
 
         Route::resource('raffles.availability', RaffleAvailabilityController::class)
             ->only(['index', 'store', 'update', 'destroy']);
 
         Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
-            ->only(['store']);
+            ->only(['index', 'store']);
     });
 
 Route::middleware(['auth:sanctum', 'online'])

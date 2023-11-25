@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\RaffleBlockedNumberRequest;
 use App\Models\BlockedNumber;
+use App\Models\Raffle;
 use App\Repositories\BlockedNumberRepository;
 
 class RaffleBlockedNumberController extends Controller
@@ -12,6 +13,14 @@ class RaffleBlockedNumberController extends Controller
     public function __construct(
         private readonly BlockedNumberRepository $blockedNumberRepository
     ) {
+    }
+
+    public function index(Raffle $raffle)
+    {
+        return inertia('Clientarea/Raffle/BlockedNumber', [
+            'blockeds' => $this->blockedNumberRepository->getByRaffle($raffle->id),
+            'raffle' => $raffle,
+        ]);
     }
 
     public function store(RaffleBlockedNumberRequest $request, $raffle)
