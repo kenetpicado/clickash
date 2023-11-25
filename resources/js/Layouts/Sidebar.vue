@@ -83,21 +83,6 @@ const ownerItems = [
     {
         header: 'Inicio'
     },
-    {
-        name: 'Vendedores',
-        route: route('clientarea.sellers.index'),
-        icon: IconUserCog
-    },
-    {
-        name: 'Rifas',
-        route: route('clientarea.raffles.index'),
-        icon: IconGift
-    },
-    {
-        name: 'Ventas',
-        route: route('clientarea.transactions.index'),
-        icon: IconMoneybag
-    },
 ]
 
 const showItems = usePage().props.auth.role == "root" ? items : ownerItems;

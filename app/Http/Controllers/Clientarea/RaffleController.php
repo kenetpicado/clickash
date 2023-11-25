@@ -23,13 +23,6 @@ class RaffleController extends Controller
     ) {
     }
 
-    public function index()
-    {
-        return inertia('Clientarea/Raffle/Index', [
-            'raffles' => $this->raffleUserRepository->getRaffles(),
-        ]);
-    }
-
     public function show(Request $request, Raffle $raffle)
     {
         $daily_sales_resume = [];
