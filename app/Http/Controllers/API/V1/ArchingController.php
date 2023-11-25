@@ -20,7 +20,7 @@ class ArchingController extends Controller
     {
         return ArchingResource::collection($this->archingRepository->getAll($request->all()))
             ->additional([
-                'total' => $this->archingRepository->getTotal($request->all())
+                'total' => $this->archingRepository->getTotal($request->all()),
             ]);
     }
 
@@ -32,7 +32,7 @@ class ArchingController extends Controller
         ]);
 
         return self::index(Request::create('', 'GET', [
-            'seller_id' => $request->seller_id
+            'seller_id' => $request->seller_id,
         ]));
     }
 

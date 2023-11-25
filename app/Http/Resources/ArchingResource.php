@@ -17,7 +17,7 @@ class ArchingResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
-            'amount' => "C$ " . number_format($this->amount),
+            'amount' => 'C$ '.number_format($this->amount),
             'current_balance' => null,
             'seller' => UserNameResource::make($this->whenLoaded('seller')),
         ];

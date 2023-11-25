@@ -22,7 +22,7 @@ class TransactionResource extends JsonResource
             'client' => $this->client,
             'hour' => Carbon::parse($this->hour)->format('g:i A'),
             'status' => $this->status,
-            'prize' => 'C$ ' . number_format($this->prize),
+            'prize' => 'C$ '.number_format($this->prize),
             'super_x' => $this->super_x,
             'created_at' => $this->created_at->format('d/m/y g:i A'),
             'raffle' => RaffleNameResource::make($this->whenLoaded('raffle')),

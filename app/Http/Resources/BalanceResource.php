@@ -15,9 +15,9 @@ class BalanceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'income' => "C$ " . number_format($this->income),
-            'expenditure' => "C$ " . number_format($this->expenditure),
-            'balance' => "C$ " . number_format($this->income - $this->expenditure),
+            'income' => 'C$ '.number_format($this->income),
+            'expenditure' => 'C$ '.number_format($this->expenditure),
+            'balance' => 'C$ '.number_format($this->income - $this->expenditure),
         ];
     }
 }

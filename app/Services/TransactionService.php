@@ -133,7 +133,7 @@ class TransactionService
     public function checkIndividualLimit($amount, $limit)
     {
         if ($amount > $limit) {
-            abort(422, 'El monto máximo es C$' . $limit);
+            abort(422, 'El monto máximo es C$'.$limit);
         }
     }
 
@@ -143,7 +143,7 @@ class TransactionService
 
         if ($transactionsTotalAmount + $request['amount'] > $limit) {
             $availableAmount = $limit - $transactionsTotalAmount;
-            abort(422, 'El monto disponible es C$' . $availableAmount);
+            abort(422, 'El monto disponible es C$'.$availableAmount);
         }
     }
 

@@ -30,8 +30,8 @@ class DailySalesController extends Controller
                 'raffle' => $raffle->name,
                 'hour' => Carbon::parse($validated['hour'])->format('g:i A'),
                 'current_time' => Carbon::now()->format('g:i A'),
-                'total' => "C$ " . number_format($sales->sum('total')),
-                'message' => isset($validated['date']) ? "Reporte de ventas del " . Carbon::parse($validated['hour'])->format('d/m/Y') : 'Reporte de ventas de hoy',
+                'total' => 'C$ '.number_format($sales->sum('total')),
+                'message' => isset($validated['date']) ? 'Reporte de ventas del '.Carbon::parse($validated['hour'])->format('d/m/Y') : 'Reporte de ventas de hoy',
             ]);
     }
 }

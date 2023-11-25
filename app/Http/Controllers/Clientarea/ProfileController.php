@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\ProfileRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -15,7 +14,7 @@ class ProfileController extends Controller
         return inertia('Clientarea/Profile/Index', [
             'user' => User::query()
                 ->withCount('sellers')
-                ->find(auth()->id())
+                ->find(auth()->id()),
         ]);
     }
 
@@ -26,7 +25,7 @@ class ProfileController extends Controller
         $user->fill([
             'name' => $request->name,
             'email' => $request->email,
-            'company_name' => $request->company_name
+            'company_name' => $request->company_name,
         ]);
 
         if ($request->password) {

@@ -15,7 +15,7 @@ class UserObserver
                 ->with([
                     'availability' => function ($query) {
                         $query->whereNull('user_id');
-                    }
+                    },
                 ])
                 ->get(['id', 'settings']);
 

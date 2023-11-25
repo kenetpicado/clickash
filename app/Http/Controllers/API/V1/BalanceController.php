@@ -15,12 +15,13 @@ class BalanceController extends Controller
         $balance = null;
         $startOfWeek = Carbon::now()->startOfWeek()->format('d M Y');
 
-        if (auth()->user()->role === 'seller')
+        if (auth()->user()->role === 'seller') {
             $balance = (new TransactionRepository)->getBalanceByUser(auth()->id(), $request->all());
-        else if ($request->has('user_id'))
+        } elseif ($request->has('user_id')) {
             $balance = (new TransactionRepository)->getBalanceByUser($request->get('user_id'), $request->all());
-        else
+        } else {
             $balance = (new TransactionRepository)->getBalanceTeam($request->all());
+        }
 
         return BalanceResource::make($balance)
             ->additional([
