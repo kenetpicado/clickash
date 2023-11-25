@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Clientarea\ClientareaController;
+use App\Http\Controllers\Clientarea\ProfileController as ClientareaProfileController;
 use App\Http\Controllers\Clientarea\RaffleAvailabilityController;
 use App\Http\Controllers\Clientarea\RaffleBlockedNumberController;
 use App\Http\Controllers\Clientarea\RaffleController as ClientareaRaffleController;
@@ -43,6 +44,8 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
     ->group(function () {
         Route::get('/', ClientareaController::class)
             ->name('index');
+
+        Route::resource('profile', ClientareaProfileController::class)->only(['index', 'update']);
 
         Route::resource('sellers', SellerController::class)
             ->except(['edit', 'create']);

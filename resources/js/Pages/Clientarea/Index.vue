@@ -1,38 +1,69 @@
 <template>
-    <AppLayout title="Inicio" :breads="breads">
+    <ClientareaLayout title="Inicio">
+        <template #options>
+            <button type="button" :class="selectedTab == 'raffle' ? 'active-tab' : 'inactive-tab'"
+                @click="selectedTab = 'raffle'">
+                Rifas
+            </button>
+            <button type="button" :class="selectedTab == 'seller' ? 'active-tab' : 'inactive-tab'"
+                @click="selectedTab = 'seller'">
+                Vendedores
+            </button>
+            <button type="button" :class="selectedTab == 'transaction' ? 'active-tab' : 'inactive-tab'"
+                @click="selectedTab = 'transaction'">
+                Transacciones
+            </button>
+        </template>
         <template #header>
             <span class="title">
-                Overview
+                {{ selectedTab == 'raffle' ? 'Rifas' : selectedTab == 'seller' ? 'Vendedores' : 'Transacciones' }}
             </span>
+            <button v-if="selectedTab == 'seller'" @click="triggerNew = !triggerNew" type="button" class="simple-button">
+                Nuevo
+            </button>
         </template>
-        <!-- <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            <div v-for="raffle in raffles" class="flex items-center bg-gray-200 rounded-xl p-2 gap-2">
-                <div class="bg-white rounded-xl p-1">
-                    <img src="/games.png" alt="" class="w-20 h-20">
-                </div>
-                <div class="gap-2">
-                    <div class="font-semibold">{{ raffle.name }}</div>
-                </div>
-            </div>
-        </div> -->
-    </AppLayout>
+
+        <RaffleTab v-if="selectedTab == 'raffle'" :raffles="raffles" />
+
+        <SellerTab v-if="selectedTab == 'seller'" :sellers="sellers" :triggerNew="triggerNew" />
+
+        <TransactionTab v-if="selectedTab == 'transaction'" :transactions="transactions"
+            :dailyTransactions="daily_transactions" />
+
+    </ClientareaLayout>
 </template>
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import RaffleTab from '@/Components/RaffleTab.vue';
+import SellerTab from '@/Components/SellerTab.vue';
+import TransactionTab from '@/Components/TransactionTab.vue';
+import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
+import { ref, watch } from 'vue';
 
 defineProps({
     raffles: {
         type: Object,
         required: true,
     },
+    sellers: {
+        type: Object,
+        required: true,
+    },
+    transactions: {
+        type: Object,
+        required: true,
+    },
+    daily_transactions: {
+        type: Number,
+        required: true,
+    },
 });
 
-const breads = [
-    {
-        name: 'Inicio',
-        route: route('clientarea.index'),
-    },
-];
+const selectedTab = ref(localStorage.getItem('selectedTab') || 'raffle')
+const triggerNew = ref(false)
+
+watch(() => selectedTab.value, (value) => {
+    localStorage.setItem('selectedTab', value)
+})
 
 </script>

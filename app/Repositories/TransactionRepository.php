@@ -116,7 +116,9 @@ class TransactionRepository
     public function getDailyTotalByTeam()
     {
         return self::setTeam()
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            // ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            //where date today
+            ->whereDate('created_at', Carbon::today())
             ->sum('amount');
     }
 

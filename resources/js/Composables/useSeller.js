@@ -6,7 +6,7 @@ export function useSeller() {
     const form = useForm({
         id: "",
         name: "",
-        email: "",
+        email: " ",
         password: "",
         password_confirmation: "",
     });

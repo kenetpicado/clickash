@@ -34,7 +34,7 @@ const proxyChecked = computed({
     <div class="block mb-4">
         <label>
             <input v-model="proxyChecked" type="checkbox" :value="value"
-                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary">
 
             <span class="ml-2 text-sm text-basic">{{ text }}</span>
         </label>
