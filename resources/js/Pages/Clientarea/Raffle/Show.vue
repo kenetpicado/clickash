@@ -128,14 +128,6 @@ const breads = [
         name: 'Inicio',
         route: route('clientarea.index'),
     },
-    {
-        name: 'Rifas',
-        route: route('clientarea.raffles.index'),
-    },
-    {
-        name: props.raffle.name,
-        route: route('clientarea.raffles.show', props.raffle.id),
-    }
 ];
 
 const currentTab = ref(localStorage.getItem('currentTab') || 0);

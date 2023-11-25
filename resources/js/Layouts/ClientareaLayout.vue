@@ -18,7 +18,7 @@ defineProps({
 <template>
     <Head :title="title" />
     <nav class="bg-white border gray-200 shadow">
-        <div class="flex items-center justify-between p-4 mx-auto max-w-screen-lg">
+        <div class="flex items-center justify-between px-4 py-2 mx-auto max-w-screen-lg">
             <Link :href="route('clientarea.index')" class="font-bold text-lg text-gray-600">{{ $page.props.app_name }}</Link>
             <Link :href="route('clientarea.profile.index')" class="font-bold text-lg text-gray-600">
                 <img src="/profile.png" class="w-10 h-10 object-cover rounded-full border-2 border-white" alt="">

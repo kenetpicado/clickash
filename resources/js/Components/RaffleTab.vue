@@ -20,14 +20,14 @@
                                 <MenuItem v-slot="{ active }">
                                 <button
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconUserCheck class="mr-2 h-5 w-5 text-primary" />
+                                    <IconUserCheck :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
                                     Números ganadores
                                 </button>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
                                 <button
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconNumber class="mr-2 h-5 w-5 text-primary" />
+                                    <IconNumber :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
                                     Números bloqueados
                                 </button>
                                 </MenuItem>
@@ -36,30 +36,30 @@
                                 <MenuItem v-slot="{ active }">
                                 <button
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconEyeDollar class="mr-2 h-5 w-5 text-primary" />
+                                    <IconEyeDollar :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
                                     Ventas
                                 </button>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
                                 <button
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconReportAnalytics class="mr-2 h-5 w-5 text-primary" />
+                                    <IconReportAnalytics :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
                                     Reportes
                                 </button>
                                 </MenuItem>
                             </div>
                             <div class="px-1 py-1">
                                 <MenuItem v-slot="{ active }">
-                                <button
+                                <Link :href="route('clientarea.raffles.availability.index', raffle.raffle_id)"
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconDeviceWatch class="mr-2 h-5 w-5 text-primary" />
+                                    <IconDeviceWatch :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
                                     Horario
-                                </button>
+                                </Link>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
                                 <button @click="edit(raffle)"
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconSettings class="mr-2 h-5 w-5 text-primary" />
+                                    <IconSettings :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
                                     Configuración
                                 </button>
                                 </MenuItem>
@@ -67,8 +67,8 @@
                         </MenuItems>
                     </transition>
                 </Menu>
-
             </div>
+
             <div class="flex items-center gap-2 mb-3">
                 <div class="bg-white rounded-xl">
                     <img src="/games.png" alt="" class="w-20 h-20">
@@ -126,6 +126,7 @@ import FormModal from './Modal/FormModal.vue';
 import InputForm from './Form/InputForm.vue';
 import Checkbox from './Form/Checkbox.vue';
 import { toast } from '@/Use/toast';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     raffles: {

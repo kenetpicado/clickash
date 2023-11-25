@@ -14,6 +14,13 @@ class RaffleAvailabilityController extends Controller
     ) {
     }
 
+    public function index($raffle)
+    {
+        return inertia('Clientarea/Raffle/Availability', [
+            'availability' => $this->availabilityRepository->getByRaffle($raffle),
+        ]);
+    }
+
     public function store(RaffleAvailabilityRequest $request, $raffle)
     {
         $this->availabilityRepository->updateOrCreate($request->validated(), $raffle);

@@ -1,5 +1,5 @@
 <template>
-    <ClientareaLayout title="Vendedor" :breads="breads">
+    <ClientareaLayout title="Vendedor">
         <template #header>
             <span class="title">
                 {{ seller.name }}
@@ -43,17 +43,6 @@ const props = defineProps({
         required: true,
     }
 });
-
-const breads = [
-    {
-        name: 'Inicio',
-        route: route('clientarea.index'),
-    },
-    {
-        name: 'Vendedores',
-        route: route('clientarea.sellers.index'),
-    },
-];
 
 const stats = computed(() => {
     return [
