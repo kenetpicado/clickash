@@ -2,10 +2,10 @@
     <div class="mt-2 mb-3 text-basic">
         <slot name="description" />
     </div>
-    <div class="bg-white overflow-hidden border rounded-xl">
+    <div class="bg-white overflow-hidden border-2 border-card rounded-xl">
         <div class="overflow-y-auto rounded-lg m-0">
             <table class="w-full border-collapse bg-white text-left text-sm text-basic">
-                <thead class="bg-gray-50">
+                <thead class="bg-card">
                     <tr>
                         <slot name="header" />
                     </tr>

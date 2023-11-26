@@ -24,9 +24,12 @@ class UserRaffleController extends Controller
         return back();
     }
 
-    public function destroy(User $user, Raffle $raffle)
+    public function destroy($user, $raffle)
     {
-        $user->raffles()->detach($raffle->id);
+        $raffleUser = RaffleUser::where('user_id', $user)->where('raffle_id', $raffle)->first();
+
+        if ($raffleUser)
+            $raffleUser->delete();
 
         return back();
     }

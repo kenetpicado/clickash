@@ -5,7 +5,7 @@
         </label>
 
         <select :required="required"
-            class="border-gray-300 focus:border-primaryDark focus:ring-primaryDark rounded-md shadow-sm mt-1 block w-full transition duration-300 ease-in-out"
+            class="border-gray-300 focus:border-primaryDark focus:ring-primaryDark rounded-xl shadow-sm mt-1 block w-full transition duration-300 ease-in-out"
             :value="modelValue" @input="$emit('update:modelValue', $event.target.value)">
             <slot></slot>
         </select>

@@ -1,17 +1,17 @@
 <template>
-    <aside class="w-72 p-3 bg-white flex flex-col hidden lg:block min-h-screen border-r">
+    <aside class="w-72 p-3 bg-card flex flex-col hidden lg:block min-h-screen">
         <div class="flex flex-col items-center my-1">
             <Link :href="route('home')">
             <div class="h-24 w-24">
                 <img class="h-full w-full" src="/logo-simple.png" alt="" />
             </div>
-            <h2 class="text-2xl font-extrabold text-basic">
+            <h2 class="text-2xl font-extrabold text-basic mb-8">
                 {{ $page.props.app_name }}
             </h2>
             </Link>
         </div>
         <ul class="space-y-2 text-basic">
-            <li v-for="item in showItems">
+            <li v-for="item in items">
                 <span v-if="item.header" class="block text-xs text-gray-400 uppercase tracking-wider mt-2 px-2">
                     {{ item.header }}
                 </span>
@@ -54,42 +54,26 @@ const logout = () => {
 
 const items = [
     {
-        header: 'Home'
+        header: 'Administración'
     },
     {
-        name: 'Dashboard',
-        route: route('dashboard.index'),
-        icon: IconHome
-    },
-    {
-        header: 'Administration'
-    },
-    {
-        name: 'Users',
+        name: 'Usuarios',
         route: route('dashboard.users.index'),
         icon: IconUsers
     },
     {
-        name: 'Raffles',
+        name: 'Rifas',
         route: route('dashboard.raffles.index'),
         icon: IconGift
     },
     {
-        header: 'System'
+        header: 'Sistema'
     },
 ]
-
-const ownerItems = [
-    {
-        header: 'Inicio'
-    },
-]
-
-const showItems = usePage().props.auth.role == "root" ? items : ownerItems;
 
 function getClass(fullRoute) {
     return window.location.href == fullRoute
-        ? 'bg-gray-100 font-bold'
+        ? 'bg-primary'
         : 'hover:bg-gray-100';
 }
 

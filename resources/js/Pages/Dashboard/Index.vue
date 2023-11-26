@@ -2,11 +2,11 @@
     <AppLayout title="Users" :breads="breads">
         <template #header>
             <span class="title">
-                Overview
+                Inicio
             </span>
         </template>
 
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <StatCard v-for="stat in stats" :stat="stat" :key="stat.name" />
         </div>
     </AppLayout>
@@ -38,12 +38,12 @@ const breads = [
 const stats = [
     {
         value: props.users_count,
-        title: 'Users',
+        title: 'Propietarios registrados',
         icon: IconUsers,
     },
     {
         value: props.sellers_count,
-        title: 'Sellers',
+        title: 'Vendedores registrados',
         icon: IconUsers,
     },
 ]

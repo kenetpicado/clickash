@@ -141,20 +141,4 @@ const resetValues = () => {
     isNew.value = true;
 };
 
-function getImageSrc(value) {
-    if (value) {
-        return value;
-    }
-
-    return "https://media.istockphoto.com/id/1211282980/es/vector/ganadores-afortunados-girando-tambor-de-la-rifa.jpg?s=612x612&w=0&k=20&c=1jJPxjaVHqPFA_DQGDV3QEBQ6_C3pbhjs8Ies2kR-44="
-}
-
 </script>
-
-<style>
-pre {
-    background-color: rgb(241, 241, 241);
-    padding: 1rem;
-    border-radius: 1rem;
-}
-</style>

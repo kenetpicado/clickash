@@ -1,30 +1,25 @@
 <template>
-    <AppLayout title="Users" :breads="breads">
+    <AppLayout title="Usuarios" :breads="breads">
 
         <template #header>
             <span class="title">
-                Users
+                Usuarios
             </span>
             <AddButton @click="openModal = true" />
         </template>
 
         <TableSection>
             <template #header>
-                <th>ID</th>
                 <th>Nombre</th>
-                <th>Company</th>
-                <th>Sellers</th>
-                <th>Role</th>
-                <th>Active</th>
-                <th>Status</th>
+                <th>Compañia</th>
+                <th>Vendedores</th>
+                <th>Actividad</th>
+                <th>Estado</th>
                 <th>Accciones</th>
             </template>
 
             <template #body>
                 <tr v-for="(user, index) in users" class="hover:bg-gray-50">
-                    <td>
-                        {{ index + 1 }}
-                    </td>
                     <td>
                         {{ user.name }}
                         <div class="text-gray-400 mt-2">
@@ -36,11 +31,6 @@
                     </td>
                     <td>
                         {{ user.sellers_count }} / {{ user.sellers_limit }}
-                    </td>
-                    <td>
-                        <span class="badge-primary uppercase" v-if="user.role">
-                            {{ user.role }}
-                        </span>
                     </td>
                     <td>
                         {{ user.online }}
@@ -63,7 +53,7 @@
             </template>
         </TableSection>
 
-        <FormModal :show="openModal" title="User" @onCancel="resetValues" @onSubmit="onSubmit">
+        <FormModal :show="openModal" title="Usuario" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Name" v-model="form.name" required />
             <InputForm text="Email" v-model="form.email" type="email" required />
             <InputForm text="Company name" v-model="form.company_name" required />

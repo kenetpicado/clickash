@@ -26,22 +26,16 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Entrar" />
 
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 px-4 lg:px-0">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-white px-4 lg:px-0">
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-xl">
-            <div>
-                <img class="mx-auto h-20 w-auto"
-                    src="logo-simple.png"
-                    alt="Workflow" />
-                <h2 class="mt-4 text-center text-2xl font-extrabold text-basic">
-                    {{ app_name }}
-                </h2>
-                <p class="mt-2 text-center text-sm text-basic">
-                    Inicia sesión con tu cuenta
-                </p>
-            </div>
+        <img class="mx-auto h-28 w-auto" src="logo-simple.png" alt="Workflow" />
+
+        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-card shadow-md overflow-hidden rounded-xl">
+            <h2 class="mt-4 text-center text-lg font-extrabold text-basic">
+                Inicia sesión
+            </h2>
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                 {{ status }}
             </div>
@@ -53,14 +47,10 @@ const submit = () => {
 
                 <Checkbox v-model:checked="form.remember" text="Recordarme" />
 
-                <div class="flex items-center justify-end mt-4">
-                    <button type="submit" :class="['primary-button', form.processing ? 'opacity-25' : '']"
-                        :disabled="form.processing">
-                        Entrar
-                    </button>
-                </div>
+                <button type="submit" class="bg-primary inline-flex justify-center items-center p-2 rounded-xl w-full mt-4 text-gray-600 transition select-none duration-300 transform active:scale-110">
+                    Entrar
+                </button>
             </form>
         </div>
-
     </div>
 </template>

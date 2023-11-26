@@ -38,6 +38,12 @@
             scrollbar-width: none;
             /* Firefox */
         }
+
+        pre {
+            background-color: #f9f5f2;
+            padding: 1rem;
+            border-radius: 1rem;
+        }
     </style>
 </head>
 

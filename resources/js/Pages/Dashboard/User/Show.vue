@@ -5,7 +5,7 @@
             <span class="title">
                 {{ user.name }}
             </span>
-            <AddButton v-if="selectedTab == 'raffles'" @click="openModal = true" />
+            <AddButton v-if="selectedTab == 1" @click="openModal = true" />
         </template>
 
         <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-4">
@@ -70,7 +70,7 @@
                         {{ index + 1 }}
                     </td>
                     <td>
-                        <span class="font-bold">{{ raffle.name }}</span>
+                        {{ raffle.name }}
                     </td>
                     <td>
                         <pre>{{ JSON.parse(raffle.pivot.settings) }}</pre>
@@ -80,7 +80,7 @@
                     </td>
                 </tr>
                 <tr v-if="raffles.length == 0">
-                    <td colspan="5" class="text-center">No data to display</td>
+                    <td colspan="4" class="text-center">No data to display</td>
                 </tr>
             </template>
         </TableSection>
@@ -101,7 +101,7 @@ import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router } from '@inertiajs/vue3';
 import { IconTrash } from '@tabler/icons-vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import AddButton from '@/Components/Buttons/AddButton.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
@@ -140,7 +140,7 @@ const breads = [
     }
 ];
 
-const selectedTab = ref(0);
+const selectedTab = ref(parseInt(localStorage.getItem('selectedDashboardTab')) ?? 0);
 const openModal = ref(false);
 const raffle = ref(null);
 
@@ -173,12 +173,8 @@ function onSubmit() {
     });
 }
 
-</script>
+watch(() => selectedTab.value, (value) => {
+    localStorage.setItem('selectedDashboardTab', value);
+});
 
-<style>
-pre {
-    background-color: rgb(241, 241, 241);
-    padding: 1rem;
-    border-radius: 1rem;
-}
-</style>
+</script>
