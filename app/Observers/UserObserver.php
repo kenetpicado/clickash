@@ -17,6 +17,7 @@ class UserObserver
                         $query->whereNull('user_id');
                     },
                 ])
+                ->whereIn('id', [1, 2, 3, 4, 5, 6])
                 ->get(['id', 'settings']);
 
             $raffles->each(function ($raffle) use ($user) {

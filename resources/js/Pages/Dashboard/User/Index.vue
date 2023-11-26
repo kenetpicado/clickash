@@ -37,14 +37,16 @@
                     </td>
                     <td> <span class="uppercase">{{ user.status }}</span></td>
                     <td>
-                        <div class="flex gap-2 text-gray-400">
-                            <Link :href="route('dashboard.users.show', user.id)">
-                            <IconEye />
-                            </Link>
-
-                            <IconPencil role="button" @click="edit(user)" />
-                            <IconTrash role="button" @click="destroy(user.id)" />
-                        </div>
+                        <Dropdown>
+                            <div class="px-1 py-1">
+                                <DropdownItem :href="route('dashboard.users.show', user.id)" title="Rifas" :icon="IconGift" />
+                                <DropdownItem :href="route('dashboard.users.show', user.id)" title="Vendedores" :icon="IconUsers" />
+                            </div>
+                            <div class="px-1 py-1">
+                                <DropdownItem @click="edit(user)" title="Editar" :icon="IconEdit" />
+                                <DropdownItem @click="destroy(user.id)" title="Eliminar" :icon="IconTrash" />
+                            </div>
+                        </Dropdown>
                     </td>
                 </tr>
                 <tr v-if="users.length == 0">
@@ -74,16 +76,17 @@
 </template>
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import TableSection from '@/Components/TableSection.vue';
-import { IconPencil, IconTrash, IconEye } from '@tabler/icons-vue';
 import AddButton from '@/Components/Buttons/AddButton.vue';
-import FormModal from '@/Components/Modal/FormModal.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownItem from '@/Components/DropdownItem.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
-import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
 import SelectForm from '@/Components/Form/SelectForm.vue';
+import FormModal from '@/Components/Modal/FormModal.vue';
+import TableSection from '@/Components/TableSection.vue';
 import { useUser } from '@/Composables/useUser.js';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { IconEdit, IconGift, IconTrash, IconUsers } from '@tabler/icons-vue';
+import { ref } from 'vue';
 
 defineProps({
     users: {

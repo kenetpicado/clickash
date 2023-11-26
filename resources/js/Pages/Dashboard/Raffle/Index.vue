@@ -1,47 +1,33 @@
 <template>
-    <AppLayout title="Raffles" :breads="breads">
+    <AppLayout title="Rifa" :breads="breads">
 
         <template #header>
             <span class="title">
-                Raffles
+                Rifa
             </span>
             <AddButton @click="openModal = true" />
         </template>
 
-        <TableSection>
-            <template #header>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Settings</th>
-                <th>Accciones</th>
-            </template>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div v-for="raffle in raffles" class="bg-card rounded-xl p-2 w-full">
+                <div class="flex justify-between">
+                    <span class="mb-2">{{ raffle.name }}</span>
 
-            <template #body>
-                <tr v-for="(raffle, index) in raffles" class="hover:bg-gray-50">
-                    <td>
-                        {{ raffle.id }}
-                    </td>
-                    <td>
-                        {{ raffle.name }}
-                    </td>
-                    <td>
-                        <pre>{{ raffle.settings }}</pre>
-                    </td>
-                    <td>
-                        <div class="flex gap-2 text-gray-400">
-                            <IconPencil role="button" @click="edit(raffle)" />
+                    <Dropdown>
+                        <div class="px-1 py-1">
+                            <DropdownItem @click="edit(raffle)" title="Editar" :icon="IconEdit" />
                         </div>
-                    </td>
-                </tr>
-                <tr v-if="raffles.length == 0">
-                    <td colspan="3" class="text-center">No data to display</td>
-                </tr>
-            </template>
-        </TableSection>
+                    </Dropdown>
+                </div>
 
-        <FormModal :show="openModal" title="Add" @onCancel="resetValues" @onSubmit="onSubmit">
+                <div class="text-xs text-gray-600">
+                    <pre class="bg-white w-full p-3">{{ raffle.settings }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <FormModal :show="openModal" title="Rifa" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Name" v-model="form.name" />
-            <InputForm text="Image" v-model="form.image" type="url" />
             <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
             <Checkbox v-model:checked="form.settings.date" text="Date" />
 
@@ -65,12 +51,15 @@ import AddButton from '@/Components/Buttons/AddButton.vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
-import TableSection from '@/Components/TableSection.vue';
 import { useRaffle } from '@/Composables/useRaffle.js';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { IconPencil } from '@tabler/icons-vue';
-import { ref, watch } from 'vue';
 import { toast } from "@/Use/toast";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { IconList, IconSettings } from '@tabler/icons-vue';
+import { ref, watch } from 'vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownItem from '@/Components/DropdownItem.vue';
+import { IconEdit } from '@tabler/icons-vue';
 
 defineProps({
     raffles: {
@@ -85,7 +74,7 @@ const breads = [
         route: route('dashboard.raffles.index'),
     },
     {
-        name: 'Raffles',
+        name: 'Rifas',
         route: route('dashboard.raffles.index'),
     },
 ];
