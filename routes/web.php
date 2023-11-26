@@ -5,6 +5,7 @@ use App\Http\Controllers\Clientarea\ProfileController as ClientareaProfileContro
 use App\Http\Controllers\Clientarea\RaffleAvailabilityController;
 use App\Http\Controllers\Clientarea\RaffleBlockedNumberController;
 use App\Http\Controllers\Clientarea\RaffleController as ClientareaRaffleController;
+use App\Http\Controllers\Clientarea\RaffleReportController;
 use App\Http\Controllers\Clientarea\RaffleWinningNumberController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
@@ -62,6 +63,9 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
 
         Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
             ->only(['index', 'store']);
+
+        Route::get('raffles/{raffle}/reports', RaffleReportController::class)
+            ->name('raffles.reports');
     });
 
 Route::middleware(['auth:sanctum', 'online'])

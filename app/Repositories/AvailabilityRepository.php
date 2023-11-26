@@ -48,4 +48,15 @@ class AvailabilityRepository
             ->where('order', Carbon::now()->dayOfWeek)
             ->value('blocked_hours');
     }
+
+    public function getHoursByRaffle($raffle_id)
+    {
+        return Availability::where('raffle_id', $raffle_id)
+            ->where('user_id', auth()->user()->getOwnerId())
+            ->pluck('blocked_hours')
+            ->flatten()
+            ->unique()
+            ->sort()
+            ->values();
+    }
 }

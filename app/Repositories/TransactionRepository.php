@@ -127,12 +127,9 @@ class TransactionRepository
             ->where('raffle_id', $raffle_id)
             ->where('hour', $request['hour'])
             ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($request['date'])->format('Y-m-d 00:00:00'),
-                    Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
-                ]);
+                $query->whereDate('created_at', $request['date']);
             }, function ($query) {
-                $query->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'));
+                $query->whereDate('created_at', Carbon::today());
             })
             ->selectRaw('digit, sum(amount) as total, count(digit) as count')
             ->groupBy('digit')
