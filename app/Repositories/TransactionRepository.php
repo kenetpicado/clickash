@@ -163,7 +163,7 @@ class TransactionRepository
             }, function ($query) {
                 $query->where('created_at', '>=', Carbon::now()->startOfWeek());
             })
-            ->selectRaw('SUM(amount) as income, SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END) as expenditure')
+            ->selectRaw('COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
             ->first();
     }
 }
