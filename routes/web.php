@@ -11,6 +11,7 @@ use App\Http\Controllers\Clientarea\RaffleWinningNumberController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\RaffleCloneController;
 use App\Http\Controllers\Dashboard\RaffleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\UserRaffleController;
@@ -37,6 +38,9 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
 
         Route::resource('raffles', RaffleController::class)
             ->except(['edit', 'create', 'show']);
+
+        Route::put('raffles/{raffle}/clone', RaffleCloneController::class)
+            ->name('raffles.clone');
     });
 
 Route::middleware(['auth:sanctum', 'online', 'role:owner'])

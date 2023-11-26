@@ -13,6 +13,7 @@ export function useRaffle() {
             super_x: false,
             general_limit: null,
             individual_limit: null,
+            multiplier: 70,
         },
     });
 
@@ -38,5 +39,16 @@ export function useRaffle() {
         });
     }
 
-    return { form, store, update };
+    function clone(onDone = null) {
+        form.put(route("dashboard.raffles.clone", form.id), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                toast.success("Rifa clonada con éxito");
+                if (onDone) onDone();
+            },
+        });
+    }
+
+    return { form, store, update, clone };
 }

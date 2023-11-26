@@ -165,9 +165,6 @@ function onSubmit() {
             resetValues();
             toast.success('Rifa actualizada');
         },
-        onError: (err) => {
-            console.log(err);
-        }
     });
 }
 

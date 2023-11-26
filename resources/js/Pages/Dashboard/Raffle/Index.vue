@@ -15,6 +15,7 @@
 
                     <Dropdown>
                         <div class="px-1 py-1">
+                            <DropdownItem @click="setToClone(raffle)" title="Clonar" :icon="IconCopy" />
                             <DropdownItem @click="edit(raffle)" title="Editar" :icon="IconEdit" />
                         </div>
                     </Dropdown>
@@ -27,20 +28,28 @@
         </div>
 
         <FormModal :show="openModal" title="Rifa" @onCancel="resetValues" @onSubmit="onSubmit">
-            <InputForm text="Name" v-model="form.name" />
-            <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
-            <Checkbox v-model:checked="form.settings.date" text="Date" />
-
-            <div class="grid grid-cols-2 gap-4" v-if="!form.settings.date">
-                <InputForm text="Min" v-model="form.settings.min" />
-                <InputForm text="Max" v-model="form.settings.max" />
-            </div>
+            <InputForm text="Nombre" v-model="form.name" />
 
             <div class="grid grid-cols-2 gap-4">
-                <InputForm text="General Limit" v-model="form.settings.general_limit" />
-                <InputForm text="Individual Limit" v-model="form.settings.individual_limit" />
+                <InputForm text="Limite general C$" v-model="form.settings.general_limit" type="number" />
+                <InputForm text="Limite indiv. C$" v-model="form.settings.individual_limit" type="number" />
             </div>
 
+            <div class="grid grid-cols-2 gap-4 mb-1">
+                <Checkbox v-model:checked="form.settings.super_x" text="Super X" />
+                <Checkbox v-model:checked="form.settings.date" text="Fecha" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4" v-if="!form.settings.date">
+                <InputForm text="Número inicio" v-model="form.settings.min" required type="number" />
+                <InputForm text="Número final" v-model="form.settings.max" required type="number" />
+            </div>
+
+            <InputForm text="Multiplicador" v-model="form.settings.multiplier" type="number" required />
+        </FormModal>
+
+        <FormModal :show="openModalClone" title="Clonar" @onCancel="resetValues" @onSubmit="onClone">
+            <InputForm text="Nuevo nombre" v-model="form.name" required="" />
         </FormModal>
 
     </AppLayout>
@@ -48,18 +57,17 @@
 
 <script setup>
 import AddButton from '@/Components/Buttons/AddButton.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownItem from '@/Components/DropdownItem.vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import { useRaffle } from '@/Composables/useRaffle.js';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { toast } from "@/Use/toast";
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
-import { IconList, IconSettings } from '@tabler/icons-vue';
-import { ref, watch } from 'vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownItem from '@/Components/DropdownItem.vue';
+import { IconCopy } from '@tabler/icons-vue';
 import { IconEdit } from '@tabler/icons-vue';
+import { ref, watch } from 'vue';
 
 defineProps({
     raffles: {
@@ -80,8 +88,9 @@ const breads = [
 ];
 
 const openModal = ref(false);
+const openModalClone = ref(false);
 const isNew = ref(true);
-const { store, update, form } = useRaffle();
+const { store, update, form, clone } = useRaffle();
 
 function edit(raffle) {
     Object.assign(form, raffle);
@@ -127,7 +136,18 @@ function onSubmit() {
 const resetValues = () => {
     form.reset();
     openModal.value = false;
+    openModalClone.value = false;
     isNew.value = true;
 };
+
+function setToClone(raffle) {
+    form.id = raffle.id;
+    form.name = raffle.name + ' (Copia)';
+    openModalClone.value = true;
+}
+
+function onClone() {
+    clone(resetValues);
+}
 
 </script>

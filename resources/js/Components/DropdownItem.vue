@@ -25,11 +25,10 @@ const props = defineProps({
     },
     href: {
         type: String,
-        required: true
+        required: false
     },
     icon: {
-        type: Object,
-        default: () => IconSettings
+        default: IconSettings
     }
 });
 
