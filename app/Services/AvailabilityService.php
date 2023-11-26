@@ -7,20 +7,12 @@ use Carbon\Carbon;
 
 class AvailabilityService
 {
-    public function checkTransactionHour($raffle_id)
+    public function getPastHours($raffle_id)
     {
-        $currentTime = Carbon::now();
-        $dateTimeService = new DateTimeService();
+        $hours = (new AvailabilityRepository)->getTodayBlockedHours($raffle_id, auth()->user()->getOwnerId());
 
-        // CHECK IF THE TIME IS BLOCKED
-        $blockedHours = (new AvailabilityRepository)->getTodayBlockedHours($raffle_id, auth()->user()->getOwnerId());
-
-        foreach ($blockedHours as $blockedHour) {
-            $message = $dateTimeService->getBlockedHourMessage($currentTime, $blockedHour);
-
-            if ($message) {
-                abort(422, $message);
-            }
-        }
+        return collect($hours)->filter(function ($value) {
+            return Carbon::parse($value)->isPast();
+        });
     }
 }

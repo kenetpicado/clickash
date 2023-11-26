@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\WinningNumberRequest;
 use App\Models\Raffle;
+use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WinningNumberRepository;
+use App\Services\AvailabilityService;
 use Carbon\Carbon;
 
 class RaffleWinningNumberController extends Controller
 {
     public function __construct(
         private readonly WinningNumberRepository $winningNumberRepository,
-        private readonly TransactionRepository $transactionRepository
+        private readonly TransactionRepository $transactionRepository,
+        private readonly AvailabilityService $availabilityService,
+        private readonly RaffleUserRepository $raffleUserRepository
     ) {
     }
 
@@ -23,6 +27,8 @@ class RaffleWinningNumberController extends Controller
             'raffle' => $raffle,
             'winning_numbers' => $this->winningNumberRepository->getByRaffle($raffle->id),
             'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
+            'hours' => $this->availabilityService->getPastHours($raffle->id),
+            'settings' => $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $raffle->id),
         ]);
     }
 
