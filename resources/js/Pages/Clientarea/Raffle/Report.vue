@@ -6,7 +6,7 @@
             </span>
         </template>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 text-gray-600">
             <InputForm v-model="queryParams.date" text="Fecha" type="date"/>
             <SelectForm v-model="queryParams.hour" text="Turno">
                 <option v-if="hours.length > 0" value="" selected>Seleccione un turno</option>
