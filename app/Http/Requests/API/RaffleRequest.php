@@ -23,11 +23,11 @@ class RaffleRequest extends FormRequest
     {
         return [
             'settings' => 'required|array',
-            'settings.individual_limit' => 'required|integer',
-            'settings.general_limit' => 'required|integer',
+            'settings.individual_limit' => 'nullable|integer',
+            'settings.general_limit' => 'nullable|integer',
             'settings.multiplier' => 'required|integer',
-            'settings.min' => 'required',
-            'settings.max' => 'required',
+            'settings.min' => 'nullable',
+            'settings.max' => 'nullable',
             'settings.super_x' => 'required|boolean',
             'settings.date' => 'required|boolean',
         ];
