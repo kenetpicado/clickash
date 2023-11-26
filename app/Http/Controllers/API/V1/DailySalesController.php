@@ -20,7 +20,7 @@ class DailySalesController extends Controller
     {
         $validated = $request->validate([
             'hour' => 'required',
-            'date' => 'nullable|date_format:Y-m-d',
+            'date' => 'nullable',
         ]);
 
         $sales = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $validated);
