@@ -40,7 +40,7 @@
                         <Dropdown>
                             <div class="px-1 py-1">
                                 <DropdownItem :href="route('dashboard.users.show', user.id)" title="Rifas" :icon="IconGift" />
-                                <DropdownItem :href="route('dashboard.users.show', user.id)" title="Vendedores" :icon="IconUsers" />
+                                <DropdownItem :href="route('dashboard.users.sellers', user.id)" title="Vendedores" :icon="IconUsers" />
                             </div>
                             <div class="px-1 py-1">
                                 <DropdownItem @click="edit(user)" title="Editar" :icon="IconEdit" />

@@ -29,7 +29,6 @@ class UserController extends Controller
 
         return inertia('Dashboard/User/Show', [
             'user' => $user,
-            'sellers' => $user->sellers()->get(),
             'raffles' => $raffles,
             'all_raffles' => $all_raffles,
         ]);

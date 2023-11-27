@@ -1,93 +1,36 @@
 <template>
-    <AppLayout title="Users" :breads="breads">
+    <AppLayout title="Rifas" :breads="breads">
 
         <template #header>
             <span class="title">
-                {{ user.name }}
+                Rifas de: {{ user.name }}
             </span>
-            <AddButton v-if="selectedTab == 1" @click="openModal = true" />
+            <AddButton @click="openModal = true" />
         </template>
 
-        <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-4">
-            <div :class="selectedTab == 0 ? 'active-tab' : 'inactive-tab'" @click="selectedTab = 0" role="button">
-                Vendedores
-            </div>
-            <div :class="selectedTab == 1 ? 'active-tab' : 'inactive-tab'" @click="selectedTab = 1" role="button">
-                Rifas
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div v-for="raffle in raffles" class="bg-card rounded-xl p-2 w-full">
+                <div class="flex justify-between">
+                    <span class="mb-2">{{ raffle.name }}</span>
+
+                    <Dropdown>
+                        <div class="px-1 py-1">
+                            <DropdownItem :href="route('dashboard.users.raffles.availability.index', [user.id, raffle.id])"
+                                title="Horario" :icon="IconDeviceWatch" />
+                            <DropdownItem @click="destroy(raffle.id)" title="Eliminar" :icon="IconTrash" />
+                        </div>
+                    </Dropdown>
+                </div>
+
+                <div class="text-xs text-gray-600">
+                    <pre class="bg-white w-full p-3">{{ JSON.parse(raffle.pivot.settings) }}</pre>
+                </div>
             </div>
         </div>
 
-        <TableSection v-if="selectedTab == 0">
-            <template #header>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Active</th>
-                <th>Status</th>
-            </template>
-
-            <template #body>
-                <tr v-for="(user, index) in sellers" class="hover:bg-gray-50">
-                    <td>
-                        {{ index + 1 }}
-                    </td>
-                    <td>
-                        {{ user.name }}
-                    </td>
-                    <td>
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        <span v-if="user.online == 'Now'" class="badge-primary">
-                            {{ user.online }}
-                        </span>
-
-                        <span v-else>
-                            {{ user.online }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="uppercase">{{ user.status }}</span>
-                    </td>
-                </tr>
-                <tr v-if="sellers.length == 0">
-                    <td colspan="4" class="text-center">No data to display</td>
-                </tr>
-            </template>
-        </TableSection>
-
-        <TableSection v-if="selectedTab == 1">
-            <template #header>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Settings</th>
-                <th>Acciones</th>
-            </template>
-
-            <template #body>
-                <tr v-for="(raffle, index) in raffles" class="hover:bg-gray-50">
-                    <td>
-                        {{ index + 1 }}
-                    </td>
-                    <td>
-                        {{ raffle.name }}
-                    </td>
-                    <td>
-                        <pre>{{ JSON.parse(raffle.pivot.settings) }}</pre>
-                    </td>
-                    <td>
-                        <IconTrash role="button" @click="destroy(raffle.id)" />
-                    </td>
-                </tr>
-                <tr v-if="raffles.length == 0">
-                    <td colspan="4" class="text-center">No data to display</td>
-                </tr>
-            </template>
-        </TableSection>
-
-        <FormModal :show="openModal" title="Raffles" @onCancel="resetValues" @onSubmit="onSubmit">
-            <SelectForm text="Raffle" v-model="raffle" required>
-                <option selected disabled value="">Select Raffle</option>
+        <FormModal :show="openModal" title="Rifas" @onCancel="resetValues" @onSubmit="onSubmit">
+            <SelectForm text="Rifas disponibles" v-model="raffle" required>
+                <option selected disabled value="">Seleccionar rifa</option>
                 <option v-for="raffle in all_raffles" :value="raffle.id">{{ raffle.name }}</option>
             </SelectForm>
         </FormModal>
@@ -95,23 +38,21 @@
 </template>
 
 <script setup>
-import TableSection from '@/Components/TableSection.vue';
+import AddButton from '@/Components/Buttons/AddButton.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownItem from '@/Components/DropdownItem.vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
+import FormModal from '@/Components/Modal/FormModal.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router } from '@inertiajs/vue3';
+import { IconDeviceWatch } from '@tabler/icons-vue';
 import { IconTrash } from '@tabler/icons-vue';
-import { ref, watch } from 'vue';
-import AddButton from '@/Components/Buttons/AddButton.vue';
-import FormModal from '@/Components/Modal/FormModal.vue';
-import SelectForm from '@/Components/Form/SelectForm.vue';
+import { ref } from 'vue';
 
 const props = defineProps({
     user: {
-        type: Object,
-        required: true,
-    },
-    sellers: {
         type: Object,
         required: true,
     },
@@ -131,16 +72,11 @@ const breads = [
         route: route('dashboard.users.index'),
     },
     {
-        name: 'Users',
+        name: 'Usuarios',
         route: route('dashboard.users.index'),
     },
-    {
-        name: props.user.name,
-        route: route('dashboard.users.show', props.user.id),
-    }
 ];
 
-const selectedTab = ref(parseInt(localStorage.getItem('selectedDashboardTab')) ?? 0);
 const openModal = ref(false);
 const raffle = ref(null);
 
@@ -172,9 +108,5 @@ function onSubmit() {
         },
     });
 }
-
-watch(() => selectedTab.value, (value) => {
-    localStorage.setItem('selectedDashboardTab', value);
-});
 
 </script>

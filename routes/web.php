@@ -14,7 +14,9 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\RaffleCloneController;
 use App\Http\Controllers\Dashboard\RaffleController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\UserRaffleAvailabilityController;
 use App\Http\Controllers\Dashboard\UserRaffleController;
+use App\Http\Controllers\Dashboard\UserSellerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -33,8 +35,14 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
         Route::resource('users', UserController::class)
             ->except(['edit', 'create']);
 
+        Route::get('users/{user}/sellers', UserSellerController::class)
+            ->name('users.sellers');
+
         Route::resource('users.raffles', UserRaffleController::class)
             ->only(['store', 'destroy']);
+
+        Route::resource('users.raffles.availability', UserRaffleAvailabilityController::class)
+            ->only(['index']);
 
         Route::resource('raffles', RaffleController::class)
             ->except(['edit', 'create', 'show']);
