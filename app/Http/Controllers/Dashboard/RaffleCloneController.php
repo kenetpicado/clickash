@@ -12,7 +12,11 @@ class RaffleCloneController extends Controller
     {
         $cloned = $raffle->replicate();
         $cloned->name = $request->name;
-        $cloned->save();
+        $cloned->saveQuietly();
+
+        $cloned->availability()->createMany(
+            $raffle->availability()->whereNull('user_id')->get()->toArray()
+        );
 
         return back();
     }
