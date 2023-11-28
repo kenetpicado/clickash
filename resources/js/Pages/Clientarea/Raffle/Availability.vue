@@ -15,39 +15,10 @@
             <div v-for="a in availability" class="bg-card p-4 rounded-xl text-gray-600">
                 <div class="flex justify-between items-center mb-2">
                     <span>{{ a.day }}</span>
-                    <Menu as="div" class="relative inline-block text-left">
-
-                        <MenuButton>
-                            <IconList class="text-primary" />
-                        </MenuButton>
-
-                        <transition enter-active-class="transition duration-100 ease-out"
-                            enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-                            leave-active-class="transition duration-75 ease-in"
-                            leave-from-class="transform scale-100 opacity-100"
-                            leave-to-class="transform scale-95 opacity-0">
-                            <MenuItems
-                                class="absolute z-10 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                                <div class="px-1 py-1">
-                                    <MenuItem v-slot="{ active }">
-                                    <button @click="editDay(a)"
-                                        :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                        <IconEdit :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
-                                        Editar
-                                    </button>
-                                    </MenuItem>
-                                    <MenuItem v-slot="{ active }">
-                                    <button @click="destroyDay(a.id)"
-                                        :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                        <IconTrash
-                                            :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
-                                        Eliminar
-                                    </button>
-                                    </MenuItem>
-                                </div>
-                            </MenuItems>
-                        </transition>
-                    </Menu>
+                    <Dropdown>
+                        <DropdownItem @click="editDay(a)" title="Editar" :icon="IconEdit"/>
+                        <DropdownItem @click="destroyDay(a.id)" title="Eliminar" :icon="IconTrash"/>
+                    </Dropdown>
                 </div>
                 <div class="grid grid-cols-2 gap-2 mb-4">
                     <div>
@@ -109,19 +80,18 @@
 </template>
 
 <script setup>
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownItem from '@/Components/DropdownItem.vue';
+import InputForm from '@/Components/Form/InputForm.vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
+import FormModal from '@/Components/Modal/FormModal.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { Carbon } from '@/Use/Carbon';
-import { IconTrash } from '@tabler/icons-vue';
-import { defineProps, ref, computed, watch } from 'vue';
-import SelectForm from '@/Components/Form/SelectForm.vue';
-import InputForm from '@/Components/Form/InputForm.vue';
+import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
-import FormModal from '@/Components/Modal/FormModal.vue';
-import { confirmAlert } from '@/Use/helpers';
-import { IconEdit } from '@tabler/icons-vue';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
-import { IconList } from '@tabler/icons-vue';
+import { IconEdit, IconTrash } from '@tabler/icons-vue';
+import { computed, defineProps, ref, watch } from 'vue';
 
 const props = defineProps({
     availability: {

@@ -15,7 +15,7 @@
                 Rifa: {{ transaction.raffle.name }}
             </span>
             <span>Hora: {{ Carbon.create().setTime(transaction.hour).getTimeFormat() }}</span>
-            <span>Digito: {{ transaction.digit }}</span>
+            <span>Dígito: {{ transaction.digit }}</span>
             <span>Super X: {{ transaction.super_x ? 'Si' : 'No' }}</span>
             <span>Monto: C${{ transaction.super_x ? transaction.amount / 2 : transaction.amount }}</span>
             <strong>Premio: C${{ transaction.prize.toLocaleString() }}</strong>

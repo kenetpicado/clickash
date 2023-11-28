@@ -9,7 +9,7 @@
             </button>
         </template>
         <div v-if="blockeds.length == 0" class="w-full text-center text-gray-400">
-            No hay números bloqueados
+            No hay dígitos bloqueados
         </div>
         <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
             <div v-for="i in blockeds" class="bg-card p-3 rounded-xl text-gray-600">
@@ -35,7 +35,7 @@
         </div>
 
         <FormModal :show="openModal" title="Bloquear" @onCancel="resetValues" @onSubmit="onSubmit">
-            <InputForm text="Numero" v-model="form.number" type="number" required />
+            <InputForm text="Dígito" v-model="form.number" type="number" required />
             <div class="grid grid-cols-2 gap-2">
                 <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
                 <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
