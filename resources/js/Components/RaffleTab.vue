@@ -18,26 +18,17 @@
                             class="absolute z-10 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                             <div class="px-1 py-1">
                                 <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.winning-numbers.index', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconUserCheck :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
-                                    Ganadores
-                                </Link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.blocked-numbers.index', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconNumber :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
-                                    Números bloqueados
-                                </Link>
-                                </MenuItem>
-                            </div>
-                            <div class="px-1 py-1">
-                                <MenuItem v-slot="{ active }">
                                 <Link :href="route('clientarea.raffles.show', raffle.raffle_id)"
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
                                     <IconEyeDollar :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
                                     Ventas
+                                </Link>
+                                </MenuItem>
+                                <MenuItem v-slot="{ active }">
+                                <Link :href="route('clientarea.raffles.winning-numbers.index', raffle.raffle_id)"
+                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
+                                    <IconUserCheck :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
+                                    Ganadores
                                 </Link>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
@@ -49,6 +40,13 @@
                                 </MenuItem>
                             </div>
                             <div class="px-1 py-1">
+                                <MenuItem v-slot="{ active }">
+                                <Link :href="route('clientarea.raffles.blocked-numbers.index', raffle.raffle_id)"
+                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
+                                    <IconNumber :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
+                                    Números bloqueados
+                                </Link>
+                                </MenuItem>
                                 <MenuItem v-slot="{ active }">
                                 <Link :href="route('clientarea.raffles.availability.index', raffle.raffle_id)"
                                     :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
