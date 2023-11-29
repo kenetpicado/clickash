@@ -26,7 +26,11 @@
             </button>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div v-if="archings.data.length == 0" class="text-center text-gray-400 mb-4">
+            No hay movimientos
+        </div>
+
+        <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
             <div class="bg-card p-3 rounded-xl" v-for="i in archings.data">
                 <div class="flex items-center justify-between">
                     <div class="text-gray-400 text-sm mb-2">
