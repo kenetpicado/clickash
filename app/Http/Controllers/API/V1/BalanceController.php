@@ -12,6 +12,11 @@ class BalanceController extends Controller
 {
     public function __invoke(Request $request)
     {
+        //TODO: DEPRECATED
+        return response()->json([
+            'message' => 'This endpoint is deprecated',
+        ], 410);
+
         $balance = null;
         $startOfWeek = Carbon::now()->startOfWeek()->format('d M Y');
 

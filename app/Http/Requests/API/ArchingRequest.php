@@ -23,8 +23,7 @@ class ArchingRequest extends FormRequest
     {
         return [
             'type' => 'required|string|in:RETIRO,DEPOSITO',
-            'amount' => 'required|numeric',
-            'seller_id' => 'required',
+            'amount' => 'required|numeric'
         ];
     }
 }
