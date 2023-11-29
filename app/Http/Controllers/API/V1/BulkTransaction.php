@@ -25,16 +25,19 @@ class BulkTransaction extends Controller
 
         $this->transactionService->validateBulkTransactions($validated);
 
-        $multiplier = $this->raffleUserRepository->getMultiplier(auth()->user()->getOwnerId(), $validated['raffle_id']);
+        $settings = $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $validated['raffle_id']);
+
         $storedTransactions = [];
 
         foreach ($validated['data'] as $transaction) {
 
-            $prize = $transaction['amount'] * $multiplier;
+            $prize = $transaction['amount'] * ($settings['multiplier'] ?? 70);
 
-            if ($transaction['super_x']) {
+            if ($transaction['super_x'] && $settings['super_x']) {
                 $transaction['amount'] = $transaction['amount'] * 2;
                 $prize = $prize * 2;
+            } else {
+                $transaction['super_x'] = false;
             }
 
             $storedTransactions[] = $this->transactionRepository->store($transaction + [
@@ -64,7 +67,7 @@ class BulkTransaction extends Controller
             'seller' => auth()->user()->name,
             'client' => $storedTransactions[0]['client'],
             'total' => array_sum(array_column($data, 'total')),
-            'multiplier' => $multiplier,
+            'multiplier' => $settings['multiplier'] ?? 70,
             'data' => $data,
         ]);
     }
