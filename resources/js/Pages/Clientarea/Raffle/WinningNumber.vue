@@ -9,8 +9,22 @@
             </button>
         </template>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
-            <StatCard v-for="stat in stats" :stat="stat" :key="stat.title" />
+        <div v-if="stats.length == 0" class="w-full text-center text-gray-400 mb-4">
+            No hay resultados
+        </div>
+
+        <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
+            <StatCardActions v-for="stat in stats" :stat="stat" :key="stat.title">
+                <Dropdown>
+                    <div class="px-1 py-1">
+                        <DropdownItem @click="destroy(stat.id)" title="Eliminar" :icon="IconTrash" />
+                    </div>
+                </Dropdown>
+            </StatCardActions>
+        </div>
+
+        <div class="text-2xl font-extrabold text-gray-600 mb-2">
+            Transacciones
         </div>
 
         <div v-if="winners.length == 0" class="w-full text-center text-gray-400">
@@ -55,18 +69,20 @@
 </template>
 
 <script setup>
-import StatCard from '@/Components/StatCard.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownItem from '@/Components/DropdownItem.vue';
+import InputForm from '@/Components/Form/InputForm.vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
+import FormModal from '@/Components/Modal/FormModal.vue';
+import StatCardActions from '@/Components/StatCardActions.vue';
 import Transaction from '@/Components/Transaction.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { Carbon } from '@/Use/Carbon';
-import { IconCheck } from '@tabler/icons-vue';
-import { computed, ref, watch } from 'vue';
-import FormModal from '@/Components/Modal/FormModal.vue';
-import SelectForm from '@/Components/Form/SelectForm.vue';
-import InputForm from '@/Components/Form/InputForm.vue';
-import { useForm } from '@inertiajs/vue3';
-import { toast } from '@/Use/toast';
 import { confirmAlert } from '@/Use/helpers';
+import { toast } from '@/Use/toast';
+import { useForm } from '@inertiajs/vue3';
+import { IconCheck, IconTrash } from '@tabler/icons-vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
     winning_numbers: {
@@ -102,6 +118,7 @@ const form = useForm({
 const stats = computed(() => {
     return props.winning_numbers.map((result) => {
         return {
+            id: result.id,
             title: "Turno: " + Carbon.create().setTime(result.hour).getTimeFormat(),
             value: "Dígito: " + result.number,
             icon: IconCheck,
@@ -138,6 +155,25 @@ const onSubmit = () => {
                     resetValues();
                     toast.success('Guardado correctamente');
                 },
+            });
+        }
+    });
+}
+
+function destroy(id) {
+    confirmAlert({
+        message: "¿Está seguro de eliminar este registro?",
+        onConfirm: () => {
+            form.delete(route('clientarea.raffles.winning-numbers.destroy', [props.raffle.id, id]), {
+                preserveScroll: true,
+                preserveState: true,
+                onSuccess: () => {
+                    resetValues();
+                    toast.success('Eliminado correctamente');
+                },
+                onError: (err) => {
+                    toast.error(err.message);
+                }
             });
         }
     });

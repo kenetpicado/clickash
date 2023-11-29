@@ -2,7 +2,7 @@
     <Menu as="div" class="relative inline-block text-left">
 
         <MenuButton>
-            <IconList class="text-primary" />
+            <IconList class="text-gray-400" />
         </MenuButton>
 
         <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0"

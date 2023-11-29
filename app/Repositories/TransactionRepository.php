@@ -166,4 +166,14 @@ class TransactionRepository
             ->selectRaw('COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
             ->first();
     }
+
+    public function revertTeamTransactions($raffle_id, $winningNumber)
+    {
+        return self::setTeam()
+            ->whereDate('created_at', $winningNumber->date)
+            ->where('raffle_id', $raffle_id)
+            ->where('hour', $winningNumber->hour)
+            ->where('status', '!=', 'VENDIDO')
+            ->update(['status' => 'VENDIDO']);
+    }
 }

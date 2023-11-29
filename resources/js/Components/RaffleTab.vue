@@ -4,67 +4,27 @@
             <div class="flex justify-between">
                 <span>{{ raffle.raffle.name }}</span>
 
-                <Menu as="div" class="relative inline-block text-left">
+                <Dropdown>
+                    <div class="px-1 py-1">
+                        <DropdownItem :href="route('clientarea.raffles.show', raffle.raffle_id)" title="Ventas"
+                            :icon="IconEyeDollar" />
 
-                    <MenuButton>
-                        <IconList class="text-primary" />
-                    </MenuButton>
+                        <DropdownItem :href="route('clientarea.raffles.winning-numbers.index', raffle.raffle_id)"
+                            title="Ganadores" :icon="IconUserCheck" />
 
-                    <transition enter-active-class="transition duration-100 ease-out"
-                        enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-                        leave-active-class="transition duration-75 ease-in"
-                        leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-                        <MenuItems
-                            class="absolute z-10 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                            <div class="px-1 py-1">
-                                <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.show', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconEyeDollar :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
-                                    Ventas
-                                </Link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.winning-numbers.index', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconUserCheck :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
-                                    Ganadores
-                                </Link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.reports', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconReportAnalytics :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
-                                    Reportes
-                                </Link>
-                                </MenuItem>
-                            </div>
-                            <div class="px-1 py-1">
-                                <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.blocked-numbers.index', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconNumber :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
-                                    Dígitos bloqueados
-                                </Link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <Link :href="route('clientarea.raffles.availability.index', raffle.raffle_id)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconDeviceWatch :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
-                                    Horario
-                                </Link>
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <button @click="edit(raffle)"
-                                    :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                    <IconSettings :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']"  />
-                                    Configuración
-                                </button>
-                                </MenuItem>
-                            </div>
-                        </MenuItems>
-                    </transition>
-                </Menu>
+                        <DropdownItem :href="route('clientarea.raffles.reports', raffle.raffle_id)" title="Reportes"
+                            :icon="IconReportAnalytics" />
+                    </div>
+                    <div class="px-1 py-1">
+                        <DropdownItem :href="route('clientarea.raffles.blocked-numbers.index', raffle.raffle_id)"
+                            title="Dígitos bloqueados" :icon="IconNumber" />
+
+                        <DropdownItem :href="route('clientarea.raffles.availability.index', raffle.raffle_id)"
+                            title="Horario" :icon="IconDeviceWatch" />
+
+                        <DropdownItem @click="edit(raffle)" title="Configuración" :icon="IconSettings" />
+                    </div>
+                </Dropdown>
             </div>
 
             <div class="flex items-center gap-2 mb-3">
@@ -125,6 +85,9 @@ import InputForm from './Form/InputForm.vue';
 import Checkbox from './Form/Checkbox.vue';
 import { toast } from '@/Use/toast';
 import { Link } from '@inertiajs/vue3';
+import DropdownItem from './DropdownItem.vue';
+import Dropdown from './Dropdown.vue';
+
 
 const props = defineProps({
     raffles: {

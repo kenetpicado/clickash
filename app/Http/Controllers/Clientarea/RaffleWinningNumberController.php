@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\WinningNumberRequest;
 use App\Models\Raffle;
+use App\Models\WinningNumber;
 use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WinningNumberRepository;
@@ -41,6 +42,19 @@ class RaffleWinningNumberController extends Controller
         $winningNumber = $this->winningNumberRepository->store($request->validated(), $raffle);
 
         $this->transactionRepository->markWinners($winningNumber);
+
+        return back();
+    }
+
+    public function destroy($raffle, WinningNumber $winningNumber)
+    {
+        if ($winningNumber->created_at->diffInMinutes(Carbon::now()) > 30) {
+            return back()->withErrors(['message' => 'No es posible eliminar este registro']);
+        }
+
+        $this->transactionRepository->revertTeamTransactions($raffle, $winningNumber);
+
+        $winningNumber->delete();
 
         return back();
     }

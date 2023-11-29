@@ -1,9 +1,6 @@
 <template>
     <div class="bg-card h-20 rounded-xl">
-        <div class="flex items-center h-full p-4 gap-3">
-            <span class="bg-primary rounded-full p-2">
-                <component :is="stat.icon ?? DEFAULT_ICON" size="30" class="text-white" />
-            </span>
+        <div class="flex h-full items-center justify-between p-4">
             <div class="text-gray-600">
                 <div class="font-bold text-lg">
                     {{ stat.value }}
@@ -11,6 +8,9 @@
                 <div class="text-sm">
                     {{ stat.title }}
                 </div>
+            </div>
+            <div>
+                <slot />
             </div>
         </div>
     </div>
