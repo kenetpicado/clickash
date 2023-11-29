@@ -23,6 +23,7 @@ class SellerBalanceController extends Controller
         $resume = $this->archingRepository->getTotalArchingsBySeller($user->id, $request->all());
 
         $balance->income = $balance->income + $resume->deposit - $resume->withdrawal;
+        $balance->balance = $balance->income - $balance->expenditure;
 
         return inertia('Clientarea/Seller/Balance', [
             'balance' => $balance,

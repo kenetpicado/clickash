@@ -37,7 +37,9 @@
                         {{ Carbon.create(i.created_at).format('d/m/Y H:i') }}
                     </div>
                     <Dropdown>
-                        <DropdownItem @click="destroy(i.id)" title="Eliminar" :icon="IconTrash"/>
+                        <div class="px-1 py-1">
+                            <DropdownItem @click="destroy(i.id)" title="Eliminar" :icon="IconTrash" />
+                        </div>
                     </Dropdown>
                 </div>
                 <div class="flex items-center justify-between">
@@ -137,7 +139,7 @@ const stats = computed(() => {
         },
         {
             title: 'Balance',
-            value: "C$" + (props.balance.income - props.balance.expenditure).toLocaleString(),
+            value: "C$" + props.balance.balance.toLocaleString(),
             icon: IconCurrencyDollar,
         },
     ]
@@ -149,6 +151,11 @@ function resetValues() {
 }
 
 function onSubmit() {
+    if (form.type == 'RETIRO' && form.amount > props.balance.balance) {
+        toast.error('No puede retirar más de lo que tiene');
+        return;
+    }
+
     form.post(route('clientarea.sellers.archings.store', props.seller.id), {
         preserveScroll: true,
         preserveState: true,

@@ -16,8 +16,10 @@
                 <div class="flex justify-between items-center mb-2">
                     <span>{{ a.day }}</span>
                     <Dropdown>
-                        <DropdownItem @click="editDay(a)" title="Editar" :icon="IconEdit"/>
-                        <DropdownItem @click="destroyDay(a.id)" title="Eliminar" :icon="IconTrash"/>
+                        <div class="px-1 py-1">
+                            <DropdownItem @click="editDay(a)" title="Editar" :icon="IconEdit" />
+                            <DropdownItem @click="destroyDay(a.id)" title="Eliminar" :icon="IconTrash" />
+                        </div>
                     </Dropdown>
                 </div>
                 <div class="grid grid-cols-2 gap-2 mb-4">

@@ -7,65 +7,21 @@
                 </div>
                 <div class="text-xs text-gray-600 w-full h-full">
                     <div class="flex justify-between w-full">
-                        <span class="text-primary">
+                        <span class="">
                             {{ i.status == 'enabled' ? 'Activo' : 'Inactivo' }}
                         </span>
-                        <Menu as="div" class="relative inline-block text-left">
 
-                            <MenuButton>
-                                <IconList class="text-primary" />
-                            </MenuButton>
-
-                            <transition enter-active-class="transition duration-100 ease-out"
-                                enter-from-class="transform scale-95 opacity-0"
-                                enter-to-class="transform scale-100 opacity-100"
-                                leave-active-class="transition duration-75 ease-in"
-                                leave-from-class="transform scale-100 opacity-100"
-                                leave-to-class="transform scale-95 opacity-0">
-                                <MenuItems
-                                    class="absolute z-10 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                                    <div class="px-1 py-1">
-                                        <MenuItem v-slot="{ active }">
-                                        <Link  :href="route('clientarea.sellers.show', i.id)"
-                                            :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                            <IconEyeDollar class="mr-2 h-5 w-5 text-primary" />
-                                            Ventas
-                                        </Link>
-                                        </MenuItem>
-                                        <MenuItem v-slot="{ active }">
-                                        <Link :href="route('clientarea.sellers.balance', i.id)"
-                                            :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                            <IconReportAnalytics class="mr-2 h-5 w-5 text-primary" />
-                                            Caja
-                                        </Link>
-                                        </MenuItem>
-                                    </div>
-                                    <div class="px-1 py-1">
-                                        <MenuItem v-slot="{ active }">
-                                        <button @click="edit(i)"
-                                            :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                            <IconEdit class="mr-2 h-5 w-5 text-primary" />
-                                            Editar
-                                        </button>
-                                        </MenuItem>
-                                        <MenuItem v-slot="{ active }">
-                                        <button @click="blockSeller(i.id)"
-                                            :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                            <IconLock class="mr-2 h-5 w-5 text-primary" />
-                                            Bloquear
-                                        </button>
-                                        </MenuItem>
-                                        <MenuItem v-slot="{ active }">
-                                        <button @click="destroy(i.id)"
-                                            :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-                                            <IconTrash class="mr-2 h-5 w-5 text-primary" />
-                                            Eliminar
-                                        </button>
-                                        </MenuItem>
-                                    </div>
-                                </MenuItems>
-                            </transition>
-                        </Menu>
+                        <Dropdown>
+                            <div class="px-1 py-1">
+                                <DropdownItem :href="route('clientarea.sellers.show', i.id)" title="Ventas" :icon="IconEyeDollar" />
+                                <DropdownItem :href="route('clientarea.sellers.balance', i.id)" title="Caja" :icon="IconReportAnalytics" />
+                            </div>
+                            <div class="px-1 py-1">
+                                <DropdownItem @click="edit(i)" title="Editar" :icon="IconEdit" />
+                                <DropdownItem @click="blockSeller(i.id)" :title="status[i.status]" :icon="IconLock" />
+                                <DropdownItem @click="destroy(i.id)" title="Eliminar" :icon="IconTrash" />
+                            </div>
+                        </Dropdown>
                     </div>
                     <div class="flex flex-col">
                         <span class="text-base">{{ i.name }}</span>
@@ -88,12 +44,12 @@
 
 <script setup>
 import { useSeller } from '@/Composables/useSeller';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { IconEdit, IconEyeDollar, IconList, IconLock, IconReportAnalytics, IconTrash } from '@tabler/icons-vue';
 import FormModal from './Modal/FormModal.vue';
 import InputForm from './Form/InputForm.vue';
 import { ref, watch } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import DropdownItem from './DropdownItem.vue';
+import Dropdown from './Dropdown.vue';
 
 const props = defineProps({
     sellers: {
@@ -132,14 +88,19 @@ const resetValues = () => {
 const edit = (data) => {
     isNew.value = false
     form.id = data.id,
-    form.name = data.name,
-    form.email = data.email,
-    openModal.value = true
+        form.name = data.name,
+        form.email = data.email,
+        openModal.value = true
 }
 
 watch(() => props.triggerNew, (value) => {
     isNew.value = true
     openModal.value = true
 })
+
+const status = {
+    enabled: 'Bloquear',
+    disabled: 'Desbloquear'
+}
 
 </script>
