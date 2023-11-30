@@ -19,7 +19,7 @@ class ArchingResource extends JsonResource
             'type' => $this->type,
             'amount' => 'C$ '.number_format($this->amount),
             'current_balance' => null,
-            'seller' => UserNameResource::make($this->whenLoaded('seller')),
+            'created_at' => $this->created_at->format('d/m/Y g:i A'),
         ];
     }
 }
