@@ -21,6 +21,10 @@ class SellerArchingController extends Controller
 
     public function index(Request $request, $seller)
     {
+        if (auth()->user()->isSeller()) {
+            $seller = auth()->id();
+        }
+
         $balance = $this->transactionRepository->getBalanceByUser($seller, $request->all());
 
         $resume = $this->archingRepository->getTotalArchingsBySeller($seller, $request->all());
