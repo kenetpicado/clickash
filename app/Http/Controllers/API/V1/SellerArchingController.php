@@ -21,13 +21,16 @@ class SellerArchingController extends Controller
 
     public function index(Request $request, $seller)
     {
+        $ownerId = null;
+
         if (auth()->user()->isSeller()) {
             $seller = auth()->id();
+            $ownerId = auth()->user()->user_id;
         }
 
         $balance = $this->transactionRepository->getBalanceByUser($seller, $request->all());
 
-        $resume = $this->archingRepository->getTotalArchingsBySeller($seller, $request->all());
+        $resume = $this->archingRepository->getTotalArchingsBySeller($seller, $request->all(), $ownerId);
 
         $balance->income = $balance->income + $resume->deposit - $resume->withdrawal;
 
@@ -35,7 +38,7 @@ class SellerArchingController extends Controller
             ? 'Balance del DIA ' . Carbon::parse($request->get('date'))->format('d/m/Y')
             : 'Balance de la SEMANA en curso';
 
-        return ArchingResource::collection($this->archingRepository->getArchingsBySeller($seller, $request->all()))
+        return ArchingResource::collection($this->archingRepository->getArchingsBySeller($seller, $request->all(), $ownerId))
             ->additional([
                 'income' => "C$ " . number_format($balance->income),
                 'expenditure' => "C$ " . number_format($balance->expenditure),

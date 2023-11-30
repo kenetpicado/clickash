@@ -29,9 +29,10 @@ class ArchingRepository
             ->sum('amount');
     }
 
-    public function getArchingsBySeller($seller_id, $request)
+    public function getArchingsBySeller($seller_id, $request, $ownerId = null)
     {
-        return Arching::where('user_id', auth()->id())
+        return Arching::query()
+            ->when($ownerId, fn ($query) => $query->where('user_id', $ownerId), fn ($query) => $query->where('user_id', auth()->id()))
             ->where('seller_id', $seller_id)
             ->when(isset($request['date']), function ($query) use ($request) {
                 $query->whereDate('created_at', $request['date']);
@@ -42,9 +43,10 @@ class ArchingRepository
             ->paginate();
     }
 
-    public function getTotalArchingsBySeller($seller_id, $request)
+    public function getTotalArchingsBySeller($seller_id, $request, $ownerId = null)
     {
-        return Arching::where('user_id', auth()->id())
+        return Arching::query()
+            ->when($ownerId, fn ($query) => $query->where('user_id', $ownerId), fn ($query) => $query->where('user_id', auth()->id()))
             ->where('seller_id', $seller_id)
             ->when(isset($request['date']), function ($query) use ($request) {
                 $query->whereDate('created_at', $request['date']);
