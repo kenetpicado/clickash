@@ -63,6 +63,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('balance', BalanceController::class)
             ->name('balance');
 
+        Route::get('sellers/{seller}/archings', [SellerArchingController::class, 'index'])
+            ->name('sellers.archings.index');
+
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
             Route::put('toggle-status/{seller}', ToggleStatusController::class);
@@ -97,7 +100,7 @@ Route::group(['prefix' => 'v1'], function () {
                 ->name('raffles.hours');
 
             Route::apiResource('sellers.archings', SellerArchingController::class)
-                ->only(['index', 'store', 'destroy']);
+                ->only(['store', 'destroy']);
         });
     });
 });

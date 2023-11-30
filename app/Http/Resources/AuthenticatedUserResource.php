@@ -17,6 +17,7 @@ class AuthenticatedUserResource extends JsonResource
         $firstName = explode(' ', $this->name)[0];
 
         return [
+            'id' => $this->id,
             'message' => "Bienvenido {$firstName}",
             'auth_token' => $this->createToken('authToken')->plainTextToken,
             'name' => $this->name,
