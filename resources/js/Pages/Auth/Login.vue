@@ -47,7 +47,7 @@ const submit = () => {
 
                 <Checkbox v-model:checked="form.remember" text="Recordarme" />
 
-                <button type="submit" class="bg-primary inline-flex justify-center items-center p-2 rounded-xl w-full mt-4 text-gray-600 transition select-none duration-300 transform active:scale-110">
+                <button type="submit" class="w-full primary-button">
                     Entrar
                 </button>
             </form>
