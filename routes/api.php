@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
-use App\Http\Controllers\API\V1\BalanceController;
 use App\Http\Controllers\API\V1\BulkTransaction;
 use App\Http\Controllers\API\V1\DailySalesController;
 use App\Http\Controllers\API\V1\ProfileController;
@@ -52,16 +51,13 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('raffles.index');
 
         Route::apiResource('transactions', TransactionController::class)
-            ->only(['index', 'store', 'destroy']);
+            ->only(['index', 'destroy']);
 
         Route::post('bulk-transactions', BulkTransaction::class)
             ->name('bulk.transactions');
 
         Route::put('transactions/{transaction}/mark-as-paid', TransactionMarkAsPaid::class)
             ->name('transactions.mark-as-paid');
-
-        Route::get('balance', BalanceController::class)
-            ->name('balance');
 
         Route::get('sellers/{seller}/archings', [SellerArchingController::class, 'index'])
             ->name('sellers.archings.index');
@@ -82,7 +78,7 @@ Route::group(['prefix' => 'v1'], function () {
                 ->only(['index', 'store', 'destroy']);
 
             Route::apiResource('raffles.winning-numbers', RaffleWinningNumberController::class)
-                ->only(['index', 'store']);
+                ->only(['index', 'store', 'destroy']);
 
             Route::get('raffles/{raffle}/winning-transactions', RaffleWinningTransactionController::class)
                 ->name('raffles.winning-transactions.index');

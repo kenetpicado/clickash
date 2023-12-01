@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\BulkTransactionRequest;
-use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Services\TransactionService;
 use Carbon\Carbon;
@@ -15,7 +14,6 @@ class BulkTransaction extends Controller
     public function __construct(
         private readonly TransactionService $transactionService,
         private readonly TransactionRepository $transactionRepository,
-        private readonly RaffleUserRepository $raffleUserRepository,
     ) {
     }
 
@@ -23,9 +21,7 @@ class BulkTransaction extends Controller
     {
         $validated = $request->validated();
 
-        $this->transactionService->validateBulkTransactions($validated);
-
-        $settings = $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $validated['raffle_id']);
+        $settings = $this->transactionService->validateBulkTransactions($validated);
 
         $storedTransactions = [];
 
@@ -62,7 +58,7 @@ class BulkTransaction extends Controller
 
         return response()->json([
             'company' => DB::table('users')->where('id', auth()->user()->getOwnerId())->value('company_name'),
-            'datetime' => Carbon::now()->format('d M Y H:i:s'),
+            'datetime' => Carbon::now()->format('d M Y g:i A'),
             'raffle' => DB::table('raffles')->where('id', $validated['raffle_id'])->value('name'),
             'seller' => auth()->user()->name,
             'client' => $storedTransactions[0]['client'],
