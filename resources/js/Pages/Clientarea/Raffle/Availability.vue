@@ -60,7 +60,7 @@
             <button type="button" class="primary-button" @click="pushToBlockedHours">
                 Agregar
             </button>
-            <p class="text-sm text-primaryDark mt-1" v-if="$page.props.errors['blocked_hours']">
+            <p class="text-sm text-primary mt-1" v-if="$page.props.errors['blocked_hours']">
                 {{ $page.props.errors['blocked_hours'] }}
             </p>
 

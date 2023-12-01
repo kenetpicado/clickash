@@ -32,6 +32,8 @@ class SellerArchingController extends Controller
 
         $resume = $this->archingRepository->getTotalArchingsBySeller($seller, $request->all(), $ownerId);
 
+        $balance->sales = $balance->income;
+
         $balance->income = $balance->income + $resume->deposit - $resume->withdrawal;
 
         $message = $request->has('date')
@@ -43,6 +45,7 @@ class SellerArchingController extends Controller
                 'income' => "C$ " . number_format($balance->income),
                 'expenditure' => "C$ " . number_format($balance->expenditure),
                 'balance' => "C$ " . number_format($balance->income - $balance->expenditure),
+                'sales' => "C$ " . number_format($balance->sales),
                 'message' => $message,
             ]);
     }

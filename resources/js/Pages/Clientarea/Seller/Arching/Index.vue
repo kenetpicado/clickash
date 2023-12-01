@@ -1,8 +1,8 @@
 <template>
-    <ClientareaLayout title="Balance">
+    <ClientareaLayout title="Caja">
         <template #header>
             <span class="title">
-                Balance: {{ seller.name }}
+                Caja: {{ seller.name }}
             </span>
         </template>
 
@@ -118,7 +118,7 @@ watch(() => [queryParams.date], ([date]) => {
     if (!date)
         delete queryParams.date
 
-    router.get(route('clientarea.sellers.balance', props.seller.id), queryParams, {
+    router.get(route('clientarea.sellers.archings.index', props.seller.id), queryParams, {
         preserveState: true,
         preserveScroll: true,
         only: ['balance', 'archings'],
@@ -127,6 +127,11 @@ watch(() => [queryParams.date], ([date]) => {
 
 const stats = computed(() => {
     return [
+        {
+            title: 'Ventas',
+            value: "C$" + props.balance.sales.toLocaleString(),
+            icon: IconCurrencyDollar,
+        },
         {
             title: 'Ingresos',
             value: "C$" + props.balance.income.toLocaleString(),

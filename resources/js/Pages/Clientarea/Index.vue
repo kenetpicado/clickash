@@ -1,18 +1,20 @@
 <template>
     <ClientareaLayout title="Inicio">
         <template #options>
-            <button type="button" :class="selectedTab == 'raffle' ? 'active-tab' : 'inactive-tab'"
-                @click="selectedTab = 'raffle'">
-                Rifas
-            </button>
-            <button type="button" :class="selectedTab == 'seller' ? 'active-tab' : 'inactive-tab'"
-                @click="selectedTab = 'seller'">
-                Vendedores
-            </button>
-            <button type="button" :class="selectedTab == 'transaction' ? 'active-tab' : 'inactive-tab'"
-                @click="selectedTab = 'transaction'">
-                Transacciones
-            </button>
+            <ul class="flex flex-nowrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 mb-2 w-full">
+                <li class="me-2" role="button">
+                    <span :class="selectedTab == 'raffle' ? 'active-tab' : 'inactive-tab'"
+                        @click="selectedTab = 'raffle'">Rifas</span>
+                </li>
+                <li class="me-2" role="button">
+                    <span :class="selectedTab == 'seller' ? 'active-tab' : 'inactive-tab'"
+                        @click="selectedTab = 'seller'">Vendedores</span>
+                </li>
+                <li class="me-2" role="button">
+                    <span :class="selectedTab == 'transaction' ? 'active-tab' : 'inactive-tab'"
+                        @click="selectedTab = 'transaction'">Transacciones</span>
+                </li>
+            </ul>
         </template>
         <template #header>
             <span class="title">

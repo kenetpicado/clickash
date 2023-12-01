@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Clientarea\SellerBalanceController;
 use App\Http\Controllers\Clientarea\ClientareaController;
 use App\Http\Controllers\Clientarea\ProfileController as ClientareaProfileController;
 use App\Http\Controllers\Clientarea\RaffleAvailabilityController;
@@ -66,10 +65,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->except(['index', 'edit', 'create']);
 
         Route::resource('sellers.archings', SellerArchingController::class)
-            ->only(['store', 'destroy']);
-
-        Route::get('sellers/{user}/balance', SellerBalanceController::class)
-            ->name('sellers.balance');
+            ->only(['index', 'store', 'destroy']);
 
         Route::put('toggle-status/{seller}', ToggleStatusController::class)->name('toggle-status');
 

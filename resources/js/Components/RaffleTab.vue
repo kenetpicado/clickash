@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div v-for="raffle in raffles" class="bg-card rounded-xl p-2 w-full">
-            <div class="flex justify-between">
+            <div class="flex justify-between text-gray-600">
                 <span>{{ raffle.raffle.name }}</span>
 
                 <Dropdown>
@@ -31,20 +31,20 @@
                 <div class="bg-white rounded-xl">
                     <img src="/games.png" alt="" class="w-20 h-20">
                 </div>
-                <div class="flex flex-col gap-1 text-xs text-gray-600">
+                <div class="flex flex-col gap-1 text-xs">
                     <span>Super X: {{ raffle.settings.super_x ? 'Activado' : 'Desactivado' }}</span>
                     <span v-if="raffle.settings.general_limit">
-                        Limite general en venta: C${{ raffle.settings.general_limit }}
+                        Limite general: C${{ raffle.settings.general_limit }}
                     </span>
                     <span v-if="raffle.settings.individual_limit">
-                        Limite individual en venta: C${{ raffle.settings.individual_limit }}
+                        Limite individual: C${{ raffle.settings.individual_limit }}
                     </span>
                     <span v-if="raffle.settings.multiplier">
                         Multiplicador: {{ raffle.settings.multiplier }}
                     </span>
                 </div>
             </div>
-            <div class="w-full text-center bg-white py-1 rounded-xl text-gray-600 text-xs">
+            <div class="w-full text-center bg-white py-1 rounded-xl text-primary text-xs">
                 <span v-if="raffle.settings.date">
                     Fecha
                 </span>

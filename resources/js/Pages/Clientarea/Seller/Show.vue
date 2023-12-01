@@ -1,5 +1,5 @@
 <template>
-    <ClientareaLayout title="Vendedor">
+    <ClientareaLayout title="Ventas">
         <template #header>
             <span class="title">
                 {{ seller.name }}

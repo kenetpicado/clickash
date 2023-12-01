@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <button @click="logout" type="button" class="bg-primary rounded-xl px-4 py-2 w-full text-gray-600">
+            <button @click="logout" type="button" class="secondary-button w-full">
                 Cerrar sesión
             </button>
         </template>
@@ -54,7 +54,7 @@
                 <InputForm text="Nombre" v-model="form.name" required />
                 <InputForm text="Correo" v-model="form.email" type="email" required />
                 <InputForm text="Nombre de la empresa" v-model="form.company_name" required />
-                <button class="bg-primary rounded-xl px-4 py-2 w-full text-gray-600">
+                <button class="primary-button w-full">
                     Guardar
                 </button>
             </form>

@@ -23,11 +23,11 @@
 
 @layer components {
     .primary-button {
-        @apply inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-xl font-medium text-sm text-gray-200 hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 transition ease-in-out duration-150;
+        @apply inline-flex justify-center items-center px-4 py-2 bg-primary rounded-xl text-sm text-white font-medium active:bg-primary-dark duration-150 transition ease-in-out;
     }
 
     .secondary-button {
-        @apply inline-flex items-center px-4 py-2 bg-white border border-primary rounded-xl font-medium text-sm text-basic hover:bg-gray-50 focus:bg-gray-50 active:bg-gray-100 transition ease-in-out duration-150;
+        @apply inline-flex justify-center items-center px-4 py-2 bg-white border-2 border-primary rounded-xl text-sm text-primary font-medium;
     }
 
     .simple-button {
@@ -39,11 +39,11 @@
     }
 
     .active-tab {
-        @apply bg-primary text-white font-bold tracking-wider rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110 whitespace-nowrap
+        @apply inline-block p-4 text-primary bg-card rounded-t-lg
     }
 
     .inactive-tab {
-        @apply bg-white text-gray-400 tracking-wider rounded-xl px-5 py-2 transition select-none duration-300 transform active:scale-110 whitespace-nowrap
+        @apply inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50
     }
 
     .badge-primary {

@@ -3,7 +3,7 @@
         <div v-for="i in sellers" class="bg-card rounded-xl p-2 w-full">
             <div class="flex gap-2 w-full">
                 <div class="bg-white rounded-xl w-1/3 px-1">
-                    <img src="/games.png" alt="" class="w-20 h-20">
+                    <img src="/images/vendedor.png" alt="" class="w-20 h-20 object-contain">
                 </div>
                 <div class="text-xs text-gray-600 w-full h-full">
                     <div class="flex justify-between w-full">
@@ -14,7 +14,7 @@
                         <Dropdown>
                             <div class="px-1 py-1">
                                 <DropdownItem :href="route('clientarea.sellers.show', i.id)" title="Ventas" :icon="IconEyeDollar" />
-                                <DropdownItem :href="route('clientarea.sellers.balance', i.id)" title="Caja" :icon="IconReportAnalytics" />
+                                <DropdownItem :href="route('clientarea.sellers.archings.index', i.id)" title="Caja" :icon="IconReportAnalytics" />
                             </div>
                             <div class="px-1 py-1">
                                 <DropdownItem @click="edit(i)" title="Editar" :icon="IconEdit" />
@@ -44,7 +44,7 @@
 
 <script setup>
 import { useSeller } from '@/Composables/useSeller';
-import { IconEdit, IconEyeDollar, IconList, IconLock, IconReportAnalytics, IconTrash } from '@tabler/icons-vue';
+import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash } from '@tabler/icons-vue';
 import FormModal from './Modal/FormModal.vue';
 import InputForm from './Form/InputForm.vue';
 import { ref, watch } from 'vue';

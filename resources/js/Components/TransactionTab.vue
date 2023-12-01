@@ -6,7 +6,7 @@
     <div v-if="transactions.data.length == 0" class="w-full text-center text-gray-400">
         No hay transacciones
     </div>
-    <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         <Transaction :transaction="transaction" v-for="transaction in transactions.data" :key="transaction.id" />
     </div>
 

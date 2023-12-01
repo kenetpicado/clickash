@@ -26,7 +26,7 @@ defineProps({
         </div>
     </nav>
     <main class="p-4 mx-auto max-w-screen-lg">
-        <div class="flex items-center gap-3 overflow-x-auto hide-scrollbar text-xs text-gray-600 mb-4">
+        <div class="flex items-center overflow-x-auto hide-scrollbar">
             <slot name="options" />
         </div>
         <div class="flex items-center justify-between mb-4 text-gray-600">
