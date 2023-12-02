@@ -31,7 +31,7 @@ class TransactionService
 
         $raffleSettings = $raffleUserRepository->getSettings($ownerId, $request['raffle_id']);
 
-        // CHECK IF THE TIME IS BLOCKED
+        // // CHECK IF THE TIME IS BLOCKED
         $blockedHours = $availabilityRepository->getTodayBlockedHours($request['raffle_id'], $ownerId);
 
         foreach ($blockedHours as $blockedHour) {
@@ -43,6 +43,10 @@ class TransactionService
         }
 
         foreach ($request['data'] as $transaction) {
+
+            if (Carbon::parse($transaction['hour'])->isPast()) {
+                abort(422, "El turno de las {$transaction['hour']} ya pasó");
+            }
 
             // CHECK IF THE NUMBER IS BLOCKED
             $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $ownerId, $transaction['digit']);
@@ -101,10 +105,17 @@ class TransactionService
 
     public function destroy($transaction)
     {
+        $transactionHour = Carbon::parse($transaction->created_at)->format('H:i:s');
+
+        if ($transactionHour > $transaction->hour) {
+            goto please_do_it;
+        }
+
         if (Carbon::parse($transaction->hour)->isPast()) {
             abort(403, 'No puedes eliminar una transacción que ya pasó');
         }
 
+        please_do_it:
         $this->transactionRepository->delete($transaction);
     }
 }
