@@ -32,9 +32,7 @@ class SellerArchingController extends Controller
 
         $resume = $this->archingRepository->getTotalArchingsBySeller($seller, $request->all(), $ownerId);
 
-        $balance->sales = $balance->income;
-
-        $balance->income = $balance->income + $resume->deposit - $resume->withdrawal;
+        $balance->box = $balance->income + $resume->deposit - $resume->withdrawal;
 
         $message = $request->has('date')
             ? 'Balance del DIA ' . Carbon::parse($request->get('date'))->format('d/m/Y')
@@ -44,8 +42,8 @@ class SellerArchingController extends Controller
             ->additional([
                 'income' => "C$ " . number_format($balance->income),
                 'expenditure' => "C$ " . number_format($balance->expenditure),
-                'balance' => "C$ " . number_format($balance->income - $balance->expenditure),
-                'sales' => "C$ " . number_format($balance->sales),
+                'balance' => "C$ " . number_format($balance->income - $balance->expenditure), //should be rename to revenue
+                'box' => "C$ " . number_format($balance->box),
                 'message' => $message,
             ]);
     }

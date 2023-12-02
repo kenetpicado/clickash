@@ -128,8 +128,8 @@ watch(() => [queryParams.date], ([date]) => {
 const stats = computed(() => {
     return [
         {
-            title: 'Ventas',
-            value: "C$" + props.balance.sales.toLocaleString(),
+            title: 'Caja',
+            value: "C$" + props.balance.box.toLocaleString(),
             icon: IconCurrencyDollar,
         },
         {
@@ -143,8 +143,8 @@ const stats = computed(() => {
             icon: IconCurrencyDollar,
         },
         {
-            title: 'Balance',
-            value: "C$" + props.balance.balance.toLocaleString(),
+            title: 'Gananacia',
+            value: "C$" + props.balance.revenue.toLocaleString(),
             icon: IconCurrencyDollar,
         },
     ]

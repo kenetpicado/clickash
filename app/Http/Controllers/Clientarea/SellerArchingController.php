@@ -24,9 +24,9 @@ class SellerArchingController extends Controller
 
         $resume = $this->archingRepository->getTotalArchingsBySeller($seller->id, $request->all());
 
-        $balance->sales = $balance->income;
-        $balance->income = $balance->income + $resume->deposit - $resume->withdrawal;
-        $balance->balance = $balance->income - $balance->expenditure;
+        $balance->box = $balance->income + $resume->deposit - $resume->withdrawal;
+
+        $balance->revenue = $balance->income - $balance->expenditure;
 
         return inertia('Clientarea/Seller/Arching/Index', [
             'balance' => $balance,
