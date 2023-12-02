@@ -20,16 +20,14 @@ class SellerArchingController extends Controller
 
     public function index(Request $request, User $seller)
     {
-        $balance = $this->transactionRepository->getBalanceByUser($seller->id, $request->all());
+        $cashbox = $this->transactionRepository->getCashboxByUser($seller->id, $request->all());
 
         $resume = $this->archingRepository->getTotalArchingsBySeller($seller->id, $request->all());
 
-        $balance->box = $balance->income + $resume->deposit - $resume->withdrawal;
-
-        $balance->revenue = $balance->income - $balance->expenditure;
+        $cashbox->revenue = ($cashbox->income - $cashbox->expenditure) + $resume->deposit - $resume->withdrawal;
 
         return inertia('Clientarea/Seller/Arching/Index', [
-            'balance' => $balance,
+            'cashbox' => $cashbox,
             'seller' => $seller,
             'archings' => $this->archingRepository->getArchingsBySeller($seller->id, $request->all()),
         ]);

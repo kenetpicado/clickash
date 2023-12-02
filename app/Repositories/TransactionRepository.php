@@ -153,7 +153,7 @@ class TransactionRepository
             ->first();
     }
 
-    public function getBalanceByUser($user_id, $request = [])
+    public function getCashboxByUser($user_id, $request = [])
     {
         return Transaction::query()
             ->where('user_id', $user_id)

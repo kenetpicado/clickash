@@ -28,22 +28,22 @@ class SellerArchingController extends Controller
             $ownerId = auth()->user()->user_id;
         }
 
-        $balance = $this->transactionRepository->getBalanceByUser($seller, $request->all());
+        $cashbox = $this->transactionRepository->getCashboxByUser($seller, $request->all());
 
         $resume = $this->archingRepository->getTotalArchingsBySeller($seller, $request->all(), $ownerId);
 
-        $balance->box = $balance->income + $resume->deposit - $resume->withdrawal;
+        $cashbox->renevue = ($cashbox->income - $cashbox->expenditure) + $resume->deposit - $resume->withdrawal;
 
         $message = $request->has('date')
-            ? 'Balance del DIA ' . Carbon::parse($request->get('date'))->format('d/m/Y')
-            : 'Balance de la SEMANA en curso';
+            ? 'Caja del DIA ' . Carbon::parse($request->get('date'))->format('d/m/Y')
+            : 'Caja de la SEMANA en curso';
 
         return ArchingResource::collection($this->archingRepository->getArchingsBySeller($seller, $request->all(), $ownerId))
             ->additional([
-                'income' => "C$ " . number_format($balance->income),
-                'expenditure' => "C$ " . number_format($balance->expenditure),
-                'balance' => "C$ " . number_format($balance->income - $balance->expenditure), //should be rename to revenue
-                'box' => "C$ " . number_format($balance->box),
+                'income' => "C$ " . number_format($cashbox->income),
+                'expenditure' => "C$ " . number_format($cashbox->expenditure),
+                'balance' => "C$ " . number_format($cashbox->renevue),
+                'type' => $cashbox->revenue >= 0 ? 'Ganancia' : 'Pérdida',
                 'message' => $message,
             ]);
     }

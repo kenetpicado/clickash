@@ -10,8 +10,8 @@
             <InputForm v-model="queryParams.date" text="Fecha" type="date" />
         </div>
 
-        <h2 class="mb-4" v-if="!queryParams.date">Balance de la SEMANA en curso</h2>
-        <h2 class="mb-4" v-else>Balance del DIA {{ Carbon.create(queryParams.date).format('d/m/Y') }}</h2>
+        <h2 class="mb-4" v-if="!queryParams.date">Caja de la SEMANA en curso</h2>
+        <h2 class="mb-4" v-else>Caja del DIA {{ Carbon.create(queryParams.date).format('d/m/Y') }}</h2>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
             <StatCard v-for="stat in stats" :stat="stat" :key="stat.title" />
@@ -81,7 +81,7 @@ import { IconCurrencyDollar, IconTrash } from '@tabler/icons-vue';
 import { watch, reactive, computed, ref } from 'vue';
 
 const props = defineProps({
-    balance: {
+    cashbox: {
         type: Object,
         required: true,
     },
@@ -121,30 +121,25 @@ watch(() => [queryParams.date], ([date]) => {
     router.get(route('clientarea.sellers.archings.index', props.seller.id), queryParams, {
         preserveState: true,
         preserveScroll: true,
-        only: ['balance', 'archings'],
+        only: ['cashbox', 'archings'],
     });
 });
 
 const stats = computed(() => {
     return [
         {
-            title: 'Caja',
-            value: "C$" + props.balance.box.toLocaleString(),
-            icon: IconCurrencyDollar,
-        },
-        {
             title: 'Ingresos',
-            value: "C$" + props.balance.income.toLocaleString(),
+            value: "C$ " + props.cashbox.income.toLocaleString(),
             icon: IconCurrencyDollar,
         },
         {
             title: 'Egresos',
-            value: "C$" + props.balance.expenditure.toLocaleString(),
+            value: "C$ " + props.cashbox.expenditure.toLocaleString(),
             icon: IconCurrencyDollar,
         },
         {
-            title: 'Gananacia',
-            value: "C$" + props.balance.revenue.toLocaleString(),
+            title: props.cashbox.revenue >= 0 ? 'Ganancias' : 'Perdidas',
+            value: "C$ " + props.cashbox.revenue.toLocaleString(),
             icon: IconCurrencyDollar,
         },
     ]
@@ -156,7 +151,7 @@ function resetValues() {
 }
 
 function onSubmit() {
-    if (form.type == 'RETIRO' && form.amount > props.balance.balance) {
+    if (form.type == 'RETIRO' && form.amount > props.cashbox.revenue) {
         toast.error('No puede retirar más de lo que tiene');
         return;
     }
