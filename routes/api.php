@@ -9,6 +9,7 @@ use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RaffleHourController;
+use App\Http\Controllers\API\V1\RaffleSettingController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RaffleWinningTransactionController;
 use App\Http\Controllers\API\V1\RegisterController;
@@ -49,6 +50,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('raffles', [RaffleController::class, 'index'])
             ->name('raffles.index');
+
+        Route::get('raffles/{raffle}/settings', RaffleSettingController::class)
+            ->name('raffles.settings');
 
         Route::apiResource('transactions', TransactionController::class)
             ->only(['index', 'destroy']);
