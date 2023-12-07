@@ -9,6 +9,7 @@ use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RaffleHourController;
+use App\Http\Controllers\API\V1\ResultController;
 use App\Http\Controllers\API\V1\RaffleSettingController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RaffleWinningTransactionController;
@@ -65,6 +66,10 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('sellers/{seller}/archings', [SellerArchingController::class, 'index'])
             ->name('sellers.archings.index');
+
+        Route::apiResource('results', ResultController::class)
+            ->parameters(['results' => 'raffle'])
+            ->only(['index', 'show']);
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
