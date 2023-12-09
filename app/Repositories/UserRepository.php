@@ -28,9 +28,10 @@ class UserRepository
 
     public function getTeam(): array
     {
+        $ownerId = auth()->user()->getOwnerId();
+
         return DB::table('users')
-            ->where('id', auth()->id())
-            ->orWhere('user_id', auth()->id())
+            ->Where('user_id', $ownerId)
             ->pluck('id')
             ->toArray();
     }

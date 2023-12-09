@@ -53,7 +53,7 @@ class TransactionRepository
     {
         return self::setTeam()
             ->where('raffle_id', $request['raffle_id'])
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->whereDate('created_at', Carbon::today())
             ->where('hour', $request['hour'])
             ->where('digit', $request['digit'])
             ->sum('amount');
