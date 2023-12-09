@@ -4,8 +4,6 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\RaffleRepository;
-use App\Repositories\RaffleUserRepository;
-use Illuminate\Http\Request;
 
 class RaffleSettingController extends Controller
 {

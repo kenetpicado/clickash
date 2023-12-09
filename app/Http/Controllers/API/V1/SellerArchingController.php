@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use Carbon\Carbon;
-use App\Models\Arching;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ArchingResource;
-use App\Repositories\ArchingRepository;
 use App\Http\Requests\API\ArchingRequest;
+use App\Http\Resources\ArchingResource;
+use App\Models\Arching;
+use App\Repositories\ArchingRepository;
 use App\Repositories\TransactionRepository;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class SellerArchingController extends Controller
 {
@@ -35,14 +35,14 @@ class SellerArchingController extends Controller
         $cashbox->revenue = ($cashbox->income - $cashbox->expenditure) + $resume->deposit - $resume->withdrawal;
 
         $message = $request->has('date')
-            ? 'Caja del DIA ' . Carbon::parse($request->get('date'))->format('d/m/Y')
+            ? 'Caja del DIA '.Carbon::parse($request->get('date'))->format('d/m/Y')
             : 'Caja de la SEMANA en curso';
 
         return ArchingResource::collection($this->archingRepository->getArchingsBySeller($seller, $request->all(), $ownerId))
             ->additional([
-                'income' => "C$ " . number_format($cashbox->income),
-                'expenditure' => "C$ " . number_format($cashbox->expenditure),
-                'balance' => "C$ " . number_format($cashbox->revenue),
+                'income' => 'C$ '.number_format($cashbox->income),
+                'expenditure' => 'C$ '.number_format($cashbox->expenditure),
+                'balance' => 'C$ '.number_format($cashbox->revenue),
                 'type' => $cashbox->revenue >= 0 ? 'Ganancia' : 'Pérdida',
                 'message' => $message,
             ]);

@@ -2,9 +2,9 @@
     <div class="mt-2 mb-3 text-basic">
         <slot name="description" />
     </div>
-    <div class="bg-white border-2 border-card rounded-xl">
+    <div class="bg-white border-2 border-card">
         <div class="rounded-lg m-0">
-            <table class="w-full border-collapse bg-white text-left text-sm text-basic">
+            <table class="w-full  bg-white text-left text-sm text-basic">
                 <thead class="bg-card">
                     <tr>
                         <slot name="header" />

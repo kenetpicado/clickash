@@ -38,7 +38,7 @@ class SellerArchingController extends Controller
         Arching::create($request->validated() + [
             'user_id' => auth()->id(),
             'seller_id' => $seller,
-            'current_balance' => 0
+            'current_balance' => 0,
         ]);
 
         return back();

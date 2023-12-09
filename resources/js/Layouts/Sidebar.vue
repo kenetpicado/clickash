@@ -1,5 +1,5 @@
 <template>
-    <aside class="w-72 p-3 bg-card flex flex-col hidden lg:block min-h-screen">
+    <aside class="w-72 p-3 flex flex-col hidden lg:block min-h-screen">
         <div class="flex flex-col items-center my-1">
             <Link :href="route('home')">
             <div class="h-24 w-24">
@@ -73,8 +73,8 @@ const items = [
 
 function getClass(fullRoute) {
     return window.location.href == fullRoute
-        ? 'bg-primary'
-        : 'hover:bg-gray-100';
+        ? 'bg-card'
+        : 'hover:bg-card';
 }
 
 </script>

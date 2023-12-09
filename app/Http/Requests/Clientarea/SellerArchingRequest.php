@@ -23,7 +23,7 @@ class SellerArchingRequest extends FormRequest
     {
         return [
             'type' => 'required|in:RETIRO,DEPOSITO',
-            'amount' => 'required|numeric|min:1'
+            'amount' => 'required|numeric|min:1',
         ];
     }
 }

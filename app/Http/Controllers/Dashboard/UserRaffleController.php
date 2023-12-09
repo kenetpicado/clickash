@@ -28,8 +28,9 @@ class UserRaffleController extends Controller
     {
         $raffleUser = RaffleUser::where('user_id', $user)->where('raffle_id', $raffle)->first();
 
-        if ($raffleUser)
+        if ($raffleUser) {
             $raffleUser->delete();
+        }
 
         return back();
     }

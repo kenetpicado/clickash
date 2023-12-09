@@ -19,7 +19,7 @@ class UserRaffleAvailabilityController extends Controller
         return inertia('Dashboard/User/Raffle/Availability', [
             'user' => $user,
             'raffle' => $raffle,
-            'availability' => $availability
+            'availability' => $availability,
         ]);
     }
 }

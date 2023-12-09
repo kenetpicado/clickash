@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\BulkTransaction;
 use App\Http\Controllers\API\V1\DailySalesController;
@@ -9,12 +8,13 @@ use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RaffleHourController;
-use App\Http\Controllers\API\V1\ResultController;
 use App\Http\Controllers\API\V1\RaffleSettingController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RaffleWinningTransactionController;
 use App\Http\Controllers\API\V1\RegisterController;
+use App\Http\Controllers\API\V1\ResultController;
 use App\Http\Controllers\API\V1\ResumeController;
+use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
 use App\Http\Controllers\API\V1\TransactionController;

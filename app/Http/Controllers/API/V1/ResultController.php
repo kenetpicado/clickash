@@ -16,7 +16,7 @@ class ResultController extends Controller
         $date = $request->get('date', Carbon::now()->format('Y-m-d'));
 
         $message = $request->has('date')
-            ? 'Resultados del ' . Carbon::parse($request->get('date'))->format('d/m/Y')
+            ? 'Resultados del '.Carbon::parse($request->get('date'))->format('d/m/Y')
             : 'Resultados del hoy';
 
         $numbers = WinningNumber::with('raffle:id,name')
@@ -30,9 +30,9 @@ class ResultController extends Controller
             return [
                 $raffleName => [
                     'id' => $numbers->first()->raffle_id,
-                    'raffle'  => $raffleName,
+                    'raffle' => $raffleName,
                     'results' => $numbers->map(function ($item) {
-                        return Carbon::parse($item->hour)->format('g:i A: ') . $item->number;
+                        return Carbon::parse($item->hour)->format('g:i A: ').$item->number;
                     }),
                 ],
             ];
@@ -41,7 +41,7 @@ class ResultController extends Controller
         return response()->json(
             [
                 'data' => $results->values(),
-                'message' => $message
+                'message' => $message,
             ]
         );
     }
