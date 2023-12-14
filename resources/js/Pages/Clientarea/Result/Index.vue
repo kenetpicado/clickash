@@ -5,22 +5,22 @@
         </template>
         <template #header>
             <span class="title">
-                Rifas
+                Resultados
             </span>
         </template>
 
-        <RaffleTab :raffles="raffles" />
+        <ResultTab :results="results" />
 
     </ClientareaLayout>
 </template>
 
 <script setup>
-import RaffleTab from '@/Components/RaffleTab.vue';
-import Tabs from '@/Components/Tabs.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
+import ResultTab from '@/Components/ResultTab.vue';
+import Tabs from '@/Components/Tabs.vue';
 
 defineProps({
-    raffles: {
+    results: {
         type: Object,
         required: true,
     },

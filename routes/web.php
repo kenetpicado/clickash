@@ -7,9 +7,11 @@ use App\Http\Controllers\Clientarea\RaffleBlockedNumberController;
 use App\Http\Controllers\Clientarea\RaffleController as ClientareaRaffleController;
 use App\Http\Controllers\Clientarea\RaffleReportController;
 use App\Http\Controllers\Clientarea\RaffleWinningNumberController;
+use App\Http\Controllers\Clientarea\ResultController;
 use App\Http\Controllers\Clientarea\SellerArchingController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
+use App\Http\Controllers\Clientarea\TransactionController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\RaffleCloneController;
 use App\Http\Controllers\Dashboard\RaffleController;
@@ -62,7 +64,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->only(['index', 'update']);
 
         Route::resource('sellers', SellerController::class)
-            ->except(['index', 'edit', 'create']);
+            ->except(['edit', 'create']);
 
         Route::resource('sellers.archings', SellerArchingController::class)
             ->only(['index', 'store', 'destroy']);
@@ -86,6 +88,12 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
 
         Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
             ->only(['index', 'store']);
+
+        Route::resource('transactions', TransactionController::class)
+            ->only(['index']);
+
+        Route::resource('results', ResultController::class)
+            ->only(['index', 'show']);
     });
 
 Route::middleware(['auth:sanctum', 'online'])

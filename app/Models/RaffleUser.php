@@ -30,4 +30,9 @@ class RaffleUser extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function winningNumbers()
+    {
+        return $this->hasMany(WinningNumber::class, 'raffle_id', 'raffle_id');
+    }
 }

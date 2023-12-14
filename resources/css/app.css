@@ -39,11 +39,11 @@
     }
 
     .active-tab {
-        @apply inline-block p-4 text-primary bg-card rounded-t-lg
+        @apply inline-block p-4 text-primary bg-card rounded-t-lg text-xs
     }
 
     .inactive-tab {
-        @apply inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50
+        @apply inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 text-xs
     }
 
     .badge-primary {

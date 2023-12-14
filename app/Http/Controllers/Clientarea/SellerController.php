@@ -16,6 +16,13 @@ class SellerController extends Controller
     ) {
     }
 
+    public function index()
+    {
+        return inertia('Clientarea/Seller/Index', [
+            'sellers' => $this->userRepository->getSellers(),
+        ]);
+    }
+
     public function store(SellerRequest $request)
     {
         if ($this->userRepository->hasReachedSellerLimit()) {

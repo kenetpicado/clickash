@@ -5,23 +5,27 @@
         </template>
         <template #header>
             <span class="title">
-                Rifas
+                Transacciones
             </span>
         </template>
 
-        <RaffleTab :raffles="raffles" />
+        <TransactionTab :transactions="transactions" :dailyTransactions="daily_transactions" />
 
     </ClientareaLayout>
 </template>
 
 <script setup>
-import RaffleTab from '@/Components/RaffleTab.vue';
-import Tabs from '@/Components/Tabs.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
+import Tabs from '@/Components/Tabs.vue';
+import TransactionTab from '@/Components/TransactionTab.vue';
 
 defineProps({
-    raffles: {
+    transactions: {
         type: Object,
+        required: true,
+    },
+    daily_transactions: {
+        type: Number,
         required: true,
     },
 });
