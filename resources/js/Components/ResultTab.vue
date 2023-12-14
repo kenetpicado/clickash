@@ -1,6 +1,7 @@
 <template>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div v-for="i in results" class="bg-card rounded-xl p-2 w-full text-gray-600">
+        <template v-for="i in results">
+            <Link :href="route('clientarea.results.show', i.id)" class="bg-card rounded-xl p-2 w-full text-gray-600">
             <div class="mb-1 font-medium">
                 {{ i.name }}
             </div>
@@ -13,11 +14,13 @@
                     {{ r }}
                 </div>
             </div>
-        </div>
+            </Link>
+        </template>
     </div>
 </template>
 
 <script setup>
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     results: {

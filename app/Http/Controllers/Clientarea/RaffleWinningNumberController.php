@@ -27,7 +27,7 @@ class RaffleWinningNumberController extends Controller
         return inertia('Clientarea/Raffle/WinningNumber', [
             'raffle' => $raffle,
             'winning_numbers' => $this->winningNumberRepository->getByRaffle($raffle->id),
-            'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
+            //'winners' => $this->transactionRepository->getWinnersByRaffle($raffle->id),
             'hours' => $this->availabilityService->getPastHours($raffle->id),
             'settings' => $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $raffle->id),
         ]);

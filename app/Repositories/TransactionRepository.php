@@ -176,4 +176,32 @@ class TransactionRepository
             ->where('status', '!=', 'VENDIDO')
             ->update(['status' => 'VENDIDO']);
     }
+
+    public function getTeamWinners($raffle_id, $request = [])
+    {
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('created_at', $request['date']);
+            }, function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
+            ->with('user:id,name')
+            ->where('status', '!=', 'VENDIDO')
+            ->get();
+    }
+
+    public function getUserWinners($user_id, $raffle_id, $request = [])
+    {
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->where('raffle_id', $raffle_id)
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('created_at', $request['date']);
+            }, function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
+            ->where('status', '!=', 'VENDIDO')
+            ->get();
+    }
 }

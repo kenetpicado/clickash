@@ -93,6 +93,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
             ->only(['index']);
 
         Route::resource('results', ResultController::class)
+            ->parameters(['results' => 'raffle'])
             ->only(['index', 'show']);
     });
 

@@ -23,17 +23,6 @@
             </StatCardActions>
         </div>
 
-        <div class="text-2xl font-extrabold text-gray-600 mb-2">
-            Transacciones
-        </div>
-
-        <div v-if="winners.length == 0" class="w-full text-center text-gray-400">
-            No hay transacciones
-        </div>
-        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <Transaction :transaction="transaction" v-for="transaction in winners" :key="transaction.id" />
-        </div>
-
         <FormModal :show="openModal" title="Resultado" @onCancel="resetValues" @onSubmit="onSubmit">
 
             <div class="text-red-500 mb-4" v-if="hours.length == 0">
@@ -75,7 +64,6 @@ import InputForm from '@/Components/Form/InputForm.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import StatCardActions from '@/Components/StatCardActions.vue';
-import Transaction from '@/Components/Transaction.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { Carbon } from '@/Use/Carbon';
 import { confirmAlert } from '@/Use/helpers';
@@ -86,10 +74,6 @@ import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
     winning_numbers: {
-        type: Object,
-        required: true,
-    },
-    winners: {
         type: Object,
         required: true,
     },
