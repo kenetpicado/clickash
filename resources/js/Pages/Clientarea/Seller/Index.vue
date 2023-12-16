@@ -1,8 +1,5 @@
 <template>
     <ClientareaLayout title="Inicio">
-        <template #options>
-            <Tabs/>
-        </template>
         <template #header>
             <span class="title">
                 Vendedores

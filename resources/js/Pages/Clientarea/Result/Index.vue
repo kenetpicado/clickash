@@ -1,8 +1,5 @@
 <template>
     <ClientareaLayout title="Inicio">
-        <template #options>
-            <Tabs />
-        </template>
         <template #header>
             <span class="title">
                 Resultados
@@ -21,7 +18,6 @@
 <script setup>
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import ResultTab from '@/Components/ResultTab.vue';
-import Tabs from '@/Components/Tabs.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import { reactive, watch } from 'vue';
 import { router } from "@inertiajs/vue3";

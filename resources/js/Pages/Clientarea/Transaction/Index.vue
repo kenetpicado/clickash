@@ -1,8 +1,5 @@
 <template>
     <ClientareaLayout title="Inicio">
-        <template #options>
-            <Tabs />
-        </template>
         <template #header>
             <span class="title">
                 Transacciones
@@ -16,7 +13,6 @@
 
 <script setup>
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
-import Tabs from '@/Components/Tabs.vue';
 import TransactionTab from '@/Components/TransactionTab.vue';
 
 defineProps({

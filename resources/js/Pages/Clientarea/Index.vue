@@ -1,8 +1,5 @@
 <template>
     <ClientareaLayout title="Inicio">
-        <template #options>
-            <Tabs />
-        </template>
         <template #header>
             <span class="title">
                 Rifas
@@ -16,7 +13,6 @@
 
 <script setup>
 import RaffleTab from '@/Components/RaffleTab.vue';
-import Tabs from '@/Components/Tabs.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 
 defineProps({
