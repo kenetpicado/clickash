@@ -14,7 +14,7 @@ class RaffleHourController extends Controller
     public function __invoke(Request $request, $raffle)
     {
         return Availability::where('raffle_id', $raffle)
-            ->where('user_id', auth()->id())
+            ->where('user_id', auth()->user()->getOwnerId())
             ->pluck('blocked_hours')
             ->flatten()
             ->unique()
