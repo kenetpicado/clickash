@@ -32,12 +32,22 @@ class TransactionRepository
 
     public function getByTeam()
     {
-        return self::setTeam()->with(['user:id,name', 'raffle:id,name'])->latest('id')->paginate();
+        return self::setTeam()
+            ->with([
+                'user' => fn ($query) => $query->withTrashed()->select('id', 'name'),
+                'raffle:id,name'
+            ])
+            ->latest('id')
+            ->paginate();
     }
 
     public function getTeamByRaffle($raffle_id)
     {
-        return self::setTeam()->where('raffle_id', $raffle_id)->with('user:id,name')->latest('id')->paginate();
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
+            ->latest('id')
+            ->paginate();
     }
 
     public function getMyDaily()
@@ -89,7 +99,7 @@ class TransactionRepository
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
             ->whereDate('created_at', Carbon::today())
-            ->with('user:id,name')
+            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
             ->orderBy('hour')
             ->where(function ($query) {
                 $query->where('status', TransactionStatusEnum::PRIZE->value)
@@ -202,7 +212,7 @@ class TransactionRepository
             }, function ($query) {
                 $query->whereDate('created_at', Carbon::today());
             })
-            ->with('user:id,name')
+            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
             ->where('status', '!=', 'VENDIDO')
             ->get();
     }

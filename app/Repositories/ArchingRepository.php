@@ -11,7 +11,7 @@ class ArchingRepository
     public function getAll(array $request)
     {
         return Arching::where('user_id', auth()->id())
-            ->with('seller:id,name')
+            ->with(['seller' => fn ($query) => $query->withTrashed()->select('id', 'name')])
             ->when(isset($request['type']), fn ($query) => $query->where('type', $request['type']))
             ->when(isset($request['seller_id']), fn ($query) => $query->where('seller_id', $request['seller_id']))
             ->when(isset($request['date']), fn ($query) => $query->whereDate('created_at', $request['date']), fn ($query) => $query->where('created_at', '>=', Carbon::now()->startOfWeek()))
