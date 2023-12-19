@@ -21,7 +21,7 @@ class RaffleReportController extends Controller
         $sales_by_number = [];
 
         if ($request->has('hour')) {
-            $sales_by_number = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $request->all());
+            $sales_by_number = $this->transactionRepository->getTeamSalesSummary($raffle->id, $request->all());
         }
 
         return inertia('Clientarea/Raffle/Report', [

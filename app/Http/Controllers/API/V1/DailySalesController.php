@@ -23,7 +23,11 @@ class DailySalesController extends Controller
             'date' => 'nullable',
         ]);
 
-        $sales = $this->transactionRepository->getDailyTotalByRaffleAndHour($raffle->id, $validated);
+        if (auth()->user()->isSeller()) {
+            $sales = $this->transactionRepository->getUserSalesSummary(auth()->id(), $raffle->id, $validated);
+        } else {
+            $sales = $this->transactionRepository->getTeamSalesSummary($raffle->id, $validated);
+        }
 
         return DailySalesResource::collection($sales)
             ->additional([

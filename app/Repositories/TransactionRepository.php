@@ -116,12 +116,11 @@ class TransactionRepository
     public function getDailyTotalByTeam()
     {
         return self::setTeam()
-            // ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
             ->whereDate('created_at', Carbon::today())
             ->sum('amount');
     }
 
-    public function getDailyTotalByRaffleAndHour($raffle_id, $request)
+    public function getTeamSalesSummary($raffle_id, $request)
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
@@ -131,7 +130,24 @@ class TransactionRepository
             }, function ($query) {
                 $query->whereDate('created_at', Carbon::today());
             })
-            ->selectRaw('digit, sum(amount) as total, count(digit) as count')
+            ->selectRaw('digit, sum(amount) as total')
+            ->groupBy('digit')
+            ->orderBy('digit')
+            ->get();
+    }
+
+    public function getUserSalesSummary($user_id, $raffle_id, $request)
+    {
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->where('raffle_id', $raffle_id)
+            ->where('hour', $request['hour'])
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('created_at', $request['date']);
+            }, function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
+            ->selectRaw('digit, sum(amount) as total')
             ->groupBy('digit')
             ->orderBy('digit')
             ->get();

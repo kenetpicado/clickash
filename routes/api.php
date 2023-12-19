@@ -71,6 +71,12 @@ Route::group(['prefix' => 'v1'], function () {
             ->parameters(['results' => 'raffle'])
             ->only(['index', 'show']);
 
+        Route::get('raffles/{raffle}/daily-sales', DailySalesController::class)
+            ->name('daily.sales');
+
+        Route::get('raffles/{raffle}/hours', RaffleHourController::class)
+            ->name('raffles.hours');
+
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
             Route::put('toggle-status/{seller}', ToggleStatusController::class);
@@ -97,12 +103,6 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::get('resume', ResumeController::class)
                 ->name('resume.index');
-
-            Route::get('raffles/{raffle}/daily-sales', DailySalesController::class)
-                ->name('daily.sales');
-
-            Route::get('raffles/{raffle}/hours', RaffleHourController::class)
-                ->name('raffles.hours');
 
             Route::apiResource('sellers.archings', SellerArchingController::class)
                 ->only(['store', 'destroy']);

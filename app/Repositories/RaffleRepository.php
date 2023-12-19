@@ -11,14 +11,7 @@ class RaffleRepository
     {
         $ownerId = auth()->user()->getOwnerId();
 
-        $currentTime = Carbon::now()->format('H:i:s');
-
         return Raffle::hasUser($ownerId)
-            ->when(auth()->user()->isSeller(), function ($query) use ($ownerId, $currentTime) {
-                $query->whereHas('currentAvailability', function ($query) use ($ownerId, $currentTime) {
-                    $query->where('user_id', $ownerId)->where('start_time', '<=', $currentTime)->where('end_time', '>=', $currentTime);
-                });
-            })
             ->with([
                 'currentAvailability' => function ($query) use ($ownerId) {
                     $query->where('user_id', $ownerId)->select('id', 'raffle_id', 'user_id', 'blocked_hours');

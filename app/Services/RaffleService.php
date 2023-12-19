@@ -23,14 +23,9 @@ class RaffleService
 
             $raffles->transform(function ($raffle) use ($isOwner) {
                 $raffle->blocked_hours = collect($raffle->currentAvailability->blocked_hours ?? [])
-                    ->filter(function ($value) use ($isOwner) {
-                        if ($isOwner) {
-                            return $value;
-                        } else {
-                            return Carbon::parse($value)->isFuture();
-                        }
-                    })
+                    ->filter(fn ($value) => $isOwner ? $value : Carbon::parse($value)->isFuture())
                     ->values();
+
                 unset($raffle->currentAvailability);
 
                 return $raffle;

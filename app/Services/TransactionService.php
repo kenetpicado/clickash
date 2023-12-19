@@ -31,7 +31,7 @@ class TransactionService
 
         $raffleSettings = $raffleUserRepository->getSettings($ownerId, $request['raffle_id']);
 
-        // // CHECK IF THE TIME IS BLOCKED
+        //CHECK IF THE TIME IS BLOCKED
         $blockedHours = $availabilityRepository->getTodayBlockedHours($request['raffle_id'], $ownerId);
 
         foreach ($blockedHours as $blockedHour) {
