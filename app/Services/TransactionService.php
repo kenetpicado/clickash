@@ -43,9 +43,18 @@ class TransactionService
         }
 
         foreach ($request['data'] as $transaction) {
-
             if (Carbon::parse($transaction['hour'])->isPast()) {
                 abort(422, "El turno de las {$transaction['hour']} ya pasó");
+            }
+
+            if (isset($raffleSettings['max'])) {
+                if (strlen($transaction['digit']) > strlen($raffleSettings['max'])) {
+                    abort(422, "Los números solo pueden contener " . strlen($raffleSettings['max']) . " digitos");
+                }
+
+                if ($transaction['digit'] > $raffleSettings['max']) {
+                    abort(422, "El número máximo es {$raffleSettings['max']}");
+                }
             }
 
             // CHECK IF THE NUMBER IS BLOCKED

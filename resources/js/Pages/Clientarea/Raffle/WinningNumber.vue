@@ -128,6 +128,18 @@ const onSubmit = () => {
         return;
     }
 
+    if (props.settings.max) {
+        if (form.number.length > props.settings.max.length) {
+            toast.error("Los números solo pueden contener " + props.settings.max.length + " digitos");
+            return;
+        }
+
+        if (parseInt(form.number) > parseInt(props.settings.max)) {
+            toast.error('El número ingresado supera el máximo permitido: ' + props.settings.max);
+            return;
+        }
+    }
+
     confirmAlert({
         title: 'Confirmar',
         message: '¿Esta seguro de agregar este resultado?',
