@@ -21,7 +21,7 @@ class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'client' => $this->client,
             'hour' => Carbon::parse($this->hour)->format('g:i A'),
-            'status' => $this->status,
+            'status' => $this->deleted_at ? 'ELIMINADO' : $this->status,
             'prize' => 'C$ '.number_format($this->prize),
             'super_x' => $this->super_x,
             'created_at' => $this->created_at->format('d/m/y g:i A'),

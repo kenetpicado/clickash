@@ -22,6 +22,12 @@ class TransactionRepository
     // del dia actual o de una fecha especifica
     public function getByUserOfTheDay($user, $request = [])
     {
+        if (isset($request['trashed'])) {
+            $request['trashed'] = filter_var($request['trashed'], FILTER_VALIDATE_BOOLEAN);
+        } else {
+            $request['trashed'] = false;
+        }
+
         return $user->transactions()
             ->with('raffle:id,name')
             ->latest('id')
@@ -30,7 +36,7 @@ class TransactionRepository
                 fn ($q) => $q->whereDate('created_at', $request['date']),
                 fn ($q) => $q->whereDate('created_at', Carbon::today())
             )
-            ->when(isset($request['trashed']), fn ($q) => $q->onlyTrashed())
+            ->when($request['trashed'], fn ($q) => $q->onlyTrashed())
             ->paginate();
     }
 
