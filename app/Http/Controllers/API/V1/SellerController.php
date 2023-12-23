@@ -9,6 +9,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\User;
 use App\Repositories\TransactionRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
@@ -34,9 +35,9 @@ class SellerController extends Controller
         return self::index();
     }
 
-    public function show(User $seller)
+    public function show(Request $request, User $seller)
     {
-        return TransactionResource::collection($this->transactionRepository->getByUserOfTheDay($seller));
+        return TransactionResource::collection($this->transactionRepository->getByUserOfTheDay($seller, $request->all()));
     }
 
     public function update(SellerRequest $request, $seller)
