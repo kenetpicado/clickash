@@ -127,4 +127,9 @@ class TransactionService
         please_do_it:
         $this->transactionRepository->delete($transaction);
     }
+
+    public function generateInvoiceNumber()
+    {
+        return strtoupper(substr(md5(uniqid(rand())), 0, 8));
+    }
 }

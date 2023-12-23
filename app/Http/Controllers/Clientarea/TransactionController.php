@@ -13,11 +13,11 @@ class TransactionController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Clientarea/Transaction/Index', [
             'transactions' => $this->transactionRepository->getByTeam(),
-            'daily_transactions' => $this->transactionRepository->getDailyTotalByTeam(),
+            'daily_transactions' => $this->transactionRepository->getTeamTotalOfTheDay($request->all()),
         ]);
     }
 }

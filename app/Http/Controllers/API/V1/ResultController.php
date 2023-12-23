@@ -23,7 +23,7 @@ class ResultController extends Controller
 
         $message = $request->has('date')
             ? 'Resultados del ' . Carbon::parse($request->get('date'))->format('d/m/Y')
-            : 'Resultados del hoy';
+            : 'Resultados de hoy';
 
         return response()->json([
             'message' => $message,

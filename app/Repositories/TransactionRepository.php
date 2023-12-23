@@ -18,9 +18,20 @@ class TransactionRepository
         Transaction::where('id', $transaction)->update(['status' => TransactionStatusEnum::PAID->value]);
     }
 
-    public function getByUser($user)
+    // Obtener todas las transacciones de un vendedor
+    // del dia actual o de una fecha especifica
+    public function getByUserOfTheDay($user, $request = [])
     {
-        return $user->transactions()->with('raffle:id,name')->latest('id')->paginate();
+        return $user->transactions()
+            ->with('raffle:id,name')
+            ->latest('id')
+            ->when(
+                isset($request['date']),
+                fn ($q) => $q->whereDate('created_at', $request['date']),
+                fn ($q) => $q->whereDate('created_at', Carbon::today())
+            )
+            ->when(isset($request['trashed']), fn ($q) => $q->onlyTrashed())
+            ->paginate();
     }
 
     private function setTeam()
@@ -41,11 +52,26 @@ class TransactionRepository
             ->paginate();
     }
 
+    //TODO: should be deleted
     public function getTeamByRaffle($raffle_id)
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
             ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
+            ->latest('id')
+            ->paginate();
+    }
+
+    public function getAllOfTheDay($raffle_id, $request = [])
+    {
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('created_at', $request['date']);
+            }, function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
             ->latest('id')
             ->paginate();
     }
@@ -81,6 +107,7 @@ class TransactionRepository
             'prize' => $request['prize'],
             'status' => TransactionStatusEnum::SOLD->value,
             'super_x' => $request['super_x'],
+            'invoice_number' => $request['invoice_number']
         ]);
     }
 
@@ -108,25 +135,38 @@ class TransactionRepository
             ->get();
     }
 
-    public function getDailyTotalByUser($user)
+    public function getTotalByUserOfTheDay($user, $request = [])
     {
         return $user->transactions()
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->when(
+                isset($request['date']),
+                fn ($q) => $q->whereDate('created_at', $request['date']),
+                fn ($q) => $q->whereDate('created_at', Carbon::today())
+            )
+            ->when(isset($request['trashed']), fn ($q) => $q->onlyTrashed())
             ->sum('amount');
     }
 
-    public function getDailyTotalByRaffle($raffle_id)
+    public function getDailyTotalByRaffle($raffle_id, $request = [])
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
-            ->whereDate('created_at', Carbon::today())
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('created_at', $request['date']);
+            }, function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
             ->sum('amount');
     }
 
-    public function getDailyTotalByTeam()
+    public function getTeamTotalOfTheDay($request = [])
     {
         return self::setTeam()
-            ->whereDate('created_at', Carbon::today())
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('created_at', $request['date']);
+            }, function ($query) {
+                $query->whereDate('created_at', Carbon::today());
+            })
             ->sum('amount');
     }
 

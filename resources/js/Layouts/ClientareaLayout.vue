@@ -50,7 +50,7 @@ const items = [
             </Link>
         </div>
     </nav>
-    <main class="p-4 mx-auto max-w-screen-lg">
+    <main class="p-4 mx-auto max-w-screen-lg mb-12">
         <div class="flex items-center overflow-x-auto hide-scrollbar">
             <slot name="options" />
         </div>

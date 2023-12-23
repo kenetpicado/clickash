@@ -47,7 +47,7 @@ const props = defineProps({
 const stats = computed(() => {
     return [
         {
-            title: 'Ventas del dia',
+            title: 'Ventas de hoy',
             value: "C$" + props.daily_transactions.toLocaleString(),
             icon: IconCurrencyDollar,
         },

@@ -2,10 +2,10 @@
     <div class="bg-card p-3 rounded-xl">
         <div class="flex items-center justify-between text-sm mb-2">
             <span class="text-gray-400">{{ Carbon.create(transaction.created_at).format('d/m/Y H:i') }}</span>
-            <span class="text-gray-600">{{ transaction.status }}</span>
+            <span class="text-gray-600">{{ transaction.deleted_at ? 'ELIMINADA' : transaction.status }}</span>
         </div>
         <span class="block text-sm text-gray-600 mb-2 font-bold">
-            No. {{ transaction.id }}
+            No. {{ transaction.id }} (Recibo: {{ transaction.invoice_number }})
         </span>
         <span v-if="transaction.user" class="block text-sm text-gray-600 mb-2">
             {{ transaction.user.name }}

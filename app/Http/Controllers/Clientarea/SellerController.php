@@ -7,6 +7,7 @@ use App\Http\Requests\Clientarea\SellerRequest;
 use App\Models\User;
 use App\Repositories\TransactionRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
@@ -34,12 +35,12 @@ class SellerController extends Controller
         return back();
     }
 
-    public function show(User $seller)
+    public function show(Request $request, User $seller)
     {
         return inertia('Clientarea/Seller/Show', [
             'seller' => $seller,
-            'transactions' => $this->transactionRepository->getByUser($seller),
-            'daily_transactions' => $this->transactionRepository->getDailyTotalByUser($seller),
+            'transactions' => $this->transactionRepository->getByUserOfTheDay($seller, $request->all()),
+            'daily_transactions' => $this->transactionRepository->getTotalByUserOfTheDay($seller, $request->all()),
         ]);
     }
 

@@ -25,6 +25,8 @@ class BulkTransaction extends Controller
 
         $storedTransactions = [];
 
+        $invoiceNumber = $this->transactionService->generateInvoiceNumber();
+
         foreach ($validated['data'] as $transaction) {
 
             $prize = $transaction['amount'] * ($settings['multiplier'] ?? 70);
@@ -40,6 +42,7 @@ class BulkTransaction extends Controller
                 'raffle_id' => $validated['raffle_id'],
                 'prize' => $prize,
                 'client' => $validated['client'],
+                'invoice_number' => $invoiceNumber,
             ]);
         }
 
@@ -64,6 +67,7 @@ class BulkTransaction extends Controller
             'client' => $storedTransactions[0]['client'],
             'total' => array_sum(array_column($data, 'total')),
             'multiplier' => $settings['multiplier'] ?? 70,
+            'invoice_number' => $invoiceNumber,
             'data' => $data,
         ]);
     }

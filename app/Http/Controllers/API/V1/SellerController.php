@@ -36,7 +36,7 @@ class SellerController extends Controller
 
     public function show(User $seller)
     {
-        return TransactionResource::collection($this->transactionRepository->getByUser($seller));
+        return TransactionResource::collection($this->transactionRepository->getByUserOfTheDay($seller));
     }
 
     public function update(SellerRequest $request, $seller)
