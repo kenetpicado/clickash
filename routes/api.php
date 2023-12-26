@@ -97,6 +97,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
 
+            //pending to remove
             Route::get('resume', ResumeController::class)
                 ->name('resume.index');
 
