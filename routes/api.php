@@ -101,6 +101,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
 
+            //shoiud be removed because has been moved to transactions.index
             Route::get('resume', ResumeController::class)
                 ->name('resume.index');
 

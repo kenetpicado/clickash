@@ -37,10 +37,12 @@ class SellerController extends Controller
 
     public function show(Request $request, User $seller)
     {
+        $filters = $request->all();
+
         return inertia('Clientarea/Seller/Show', [
             'seller' => $seller,
-            'transactions' => $this->transactionRepository->getByUserOfTheDay($seller, $request->all()),
-            'daily_transactions' => $this->transactionRepository->getTotalByUserOfTheDay($seller, $request->all()),
+            'transactions' => $this->transactionRepository->getUserTransactionsPerDay($seller->id, $filters),
+            'daily_transactions' => $this->transactionRepository->getTotalByUserOfTheDay($seller, $filters),
         ]);
     }
 

@@ -7,6 +7,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Repositories\TransactionRepository;
 use App\Services\TransactionService;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
@@ -16,15 +17,22 @@ class TransactionController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return TransactionResource::collection($this->transactionRepository->getMyDaily());
+        $filters = $request->all();
+
+        if (auth()->user()->isSeller())
+            $data = $this->transactionRepository->getUserTransactionsPerDay(auth()->id(), $filters);
+        else
+            $data = $this->transactionRepository->getTeamTransactionsPerDay($filters);
+
+        return TransactionResource::collection($data);
     }
 
     public function destroy(Transaction $transaction)
     {
         $this->transactionService->destroy($transaction);
 
-        return self::index();
+        return self::index(request());
     }
 }

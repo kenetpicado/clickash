@@ -15,6 +15,6 @@ class ResumeController extends Controller
 
     public function __invoke()
     {
-        return TransactionResource::collection($this->transactionRepository->getByTeam());
+        return TransactionResource::collection($this->transactionRepository->getTeamTransactionsPerDay());
     }
 }

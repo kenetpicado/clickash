@@ -8,9 +8,20 @@ use Carbon\Carbon;
 
 class TransactionRepository
 {
-    public function delete($transaction)
+    public function store(array $request)
     {
-        $transaction->delete();
+        return Transaction::create([
+            'user_id' => auth()->id(),
+            'raffle_id' => $request['raffle_id'],
+            'digit' => $request['digit'],
+            'amount' => $request['amount'],
+            'hour' => $request['hour'],
+            'client' => $request['client'],
+            'prize' => $request['prize'],
+            'status' => TransactionStatusEnum::SOLD->value,
+            'super_x' => $request['super_x'],
+            'invoice_number' => $request['invoice_number']
+        ]);
     }
 
     public function markAsPaid($transaction)
@@ -18,9 +29,24 @@ class TransactionRepository
         Transaction::where('id', $transaction)->update(['status' => TransactionStatusEnum::PAID->value]);
     }
 
-    // Obtener todas las transacciones de un vendedor
-    // del dia actual o de una fecha especifica
-    public function getByUserOfTheDay($user, $request = [])
+    private function setTeam()
+    {
+        return Transaction::whereIn('user_id', (new UserRepository)->getTeam());
+    }
+
+    public function getTeamTransactionsPerDay($request = [])
+    {
+        return self::setTeam()
+            ->with([
+                'user' => fn ($query) => $query->withTrashed()->select('id', 'name'),
+                'raffle:id,name'
+            ])
+            ->day($request)
+            ->latest('id')
+            ->paginate();
+    }
+
+    public function getUserTransactionsPerDay($user_id, $request = [])
     {
         if (isset($request['trashed'])) {
             $request['trashed'] = filter_var($request['trashed'], FILTER_VALIDATE_BOOLEAN);
@@ -28,34 +54,23 @@ class TransactionRepository
             $request['trashed'] = false;
         }
 
-        return $user->transactions()
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->day($request)
             ->with('raffle:id,name')
-            ->latest('id')
-            ->when(
-                isset($request['date']),
-                fn ($q) => $q->whereDate('created_at', $request['date']),
-                fn ($q) => $q->whereDate('created_at', Carbon::today())
-            )
             ->when($request['trashed'], fn ($q) => $q->onlyTrashed())
+            ->latest('id')
             ->paginate();
     }
 
-    private function setTeam()
-    {
-        $team = (new UserRepository)->getTeam();
-
-        return Transaction::whereIn('user_id', $team);
-    }
-
-    public function getByTeam()
+    public function getTeamCurrentTotal(array $request)
     {
         return self::setTeam()
-            ->with([
-                'user' => fn ($query) => $query->withTrashed()->select('id', 'name'),
-                'raffle:id,name'
-            ])
-            ->latest('id')
-            ->paginate();
+            ->where('raffle_id', $request['raffle_id'])
+            ->whereDate('created_at', Carbon::today())
+            ->where('hour', $request['hour'])
+            ->where('digit', $request['digit'])
+            ->sum('amount');
     }
 
     //TODO: should be deleted
@@ -80,41 +95,6 @@ class TransactionRepository
             })
             ->latest('id')
             ->paginate();
-    }
-
-    public function getMyDaily()
-    {
-        return Transaction::where('user_id', auth()->id())
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
-            ->with('raffle:id,name')
-            ->latest('id')
-            ->paginate();
-    }
-
-    public function getTeamCurrentTotal(array $request)
-    {
-        return self::setTeam()
-            ->where('raffle_id', $request['raffle_id'])
-            ->whereDate('created_at', Carbon::today())
-            ->where('hour', $request['hour'])
-            ->where('digit', $request['digit'])
-            ->sum('amount');
-    }
-
-    public function store(array $request)
-    {
-        return Transaction::create([
-            'user_id' => auth()->id(),
-            'raffle_id' => $request['raffle_id'],
-            'digit' => $request['digit'],
-            'amount' => $request['amount'],
-            'hour' => $request['hour'],
-            'client' => $request['client'],
-            'prize' => $request['prize'],
-            'status' => TransactionStatusEnum::SOLD->value,
-            'super_x' => $request['super_x'],
-            'invoice_number' => $request['invoice_number']
-        ]);
     }
 
     public function markWinners($winningNumber)
