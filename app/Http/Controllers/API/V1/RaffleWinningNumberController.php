@@ -35,7 +35,7 @@ class RaffleWinningNumberController extends Controller
 
         $winningNumber = $this->winningNumberRepository->store($request->validated(), $raffle);
 
-        $this->transactionRepository->markWinners($winningNumber);
+        $this->transactionRepository->setWinningTransactions($winningNumber);
 
         return self::index($raffle);
     }
@@ -46,7 +46,7 @@ class RaffleWinningNumberController extends Controller
             abort('No es posible eliminar este registro');
         }
 
-        $this->transactionRepository->revertTeamTransactions($raffle, $winningNumber);
+        $this->transactionRepository->revertWinningTransactions($winningNumber);
 
         $winningNumber->delete();
 

@@ -55,4 +55,20 @@ class Transaction extends Model
             fn ($query) => $query->whereDate('created_at', Carbon::today())
         );
     }
+
+    public function scopeTrashed($query, $request = [])
+    {
+        if (isset($request['trashed'])) {
+            $request['trashed'] = filter_var($request['trashed'], FILTER_VALIDATE_BOOLEAN);
+        } else {
+            $request['trashed'] = false;
+        }
+
+        return $query->when($request['trashed'], fn ($q) => $q->onlyTrashed());
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->whereDate('created_at', Carbon::today());
+    }
 }

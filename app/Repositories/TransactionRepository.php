@@ -46,21 +46,51 @@ class TransactionRepository
             ->paginate();
     }
 
+    public function getTeamTransactionsTotalPerDay($request = [])
+    {
+        return self::setTeam()
+            ->day($request)
+            ->sum('amount');
+    }
+
     public function getUserTransactionsPerDay($user_id, $request = [])
     {
-        if (isset($request['trashed'])) {
-            $request['trashed'] = filter_var($request['trashed'], FILTER_VALIDATE_BOOLEAN);
-        } else {
-            $request['trashed'] = false;
-        }
-
         return Transaction::query()
             ->where('user_id', $user_id)
             ->day($request)
+            ->trashed($request)
             ->with('raffle:id,name')
-            ->when($request['trashed'], fn ($q) => $q->onlyTrashed())
             ->latest('id')
             ->paginate();
+    }
+
+    public function getUserTransactionsTotalPerDay($user_id, $request = [])
+    {
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->day($request)
+            ->trashed($request)
+            ->sum('amount');
+    }
+
+    public function getRaffleTransactionsPerDay($raffle_id, $request = [])
+    {
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->day($request)
+            ->trashed($request)
+            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
+            ->latest('id')
+            ->paginate();
+    }
+
+    public function getRaffleTransactionsTotalPerDay($raffle_id, $request = [])
+    {
+        return self::setTeam()
+            ->where('raffle_id', $raffle_id)
+            ->day($request)
+            ->trashed($request)
+            ->sum('amount');
     }
 
     public function getTeamCurrentTotal(array $request)
@@ -73,89 +103,27 @@ class TransactionRepository
             ->sum('amount');
     }
 
-    //TODO: should be deleted
-    public function getTeamByRaffle($raffle_id)
-    {
-        return self::setTeam()
-            ->where('raffle_id', $raffle_id)
-            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
-            ->latest('id')
-            ->paginate();
-    }
-
-    public function getAllOfTheDay($raffle_id, $request = [])
-    {
-        return self::setTeam()
-            ->where('raffle_id', $raffle_id)
-            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereDate('created_at', $request['date']);
-            }, function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
-            ->latest('id')
-            ->paginate();
-    }
-
-    public function markWinners($winningNumber)
+    public function setWinningTransactions($winningNumber)
     {
         self::setTeam()
             ->where('raffle_id', $winningNumber->raffle_id)
             ->where('hour', $winningNumber->hour)
             ->where('digit', $winningNumber->number)
-            ->where('created_at', '>=', Carbon::now()->format('Y-m-d 00:00:00'))
+            ->whereDate('created_at', $winningNumber->date)
             ->update(['status' => TransactionStatusEnum::PRIZE->value]);
     }
 
-    public function getWinnersByRaffle($raffle_id)
+    public function revertWinningTransactions($winningNumber)
     {
         return self::setTeam()
-            ->where('raffle_id', $raffle_id)
-            ->whereDate('created_at', Carbon::today())
-            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
-            ->orderBy('hour')
-            ->where(function ($query) {
-                $query->where('status', TransactionStatusEnum::PRIZE->value)
-                    ->orWhere('status', TransactionStatusEnum::PAID->value);
-            })
-            ->get();
+            ->whereDate('created_at', $winningNumber->date)
+            ->where('raffle_id', $winningNumber->raffle_id)
+            ->where('hour', $winningNumber->hour)
+            ->where('status', '!=', 'VENDIDO')
+            ->update(['status' => Transaction::SOLD]);
     }
 
-    public function getTotalByUserOfTheDay($user, $request = [])
-    {
-        return $user->transactions()
-            ->when(
-                isset($request['date']),
-                fn ($q) => $q->whereDate('created_at', $request['date']),
-                fn ($q) => $q->whereDate('created_at', Carbon::today())
-            )
-            ->when(isset($request['trashed']), fn ($q) => $q->onlyTrashed())
-            ->sum('amount');
-    }
-
-    public function getDailyTotalByRaffle($raffle_id, $request = [])
-    {
-        return self::setTeam()
-            ->where('raffle_id', $raffle_id)
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereDate('created_at', $request['date']);
-            }, function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
-            ->sum('amount');
-    }
-
-    public function getTeamTotalOfTheDay($request = [])
-    {
-        return self::setTeam()
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereDate('created_at', $request['date']);
-            }, function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
-            ->sum('amount');
-    }
-
+    // PENDING REVIEW all down here
     public function getTeamSalesSummary($raffle_id, $request)
     {
         return self::setTeam()
@@ -219,16 +187,7 @@ class TransactionRepository
             ->first();
     }
 
-    public function revertTeamTransactions($raffle_id, $winningNumber)
-    {
-        return self::setTeam()
-            ->whereDate('created_at', $winningNumber->date)
-            ->where('raffle_id', $raffle_id)
-            ->where('hour', $winningNumber->hour)
-            ->where('status', '!=', 'VENDIDO')
-            ->update(['status' => 'VENDIDO']);
-    }
-
+    //puedo unificar estas 2 funciones en 1 sola
     public function getTeamWinners($raffle_id, $request = [])
     {
         return self::setTeam()

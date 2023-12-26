@@ -24,7 +24,7 @@ class WinningNumberRepository
             'user_id' => auth()->id(),
             'number' => $request['number'],
             'hour' => $request['hour'],
-            'date' => Carbon::now()->format('Y-m-d'),
+            'date' => Carbon::today(),
         ]);
     }
 

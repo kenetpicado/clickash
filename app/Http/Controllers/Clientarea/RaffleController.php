@@ -20,8 +20,8 @@ class RaffleController extends Controller
     {
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
-            'daily_transactions' => $this->transactionRepository->getDailyTotalByRaffle($raffle->id),
-            'transactions' => $this->transactionRepository->getAllOfTheDay($raffle->id),
+            'daily_transactions' => $this->transactionRepository->getRaffleTransactionsTotalPerDay($raffle->id),
+            'transactions' => $this->transactionRepository->getRaffleTransactionsPerDay($raffle->id),
         ]);
     }
 

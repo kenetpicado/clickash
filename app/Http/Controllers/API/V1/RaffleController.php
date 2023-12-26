@@ -9,6 +9,7 @@ use App\Http\Resources\TransactionResource;
 use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Services\RaffleService;
+use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {
@@ -24,9 +25,9 @@ class RaffleController extends Controller
         return RaffleResource::collection($this->raffleService->getRaffles());
     }
 
-    public function show($raffle)
+    public function show(Request $request, $raffle)
     {
-        return TransactionResource::collection($this->transactionRepository->getTeamByRaffle($raffle));
+        return TransactionResource::collection($this->transactionRepository->getRaffleTransactionsPerDay($raffle, $request->all()));
     }
 
     public function update(RaffleRequest $request, $raffle)
