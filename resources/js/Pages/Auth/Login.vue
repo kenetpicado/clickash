@@ -28,7 +28,7 @@ const submit = () => {
 <template>
     <Head title="Entrar" />
 
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-white px-4 lg:px-0">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-3 sm:pt-0 bg-white px-4 lg:px-0">
 
         <img class="mx-auto h-28 w-auto" src="/logo-simple.png" alt="Workflow" />
 
@@ -56,5 +56,9 @@ const submit = () => {
             Crear cuenta
             </Link>
         </div>
+
+        <a href="https://play.google.com/store/apps/details?id=com.strainteam.clickashadmin" target="_blank">
+            <img src="/images/gp.svg" alt="" style="width: 15rem;">
+        </a>
     </div>
 </template>
