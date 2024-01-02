@@ -27,6 +27,21 @@ class BulkTransaction extends Controller
 
         $invoiceNumber = $this->transactionService->generateInvoiceNumber();
 
+        $transformedData = [];
+
+        foreach ($validated['data'] as $transaction) {
+            $key = $transaction['digit'] . $transaction['hour'] . $transaction['super_x'];
+
+            if (!isset($transformedData[$key])) {
+                $transformedData[$key] = $transaction;
+                continue;
+            }
+
+            $transformedData[$key]['amount'] += $transaction['amount'];
+        }
+
+        $validated['data'] = array_values($transformedData);
+
         foreach ($validated['data'] as $transaction) {
 
             $prize = $transaction['amount'] * ($settings['multiplier'] ?? 70);
