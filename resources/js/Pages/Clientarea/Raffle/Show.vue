@@ -6,6 +6,10 @@
             </span>
         </template>
 
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 text-gray-600">
+            <InputForm v-model="queryParams.date" text="Fecha" type="date" />
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
             <StatCard v-for="stat in stats" :stat="stat" :key="stat.title" />
         </div>
@@ -27,7 +31,9 @@ import ThePaginator from '@/Components/ThePaginator.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import Transaction from '@/Components/Transaction.vue';
 import { IconCurrencyDollar } from '@tabler/icons-vue';
-import { computed } from 'vue';
+import { computed, watch, reactive } from 'vue';
+import { router } from '@inertiajs/vue3';
+import InputForm from '@/Components/Form/InputForm.vue';
 
 const props = defineProps({
     raffle: {
@@ -47,11 +53,31 @@ const props = defineProps({
 const stats = computed(() => {
     return [
         {
-            title: 'Ventas de hoy',
+            title: 'Ventas del dia',
             value: "C$" + props.daily_transactions.toLocaleString(),
             icon: IconCurrencyDollar,
         },
     ]
 })
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const queryParams = reactive({
+    date: urlParams.get('date') ?? '',
+});
+
+watch(() => queryParams, () => {
+    let params = { ...route().params, ...queryParams };
+
+    for (const key in params) {
+        if (!params[key] || key == 'raffle') delete params[key];
+    }
+
+    router.get(route('clientarea.raffles.show', props.raffle.id), params, {
+        preserveState: true,
+        preserveScroll: true,
+        only: ['transactions', 'daily_transactions'],
+    });
+}, { deep: true });
 
 </script>

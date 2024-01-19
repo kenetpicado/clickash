@@ -25,7 +25,11 @@ const pageList = computed(() => {
 });
 
 function getThisPage(url) {
-    router.get(url, {}, {
+    let params = route().params;
+
+    if (params.page) delete params.page;
+
+    router.get(url, params, {
         preserveState: true,
         preserveScroll: true
     });

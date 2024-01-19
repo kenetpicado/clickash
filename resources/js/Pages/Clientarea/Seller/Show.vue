@@ -72,29 +72,23 @@ const stats = computed(() => {
     ]
 })
 
-const queryParams = reactive({
-    date: null,
-    trashed: false,
-});
-
 const urlParams = new URLSearchParams(window.location.search);
 
-if (urlParams.has('date'))
-    queryParams.date = urlParams.get('date');
+const queryParams = reactive({
+    date: urlParams.get('date') ?? '',
+    trashed: Boolean(urlParams.get('trashed')),
+});
 
-watch(() => [queryParams.date, queryParams.trashed], () => {
-    if (!queryParams.date)
-        delete queryParams.date;
-
-    if (!queryParams.trashed)
-        delete queryParams.trashed;
+watch(() => queryParams, () => {
+    for (const key in queryParams) {
+        if (!queryParams[key]) delete queryParams[key];
+    }
 
     router.get(route('clientarea.sellers.show', props.seller.id), queryParams, {
         preserveState: true,
         preserveScroll: true,
         only: ['transactions', 'daily_transactions'],
     });
-});
-
+}, { deep: true });
 
 </script>

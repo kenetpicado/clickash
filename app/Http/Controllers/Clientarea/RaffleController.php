@@ -7,6 +7,7 @@ use App\Http\Requests\API\RaffleRequest;
 use App\Models\Raffle;
 use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
+use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {
@@ -16,12 +17,14 @@ class RaffleController extends Controller
     ) {
     }
 
-    public function show(Raffle $raffle)
+    public function show(Request $request, Raffle $raffle)
     {
+        $array = $request->all();
+
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
-            'daily_transactions' => $this->transactionRepository->getRaffleTransactionsTotalPerDay($raffle->id),
-            'transactions' => $this->transactionRepository->getRaffleTransactionsPerDay($raffle->id),
+            'daily_transactions' => $this->transactionRepository->getRaffleTransactionsTotalPerDay($raffle->id, $array),
+            'transactions' => $this->transactionRepository->getRaffleTransactionsPerDay($raffle->id, $array),
         ]);
     }
 
