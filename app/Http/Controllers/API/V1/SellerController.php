@@ -37,7 +37,12 @@ class SellerController extends Controller
 
     public function show(Request $request, User $seller)
     {
-        return TransactionResource::collection($this->transactionRepository->getUserTransactionsPerDay($seller->id, $request->all()));
+        $array = $request->all();
+
+        return TransactionResource::collection($this->transactionRepository->getUserTransactionsPerDay($seller->id, $array))
+            ->additional([
+                'total' => 'C$ ' . number_format($this->transactionRepository->getUserTransactionsTotalPerDay($seller->id, $array)),
+            ]);
     }
 
     public function update(SellerRequest $request, $seller)

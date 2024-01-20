@@ -21,12 +21,19 @@ class TransactionController extends Controller
     {
         $filters = $request->all();
 
-        if (auth()->user()->isSeller())
+        if (auth()->user()->isSeller()) {
             $data = $this->transactionRepository->getUserTransactionsPerDay(auth()->id(), $filters);
-        else
+            $total = $this->transactionRepository->getUserTransactionsTotalPerDay(auth()->id(), $filters);
+        }
+        else {
             $data = $this->transactionRepository->getTeamTransactionsPerDay($filters);
+            $total = $this->transactionRepository->getTeamTransactionsTotalPerDay($filters);
+        }
 
-        return TransactionResource::collection($data);
+        return TransactionResource::collection($data)
+            ->additional([
+                'total' => 'C$ ' . number_format($total),
+            ]);
     }
 
     public function destroy(Transaction $transaction)

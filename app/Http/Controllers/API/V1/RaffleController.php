@@ -27,7 +27,12 @@ class RaffleController extends Controller
 
     public function show(Request $request, $raffle)
     {
-        return TransactionResource::collection($this->transactionRepository->getRaffleTransactionsPerDay($raffle, $request->all()));
+        $array = $request->all();
+
+        return TransactionResource::collection($this->transactionRepository->getRaffleTransactionsPerDay($raffle, $array))
+            ->additional([
+                'total' => 'C$ ' . number_format($this->transactionRepository->getRaffleTransactionsTotalPerDay($raffle, $array)),
+            ]);
     }
 
     public function update(RaffleRequest $request, $raffle)
