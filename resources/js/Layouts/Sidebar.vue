@@ -2,12 +2,9 @@
     <aside class="w-72 p-3 flex flex-col hidden lg:block min-h-screen">
         <div class="flex flex-col items-center my-1">
             <Link :href="route('home')">
-            <div class="h-24 w-24">
-                <img class="h-full w-full" src="/logo-simple.png" alt="" />
+            <div class="h-14 my-6">
+                <img class="h-full w-full object-contain" src="/logo1x1.png" alt="" />
             </div>
-            <h2 class="text-2xl font-extrabold text-basic mb-8">
-                {{ $page.props.app_name }}
-            </h2>
             </Link>
         </div>
         <ul class="space-y-2 text-basic">

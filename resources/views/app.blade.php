@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia>{{ config('app.name', 'ClickAsh') }}</title>
 
     <meta name="theme-color" content="#2a6049">
 
@@ -14,18 +14,18 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     {{-- favicon --}}
-    <link rel="icon" href="{{ asset('/logo-simple.png') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('/favicon.png') }}" type="image/x-icon" />
     <meta name="title" content="Inicio - {{ config('app.name', 'ClickAsh') }}" />
     <meta name="description"
-        content="ClickAsh es una herramienta innovadora diseñada para facilitar la gestión de tu negocio, especialmente en el ámbito de sorteos. Con esta plataforma, podrás supervisar de manera efectiva cada etapa del proceso de venta realizado por tus vendedores. Obtén un control total sobre las transacciones, gestionando las cajas en tiempo real para garantizar una operación fluida y eficiente. Con ClickAsh, optimiza la administración de tu negocio y disfruta de una experiencia de gestión integral y en tiempo real." />
+        content="ClickAsh es una innovadora aplicación diseñada para facilitar la venta de rifas. Con esta plataforma, podrás supervisar de manera efectiva cada etapa del proceso de venta realizado por tus vendedores, obteniendo un control total sobre las transacciones y gestionando las cajas en tiempo real para garantizar una operación fluida y eficiente. Con ClickAsh, optimiza la administración de tu negocio y disfruta de una experiencia de gestión integral y en tiempo real. " />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ config('app.url') }}" />
     <meta property="og:title" content="Inicio - {{ config('app.name', 'ClickAsh') }}" />
     <meta property="og:description"
-        content="ClickAsh es una herramienta innovadora diseñada para facilitar la gestión de tu negocio, especialmente en el ámbito de sorteos. Con esta plataforma, podrás supervisar de manera efectiva cada etapa del proceso de venta realizado por tus vendedores. Obtén un control total sobre las transacciones, gestionando las cajas en tiempo real para garantizar una operación fluida y eficiente. Con ClickAsh, optimiza la administración de tu negocio y disfruta de una experiencia de gestión integral y en tiempo real." />
-    <meta property="og:image" content="{{ asset('/logo-simple.png') }}" />
+        content="ClickAsh es una innovadora aplicación diseñada para facilitar la venta de rifas. Con esta plataforma, podrás supervisar de manera efectiva cada etapa del proceso de venta realizado por tus vendedores, obteniendo un control total sobre las transacciones y gestionando las cajas en tiempo real para garantizar una operación fluida y eficiente. Con ClickAsh, optimiza la administración de tu negocio y disfruta de una experiencia de gestión integral y en tiempo real. " />
+    <meta property="og:image" content="{{ asset('/favicon.png') }}" />
 
     <!-- Scripts -->
     @routes

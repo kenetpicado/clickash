@@ -1,6 +1,5 @@
 <script setup>
 import { Head, useForm, Link } from '@inertiajs/vue3';
-import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 
 const form = useForm({
@@ -27,7 +26,7 @@ const submit = () => {
 
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-white px-4 lg:px-0">
 
-        <img class="mx-auto h-28 w-auto" src="/logo-simple.png" alt="Workflow" />
+        <img class="mx-auto h-16 w-auto" src="/logo1x1.png" alt="Workflow" />
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-card shadow-md overflow-hidden rounded-xl">
             <h2 class="mt-4 text-center text-lg font-extrabold text-basic">
