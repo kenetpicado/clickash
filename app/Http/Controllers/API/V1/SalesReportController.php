@@ -7,10 +7,8 @@ use App\Http\Requests\API\SalesReportRequest;
 use App\Http\Resources\SalesReportResource;
 use App\Models\Raffle;
 use App\Repositories\TransactionRepository;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
-class DailySalesController extends Controller
+class SalesReportController extends Controller
 {
     public function __construct(
         private readonly TransactionRepository $transactionRepository,
@@ -23,7 +21,7 @@ class DailySalesController extends Controller
 
         $sales = auth()->user()->isSeller()
             ? $this->transactionRepository->getUserSalesReport(auth()->id(), $raffle->id, $validated)
-            : $this->transactionRepository->getTeamSalesSummary($raffle->id, $validated);
+            : $this->transactionRepository->getTeamSalesReport($raffle->id, $validated);
 
         return SalesReportResource::collection($sales)
             ->additional([

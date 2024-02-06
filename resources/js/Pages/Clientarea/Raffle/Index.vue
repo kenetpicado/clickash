@@ -6,8 +6,6 @@
             </span>
         </template>
 
-        <!-- SHOULD BE REMOVED -->
-
         <RaffleTab :raffles="raffles" />
 
     </ClientareaLayout>

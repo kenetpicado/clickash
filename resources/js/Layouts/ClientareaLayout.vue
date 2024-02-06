@@ -25,7 +25,7 @@ const items = [
     },
     {
         icon: IconHome,
-        route: route('clientarea.index'),
+        route: route('clientarea.raffles.index'),
     },
     {
         icon: IconGift,
@@ -38,9 +38,6 @@ const items = [
 ];
 
 const isActive = (r) => {
-    if (r === route('clientarea.index'))
-        return window.location.pathname === '/clientarea';
-
     return window.location.href.includes(r);
 };
 

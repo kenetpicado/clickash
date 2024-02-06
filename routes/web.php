@@ -54,7 +54,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:root'])
             ->name('raffles.clone');
     });
 
-Route::middleware(['auth:sanctum', 'online', 'role:owner'])
+Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
     ->prefix('clientarea')
     ->name('clientarea.')
     ->group(function () {
@@ -76,7 +76,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner'])
         Route::put('toggle-status/{seller}', ToggleStatusController::class)->name('toggle-status');
 
         Route::resource('raffles', ClientareaRaffleController::class)
-            ->only(['show', 'update']);
+            ->only(['index', 'show', 'update']);
 
         Route::resource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
             ->only(['index', 'store', 'destroy']);

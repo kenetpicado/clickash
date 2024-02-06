@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\BulkTransaction;
-use App\Http\Controllers\API\V1\DailySalesController;
+use App\Http\Controllers\API\V1\SalesReportController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
@@ -40,7 +40,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('register', RegisterController::class)
         ->name('register');
 
-    Route::middleware(['auth:sanctum', 'online', 'role:owner|seller'])->group(function () {
+    Route::middleware(['auth:sanctum', 'online', 'role:owner|seller', 'isMySeller'])->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
 
@@ -72,8 +72,8 @@ Route::group(['prefix' => 'v1'], function () {
             ->parameters(['results' => 'raffle'])
             ->only(['index', 'show']);
 
-        Route::get('raffles/{raffle}/daily-sales', DailySalesController::class)
-            ->name('daily.sales');
+        Route::get('raffles/{raffle}/daily-sales', SalesReportController::class)
+            ->name('raffles.reports.index');
 
         Route::get('raffles/{raffle}/hours', RaffleHourController::class)
             ->name('raffles.hours');

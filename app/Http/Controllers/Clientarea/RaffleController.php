@@ -17,6 +17,13 @@ class RaffleController extends Controller
     ) {
     }
 
+    public function index(Request $request)
+    {
+        return inertia('Clientarea/Index', [
+            'raffles' => $this->raffleUserRepository->getRaffles(),
+        ]);
+    }
+
     public function show(Request $request, Raffle $raffle)
     {
         $array = $request->all();

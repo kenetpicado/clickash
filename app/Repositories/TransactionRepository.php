@@ -123,17 +123,12 @@ class TransactionRepository
             ->update(['status' => Transaction::SOLD]);
     }
 
-    // PENDING REVIEW all down here
-    public function getTeamSalesSummary($raffle_id, $request)
+    public function getTeamSalesReport($raffle_id, $request)
     {
         return self::setTeam()
             ->where('raffle_id', $raffle_id)
             ->where('hour', $request['hour'])
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereDate('created_at', $request['date']);
-            }, function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
+            ->day($request)
             ->selectRaw('digit, sum(amount) as total')
             ->groupBy('digit')
             ->orderBy('digit')
@@ -153,6 +148,7 @@ class TransactionRepository
             ->get();
     }
 
+    // PENDING REVIEW all down here
     public function getBalanceTeam($request = [])
     {
         return self::setTeam()
