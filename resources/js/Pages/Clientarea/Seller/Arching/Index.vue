@@ -95,8 +95,10 @@ const props = defineProps({
     },
 })
 
+const searchParams = new URLSearchParams(window.location.search);
+
 const queryParams = reactive({
-    date: ''
+    date: searchParams.get("date") ?? '',
 })
 
 const openModal = ref(false);
@@ -107,23 +109,20 @@ const form = useForm({
     amount: null,
 });
 
-const searchParams = new URLSearchParams(window.location.search);
+watch(() => queryParams, () => {
+    let params = { ...queryParams };
 
-if (searchParams.get("date")) {
-    queryParams.date = searchParams.get("date");
-}
+    for (const key in params) {
+        if (!params[key]) delete params[key];
+    }
 
-watch(() => [queryParams.date], ([date]) => {
-
-    if (!date)
-        delete queryParams.date
-
-    router.get(route('clientarea.sellers.archings.index', props.seller.id), queryParams, {
+    router.get(route('clientarea.sellers.archings.index', props.seller.id), params, {
         preserveState: true,
         preserveScroll: true,
         only: ['cashbox', 'archings'],
+        replace: true,
     });
-});
+}, { deep: true });
 
 const stats = computed(() => {
     return [

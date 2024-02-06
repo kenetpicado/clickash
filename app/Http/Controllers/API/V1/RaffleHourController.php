@@ -3,22 +3,18 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Availability;
+use App\Repositories\AvailabilityRepository;
 use Illuminate\Http\Request;
 
 class RaffleHourController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+    public function __construct(
+        private readonly AvailabilityRepository $availabilityRepository
+    ) {
+    }
+
     public function __invoke(Request $request, $raffle)
     {
-        return Availability::where('raffle_id', $raffle)
-            ->where('user_id', auth()->user()->getOwnerId())
-            ->pluck('blocked_hours')
-            ->flatten()
-            ->unique()
-            ->sort()
-            ->values();
+        return $this->availabilityRepository->getHoursByRaffle($raffle);
     }
 }

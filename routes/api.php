@@ -8,13 +8,15 @@ use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RaffleHourController;
+use App\Http\Controllers\API\V1\RaffleParsedHourController;
+use App\Http\Controllers\API\V1\RaffleReportListController;
 use App\Http\Controllers\API\V1\RaffleSettingController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\ResultController;
-use App\Http\Controllers\API\V1\ResumeController;
 use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\SellerController;
+use App\Http\Controllers\API\V1\SellerReportController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
 use App\Http\Controllers\API\V1\TransactionController;
 use App\Http\Controllers\API\V1\TransactionMarkAsPaid;
@@ -76,11 +78,20 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('raffles/{raffle}/hours', RaffleHourController::class)
             ->name('raffles.hours');
 
+        Route::get('raffles/{raffle}/parsed-hours', RaffleParsedHourController::class)
+            ->name('raffles.parsed-hours');
+
+        Route::get('raffles-report-list', RaffleReportListController::class)
+            ->name('raffles.report-list');
+
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
             Route::put('toggle-status/{seller}', ToggleStatusController::class);
 
             Route::apiResource('sellers', SellerController::class);
+
+            Route::get('sellers/{seller}/reports', SellerReportController::class)
+                ->name('sellers.reports.index');
 
             Route::put('raffles/{raffle}', [RaffleController::class, 'update'])
                 ->name('raffles.update');
@@ -96,10 +107,6 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::apiResource('raffles.availability', RaffleAvailabilityController::class)
                 ->only(['index', 'store', 'update', 'destroy']);
-
-            //pending to remove
-            Route::get('resume', ResumeController::class)
-                ->name('resume.index');
 
             Route::apiResource('sellers.archings', SellerArchingController::class)
                 ->only(['store', 'destroy']);

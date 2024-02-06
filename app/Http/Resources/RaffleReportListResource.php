@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DailySalesResource extends JsonResource
+class RaffleReportListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,9 @@ class DailySalesResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'digit' => $this->digit,
-            'total' => 'C$ '.number_format($this->total),
+            'id' => $this->id,
+            'name' => $this->name,
+            'hours' => $this->hours,
         ];
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full mb-4">
+    <div class="w-full" :class="class">
         <label class="block font-medium text-sm text-gray-700">
             {{ text }}
         </label>
@@ -31,6 +31,10 @@ const props = defineProps({
     },
     required: {
         type: Boolean, default: false
+    },
+    class: {
+        type: String,
+        default: 'mb-4'
     }
 })
 

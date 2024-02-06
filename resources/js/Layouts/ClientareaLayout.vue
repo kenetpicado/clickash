@@ -37,6 +37,13 @@ const items = [
     },
 ];
 
+const isActive = (r) => {
+    if (r === route('clientarea.index'))
+        return window.location.pathname === '/clientarea';
+
+    return window.location.href.includes(r);
+};
+
 </script>
 
 <template>
@@ -60,10 +67,9 @@ const items = [
         <slot />
     </main>
 
-    <div
-        class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-card rounded-full bottom-2 left-1/2">
+    <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-card rounded-full bottom-2 left-1/2">
         <div class="grid h-full max-w-lg grid-cols-5 mx-auto">
-            <NavItem v-for="item in items" :key="item.route" :item="item" />
+            <NavItem v-for="item in items" :key="item.route" :item="item" :active="isActive(item.route)" />
         </div>
     </div>
 </template>

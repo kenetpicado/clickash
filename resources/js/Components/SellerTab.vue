@@ -13,8 +13,12 @@
 
                         <Dropdown>
                             <div class="px-1 py-1">
-                                <DropdownItem :href="route('clientarea.sellers.show', i.id)" title="Ventas" :icon="IconEyeDollar" />
-                                <DropdownItem :href="route('clientarea.sellers.archings.index', i.id)" title="Caja" :icon="IconReportAnalytics" />
+                                <DropdownItem :href="route('clientarea.sellers.show', i.id)" title="Ventas"
+                                    :icon="IconEyeDollar" />
+                                <DropdownItem :href="route('clientarea.sellers.archings.index', i.id)" title="Caja"
+                                    :icon="IconBox" />
+                                <DropdownItem :href="route('clientarea.sellers.reports.index', i.id)" title="Reportes"
+                                    :icon="IconReportAnalytics" />
                             </div>
                             <div class="px-1 py-1">
                                 <DropdownItem @click="edit(i)" title="Editar" :icon="IconEdit" />
@@ -44,7 +48,7 @@
 
 <script setup>
 import { useSeller } from '@/Composables/useSeller';
-import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash } from '@tabler/icons-vue';
+import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash, IconBox } from '@tabler/icons-vue';
 import FormModal from './Modal/FormModal.vue';
 import InputForm from './Form/InputForm.vue';
 import { ref, watch } from 'vue';

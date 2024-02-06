@@ -18,7 +18,6 @@
 import SellerTab from '@/Components/SellerTab.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { ref } from 'vue';
-import Tabs from '@/Components/Tabs.vue';
 
 defineProps({
     sellers: {

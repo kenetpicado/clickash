@@ -15,4 +15,16 @@ class AvailabilityService
             return Carbon::parse($value)->isPast();
         });
     }
+
+    public function getParsedHours($raffle)
+    {
+        $hours = (new AvailabilityRepository)->getHoursByRaffle($raffle);
+
+        return $hours->transform(function ($item) {
+            return [
+                'value' => $item,
+                'label' => Carbon::parse($item)->format('g:i A')
+            ];
+        });
+    }
 }

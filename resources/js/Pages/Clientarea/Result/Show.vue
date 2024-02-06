@@ -43,15 +43,18 @@ const queryParams = reactive({
     date: '',
 });
 
-watch(() => queryParams.date, (value) => {
-    if (!value) {
-        delete queryParams.date
+watch(() => queryParams, () => {
+    let params = { ...queryParams };
+
+    for (const key in params) {
+        if (!params[key]) delete params[key];
     }
 
-    router.get(route('clientarea.results.show', props.raffle.id), queryParams, {
+    router.get(route('clientarea.results.show', props.raffle.id), params, {
         preserveState: true,
         only: ['transactions'],
+        replace: true,
     });
-});
+}, { deep: true });
 
 </script>

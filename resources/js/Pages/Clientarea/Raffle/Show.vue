@@ -77,6 +77,7 @@ watch(() => queryParams, () => {
         preserveState: true,
         preserveScroll: true,
         only: ['transactions', 'daily_transactions'],
+        replace: true,
     });
 }, { deep: true });
 

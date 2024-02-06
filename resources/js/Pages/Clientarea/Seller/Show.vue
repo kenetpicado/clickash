@@ -80,14 +80,17 @@ const queryParams = reactive({
 });
 
 watch(() => queryParams, () => {
-    for (const key in queryParams) {
-        if (!queryParams[key]) delete queryParams[key];
+    let params = { ...queryParams };
+
+    for (const key in params) {
+        if (!params[key]) delete params[key];
     }
 
-    router.get(route('clientarea.sellers.show', props.seller.id), queryParams, {
+    router.get(route('clientarea.sellers.show', props.seller.id), params, {
         preserveState: true,
         preserveScroll: true,
         only: ['transactions', 'daily_transactions'],
+        replace: true,
     });
 }, { deep: true });
 

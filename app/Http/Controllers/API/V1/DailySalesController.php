@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DailySalesResource;
+use App\Http\Requests\API\SalesReportRequest;
+use App\Http\Resources\SalesReportResource;
 use App\Models\Raffle;
 use App\Repositories\TransactionRepository;
 use Carbon\Carbon;
@@ -16,26 +17,17 @@ class DailySalesController extends Controller
     ) {
     }
 
-    public function __invoke(Request $request, Raffle $raffle)
+    public function __invoke(SalesReportRequest $request, Raffle $raffle)
     {
-        $validated = $request->validate([
-            'hour' => 'required',
-            'date' => 'nullable',
-        ]);
+        $validated = $request->validated();
 
-        if (auth()->user()->isSeller()) {
-            $sales = $this->transactionRepository->getUserSalesSummary(auth()->id(), $raffle->id, $validated);
-        } else {
-            $sales = $this->transactionRepository->getTeamSalesSummary($raffle->id, $validated);
-        }
+        $sales = auth()->user()->isSeller()
+            ? $this->transactionRepository->getUserSalesReport(auth()->id(), $raffle->id, $validated)
+            : $this->transactionRepository->getTeamSalesSummary($raffle->id, $validated);
 
-        return DailySalesResource::collection($sales)
+        return SalesReportResource::collection($sales)
             ->additional([
-                'raffle' => $raffle->name,
-                'hour' => Carbon::parse($validated['hour'])->format('g:i A'),
-                'current_time' => Carbon::now()->format('g:i A'),
                 'total' => 'C$ '.number_format($sales->sum('total')),
-                'message' => isset($validated['date']) ? 'Reporte de ventas del '.Carbon::parse($validated['hour'])->format('d/m/Y') : 'Reporte de ventas de hoy',
             ]);
     }
 }
