@@ -11,23 +11,23 @@
         <div v-if="blockeds.length == 0" class="w-full text-center text-gray-400">
             No hay dígitos bloqueados
         </div>
-        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+        <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div v-for="i in blockeds" class="bg-card p-3 rounded-xl text-gray-600">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-xl font-bold">{{ i.number }}</span>
-                    <IconTrash class="text-primary" @click="destroy(i.id)" />
+                    <IconTrash class="text-primary" size="20" @click="destroy(i.id)" role="button"/>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div v-if="i.settings.general_limit">
-                        <strong class="text-sm">Limite general C$</strong>
+                        <strong class="text-sm">General</strong>
                         <div>
-                            C${{ i.settings.general_limit }}
+                            C$ {{ i.settings.general_limit }}
                         </div>
                     </div>
                     <div v-if="i.settings.individual_limit">
-                        <strong class="text-sm">Limite indiv. C$</strong>
+                        <strong class="text-sm">Individual</strong>
                         <div>
-                            C${{ i.settings.individual_limit }}
+                            C$ {{ i.settings.individual_limit }}
                         </div>
                     </div>
                 </div>
