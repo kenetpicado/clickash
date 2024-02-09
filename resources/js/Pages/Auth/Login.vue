@@ -27,6 +27,7 @@ const submit = () => {
 
 <template>
     <Head title="Inicia sesión" />
+    <loading :active="form.processing" :is-full-page="true" />
 
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-3 sm:pt-0 bg-white px-4 lg:px-0">
 
