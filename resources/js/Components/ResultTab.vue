@@ -8,7 +8,7 @@
 
             <div class="text-xs flex flex-col gap-1">
                 <span v-if="i.results.length == 0" class="text-gray-400">
-                    No hay resultados
+                    No hay resultados 😥️
                 </span>
                 <div v-else v-for="r in i.results">
                     {{ r }}

@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class IsMySeller
@@ -16,8 +16,9 @@ class IsMySeller
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->seller && auth()->user()->isOwner()) {
-            if (DB::table('users')->where('id', $request->seller)->where('user_id', auth()->id())->doesntExist()) {
+        if (isset($request->seller) && auth()->user()->isOwner()) {
+            $id = $request->seller instanceof User ? $request->seller->id : $request->seller;
+            if (User::where('id', $id)->value('user_id') !== auth()->id()) {
                 abort(403, 'Unauthorized');
             }
         }

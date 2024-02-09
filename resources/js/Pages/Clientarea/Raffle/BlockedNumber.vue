@@ -9,7 +9,7 @@
             </button>
         </template>
         <div v-if="blockeds.length == 0" class="w-full text-center text-gray-400">
-            No hay dígitos bloqueados
+            No hay dígitos bloqueados 😥️
         </div>
         <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div v-for="i in blockeds" class="bg-card p-3 rounded-xl text-gray-600">

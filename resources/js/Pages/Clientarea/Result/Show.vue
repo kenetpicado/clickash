@@ -22,7 +22,6 @@
 
 <script setup>
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
-import Tabs from '@/Components/Tabs.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import { reactive, watch } from 'vue';
 import { router } from "@inertiajs/vue3";

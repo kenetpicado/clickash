@@ -22,7 +22,7 @@
                         <IconList class="text-primary" />
                     </span>
                     <div class="flex flex-col">
-                        <span>Nombre de la compañía</span>
+                        <span>Nombre de la empresa</span>
                         <span class="text-gray-400">{{ user.company_name ?? 'N/A' }}</span>
                     </div>
                 </div>
@@ -45,16 +45,16 @@
                     </div>
                 </div>
             </div>
-            <button @click="logout" type="button" class="secondary-button w-full">
+            <button @click="logout" type="button" class="flex primary-button mx-auto mb-6">
                 Cerrar sesión
             </button>
         </template>
         <div v-else>
             <form @submit.prevent="onSubmit">
                 <InputForm text="Nombre" v-model="form.name" required />
-                <InputForm text="Correo" v-model="form.email" type="email" required />
                 <InputForm text="Nombre de la empresa" v-model="form.company_name" required />
-                <button class="primary-button w-full">
+                <InputForm text="Correo" v-model="form.email" type="email" required />
+                <button class="primary-button flex ml-auto mb-6">
                     Guardar
                 </button>
             </form>

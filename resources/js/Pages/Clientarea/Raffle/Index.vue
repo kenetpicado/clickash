@@ -1,5 +1,5 @@
 <template>
-    <ClientareaLayout title="Inicio">
+    <ClientareaLayout title="Rifas">
         <template #header>
             <span class="title">
                 Rifas
