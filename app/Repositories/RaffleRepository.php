@@ -17,7 +17,7 @@ class RaffleRepository
                     $query->where('user_id', $ownerId)->select('id', 'raffle_id', 'user_id', 'blocked_hours');
                 },
             ])
-            ->select('id', 'name')
+            ->select('id', 'name', 'image')
             ->addSelect([
                 'settings' => function ($query) use ($ownerId) {
                     $query->select('settings')->from('raffle_user')->where('user_id', $ownerId)->whereColumn('raffle_id', 'raffles.id');

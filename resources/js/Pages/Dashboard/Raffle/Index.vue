@@ -29,6 +29,7 @@
 
         <FormModal :show="openModal" title="Rifa" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Nombre" v-model="form.name" />
+            <InputForm text="Imagen" v-model="form.image" type="url" />
 
             <div class="grid grid-cols-2 gap-4">
                 <InputForm text="Limite general C$" v-model="form.settings.general_limit" type="number" />

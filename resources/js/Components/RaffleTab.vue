@@ -28,8 +28,9 @@
             </div>
 
             <div class="flex items-center gap-2 mb-3">
-                <div class="bg-white rounded-xl">
-                    <img src="/games.png" alt="" class="w-20 h-20">
+                <div class="bg-white rounded-xl w-20 h-20 overflow-hidden">
+                    <img v-if="raffle.raffle.image" :src="raffle.raffle.image" alt="" class="w-full h-full">
+                    <img v-else src="/games.png" alt="" class="w-full h-full">
                 </div>
                 <div class="flex flex-col gap-1 text-xs">
                     <span>Super X: {{ raffle.settings.super_x ? 'Activado' : 'Desactivado' }}</span>
