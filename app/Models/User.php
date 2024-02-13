@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -125,5 +126,14 @@ class User extends Authenticatable
     public function isEnabled()
     {
         return $this->status == 'enabled';
+    }
+
+    public function getCompanyName()
+    {
+        if (!$this->company_name) {
+            DB::table('users')->where('id', auth()->user()->getOwnerId())->value('company_name');
+        } else {
+            return $this->company_name;
+        }
     }
 }

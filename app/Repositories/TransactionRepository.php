@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Enums\TransactionStatusEnum;
+use App\Models\Raffle;
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 
 class TransactionRepository
@@ -34,6 +36,22 @@ class TransactionRepository
         return Transaction::whereIn('user_id', (new UserRepository)->getTeam());
     }
 
+    public function getInvoicesPerDay($request = [], $isSeller = false)
+    {
+        $query = $isSeller
+            ? Transaction::where('user_id', auth()->id())
+            : self::setTeam();
+
+        return $query
+            ->selectRaw('invoice_number, MAX(created_at) as created_at, MAX(deleted_at) as deleted_at, MAX(user_id) as user_id, (SELECT MAX(name) FROM raffles WHERE raffles.id = MAX(raffle_id)) as raffle, SUM(amount) as total')
+            ->groupBy('invoice_number')
+            ->latest('created_at')
+            ->day($request)
+            ->trashed($request)
+            ->whereNotNull('invoice_number')
+            ->paginate();
+    }
+
     public function getTeamTransactionsPerDay($request = [])
     {
         return self::setTeam()
@@ -50,6 +68,7 @@ class TransactionRepository
     {
         return self::setTeam()
             ->day($request)
+            ->trashed($request)
             ->sum('amount');
     }
 

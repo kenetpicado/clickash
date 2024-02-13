@@ -25,7 +25,9 @@ class BulkTransaction extends Controller
 
         $storedTransactions = [];
 
-        $invoiceNumber = $this->transactionService->generateInvoiceNumber();
+        do {
+            $invoiceNumber = $this->transactionService->generateInvoiceNumber();
+        } while ($this->transactionService->existsInvoiceNumber($invoiceNumber));
 
         $transformedData = [];
 
