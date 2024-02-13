@@ -193,6 +193,8 @@ class TransactionService
         $transactions = Transaction::query()
             ->where('invoice_number', $invoice)
             ->when(auth()->user()->isOwner(), fn ($query) => $query->withTrashed())
+            ->orderBy('digit')
+            ->orderBy('hour')
             ->get();
 
         if ($transactions->isEmpty()) {

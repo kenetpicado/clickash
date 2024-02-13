@@ -35,7 +35,6 @@ class InvoiceController extends Controller
                 'created_at' => $data['created_at'],
                 'raffle' => $data['raffle'],
                 'user' => $data['user'],
-                'client' => $data['client'],
                 'total' => $data['total'],
                 'invoice_number' => $data['invoice_number'],
                 'status' => $data['status'],
