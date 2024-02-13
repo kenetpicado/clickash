@@ -2,11 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Transaction;
+use App\Models\User;
 use App\Repositories\AvailabilityRepository;
 use App\Repositories\BlockedNumberRepository;
 use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TransactionService
 {
@@ -125,8 +129,89 @@ class TransactionService
         $transaction->delete();
     }
 
+    public function destroyInvoice($invoice)
+    {
+        $transactions = Transaction::where('invoice_number', $invoice)->get();
+
+        if ($transactions->isEmpty()) {
+            abort(404, 'No se encontraron transacciones');
+        }
+
+        if (!$transactions->first()->created_at->isToday()) {
+            abort(403, 'No puedes eliminar un recibo de otro día');
+        }
+
+        foreach ($transactions as $transaction) {
+            if (Carbon::parse($transaction->hour)->isPast()) {
+                abort(403, 'Hay transacciones que ya pasaron');
+            }
+        }
+
+        $transactions->each->delete();
+    }
+
     public function generateInvoiceNumber()
     {
-        return strtoupper(substr(md5(uniqid(rand())), 0, 8));
+        return strtoupper(Str::random(8));
+    }
+
+    public function existsInvoiceNumber($invoiceNumber)
+    {
+        return Transaction::where('invoice_number', $invoiceNumber)->exists();
+    }
+
+    public function getInvoices(array $request)
+    {
+        $isSeller = auth()->user()->isSeller();
+        $invoices = $this->transactionRepository->getInvoicesPerDay($request, $isSeller);
+
+        if ($isSeller) {
+            $invoices->transform(function ($invoice) {
+                $invoice->user = auth()->user()->name . " (Tú)";
+                return $invoice;
+            });
+            $total = $this->transactionRepository->getUserTransactionsTotalPerDay(auth()->id(), $request);
+        } else {
+            $users = User::whereIn('id', $invoices->pluck('user_id')->unique())->withTrashed()->get(['id', 'name']);
+
+            $invoices->transform(function ($invoice) use ($users) {
+                $invoice->user = $users->where('id', $invoice->user_id)->value('name');
+                return $invoice;
+            });
+
+            $total = $this->transactionRepository->getTeamTransactionsTotalPerDay($request);
+        }
+
+        return [
+            'invoices' => $invoices,
+            'total' => 'C$ ' . number_format($total)
+        ];
+    }
+
+    public function getInvoiceTransactions($invoice)
+    {
+        $transactions = Transaction::query()
+            ->where('invoice_number', $invoice)
+            ->when(auth()->user()->isOwner(), fn ($query) => $query->withTrashed())
+            ->orderBy('digit')
+            ->orderBy('hour')
+            ->get();
+
+        if ($transactions->isEmpty()) {
+            abort(404, 'No se encontraron transacciones');
+        }
+
+        return [
+            'transactions' => $transactions,
+            'user' => DB::table('users')->where('id', $transactions->first()->user_id)->value('name'),
+            'raffle' => DB::table('raffles')->where('id', $transactions->first()->raffle_id)->value('name'),
+            'invoice_number' => $invoice,
+            'created_at' => $transactions->first()->created_at->format('d/m/y g:i A'),
+            'status' => $transactions->first()->deleted_at
+                ? 'ELIMINADO ' .  $transactions->first()->deleted_at->format('d/m/y g:i A')
+                : 'VENDIDO',
+            'total' => 'C$ ' . number_format($transactions->sum('amount')),
+            'company' => auth()->user()->getCompanyName()
+        ];
     }
 }

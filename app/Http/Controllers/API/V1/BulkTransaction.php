@@ -25,7 +25,9 @@ class BulkTransaction extends Controller
 
         $storedTransactions = [];
 
-        $invoiceNumber = $this->transactionService->generateInvoiceNumber();
+        do {
+            $invoiceNumber = $this->transactionService->generateInvoiceNumber();
+        } while ($this->transactionService->existsInvoiceNumber($invoiceNumber));
 
         $transformedData = [];
 
@@ -61,26 +63,29 @@ class BulkTransaction extends Controller
             ]);
         }
 
-        $data = array_map(function ($transaction) {
+        $data = collect($storedTransactions)->map(function ($transaction) {
             return [
                 'transaction_id' => $transaction['id'],
                 'digit' => $transaction['digit'],
                 'amount' => $transaction['super_x'] ? $transaction['amount'] / 2 : $transaction['amount'],
                 'total' => $transaction['amount'],
-                'hour' => $transaction['hour'],
+                'hour' => Carbon::parse($transaction['hour'])->format('g:i A'),
                 'prize' => $transaction['prize'],
                 'status' => $transaction['status'],
                 'super_x' => $transaction['super_x'],
             ];
-        }, $storedTransactions);
+        })
+            ->sortBy('digit')
+            ->sortBy('hour')
+            ->values();
 
         return response()->json([
-            'company' => DB::table('users')->where('id', auth()->user()->getOwnerId())->value('company_name'),
-            'datetime' => Carbon::now()->format('d M Y g:i A'),
+            'company' => auth()->user()->getCompanyName(),
+            'datetime' => Carbon::now()->format('d/m/y g:i A'),
             'raffle' => DB::table('raffles')->where('id', $validated['raffle_id'])->value('name'),
             'seller' => auth()->user()->name,
             'client' => $storedTransactions[0]['client'],
-            'total' => array_sum(array_column($data, 'total')),
+            'total' => $data->sum('total'),
             'multiplier' => $settings['multiplier'] ?? 70,
             'invoice_number' => $invoiceNumber,
             'data' => $data,
