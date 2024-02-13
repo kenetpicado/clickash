@@ -190,7 +190,10 @@ class TransactionService
 
     public function getInvoiceTransactions($invoice)
     {
-        $transactions = Transaction::where('invoice_number', $invoice)->get();
+        $transactions = Transaction::query()
+            ->where('invoice_number', $invoice)
+            ->when(auth()->user()->isOwner(), fn ($query) => $query->withTrashed())
+            ->get();
 
         if ($transactions->isEmpty()) {
             abort(404, 'No se encontraron transacciones');
@@ -202,7 +205,6 @@ class TransactionService
             'raffle' => DB::table('raffles')->where('id', $transactions->first()->raffle_id)->value('name'),
             'invoice_number' => $invoice,
             'created_at' => $transactions->first()->created_at->format('d/m/y g:i A'),
-            'client' => $transactions->first()->client,
             'status' => $transactions->first()->deleted_at
                 ? 'ELIMINADO ' .  $transactions->first()->deleted_at->format('d/m/y g:i A')
                 : 'VENDIDO',

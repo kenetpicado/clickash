@@ -77,8 +77,8 @@ class BulkTransaction extends Controller
         }, $storedTransactions);
 
         return response()->json([
-            'company' => DB::table('users')->where('id', auth()->user()->getOwnerId())->value('company_name'),
-            'datetime' => Carbon::now()->format('d M Y g:i A'),
+            'company' => auth()->user()->getCompanyName(),
+            'datetime' => Carbon::now()->format('d/m/y g:i A'),
             'raffle' => DB::table('raffles')->where('id', $validated['raffle_id'])->value('name'),
             'seller' => auth()->user()->name,
             'client' => $storedTransactions[0]['client'],
