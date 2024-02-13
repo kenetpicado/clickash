@@ -114,17 +114,14 @@ class TransactionService
 
     public function destroy($transaction)
     {
-        $transactionHour = Carbon::parse($transaction->created_at)->format('H:i:s');
-
-        if ($transactionHour > $transaction->hour) {
-            goto please_do_it;
+        if (!$transaction->created_at->isToday()) {
+            abort(403, 'No puedes eliminar una transacción de otro día');
         }
 
         if (Carbon::parse($transaction->hour)->isPast()) {
             abort(403, 'No puedes eliminar una transacción que ya pasó');
         }
 
-        please_do_it:
         $transaction->delete();
     }
 
