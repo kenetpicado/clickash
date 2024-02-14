@@ -122,6 +122,17 @@ class TransactionRepository
             ->sum('amount');
     }
 
+    public function getUserCurrentTotal(array $request)
+    {
+        return Transaction::query()
+            ->where('user_id', auth()->id())
+            ->where('raffle_id', $request['raffle_id'])
+            ->whereDate('created_at', Carbon::today())
+            ->where('hour', $request['hour'])
+            ->where('digit', $request['digit'])
+            ->sum('amount');
+    }
+
     public function setWinningTransactions($winningNumber)
     {
         self::setTeam()

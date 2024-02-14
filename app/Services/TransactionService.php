@@ -35,6 +35,17 @@ class TransactionService
 
         $raffleSettings = $raffleUserRepository->getSettings($ownerId, $request['raffle_id']);
 
+        $models = [
+            [
+                'id' => auth()->id(),
+                'type' => 'user'
+            ],
+            [
+                'id' => $ownerId,
+                'type' => 'team'
+            ]
+        ];
+
         //CHECK IF THE TIME IS BLOCKED
         $blockedHours = $availabilityRepository->getTodayBlockedHours($request['raffle_id'], $ownerId);
 
@@ -61,11 +72,8 @@ class TransactionService
                 }
             }
 
-            // CHECK IF THE NUMBER IS BLOCKED
-            // GENERAL CONFIG: $ownerId
-            // SELLER CONFIG: auth()->id()
-            foreach ([auth()->id(), $ownerId] as $current_user_id) {
-                $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $current_user_id, $transaction['digit']);
+            foreach ($models as $model) {
+                $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $model['id'], $transaction['digit']);
 
                 if ($blockedNumber) {
                     if (isset($blockedNumber['settings']['individual_limit'])) {
@@ -79,7 +87,7 @@ class TransactionService
                             ->where('digit', $transaction['digit'])
                             ->sum('amount');
 
-                        self::checkGeneralLimit($transaction + ['raffle_id' => $request['raffle_id']], $blockedNumber['settings']['general_limit'], $amount);
+                        self::checkGeneralLimit($transaction + ['raffle_id' => $request['raffle_id']], $blockedNumber['settings']['general_limit'], $amount, $model['type']);
                     }
                 }
             }
@@ -110,9 +118,11 @@ class TransactionService
         }
     }
 
-    public function checkGeneralLimit($request, $limit, $amount)
+    public function checkGeneralLimit($request, $limit, $amount, $type = 'team')
     {
-        $transactionsTotalAmount = $this->transactionRepository->getTeamCurrentTotal($request);
+        $transactionsTotalAmount = $type == 'team'
+            ? $this->transactionRepository->getTeamCurrentTotal($request)
+            : $this->transactionRepository->getUserCurrentTotal($request);
 
         if ($transactionsTotalAmount + $amount > $limit) {
             $availableAmount = $limit - $transactionsTotalAmount;
