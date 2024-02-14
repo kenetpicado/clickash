@@ -4,7 +4,7 @@ namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RaffleBlockedNumberRequest extends FormRequest
+class BlockedNumberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,7 @@ class RaffleBlockedNumberRequest extends FormRequest
         return [
             'number' => 'required|numeric',
             'settings' => 'required|array',
+            'raffle_id' => 'nullable',
         ];
     }
 }

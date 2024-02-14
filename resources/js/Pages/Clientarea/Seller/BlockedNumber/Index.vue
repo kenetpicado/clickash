@@ -2,20 +2,32 @@
     <ClientareaLayout title="Bloqueados">
         <template #header>
             <span class="title">
-                {{ raffle.name }}: Bloqueados
+                {{ seller.name }}: Bloqueados
             </span>
-            <button type="button" class="simple-button" @click="openModal = true">
+            <button v-if="queryParams.raffle_id" type="button" class="simple-button" @click="openModal = true">
                 Nuevo
             </button>
         </template>
-        <div v-if="blockeds.length == 0" class="w-full text-center text-gray-400">
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 text-gray-600">
+            <SelectForm v-model="queryParams.raffle_id" text="Rifa" required>
+                <option value="" selected>Seleccione una rifa</option>
+                <option v-for="r in raffles" :value="r.id">{{ r.name }}</option>
+            </SelectForm>
+        </div>
+
+        <div v-if="!queryParams.raffle_id" class="w-full text-center text-gray-400">
+            Por favor seleccione una rifa
+        </div>
+        <div v-else-if="blockeds.length == 0" class="w-full text-center text-gray-400">
             No hay dígitos bloqueados 😥️
         </div>
         <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <BlockedNumber v-for="i in blockeds" :digit="i" :key="i.id" @destroy="destroy" />
         </div>
 
-        <FormModal :show="openModal" title="Bloquear" @onCancel="resetValues" @onSubmit="onSubmit">
+        <FormModal :show="openModal" :title="raffles.find((i) => queryParams.raffle_id == i.id)?.name"
+            @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Dígito" v-model="form.number" type="number" required />
             <div class="grid grid-cols-2 gap-2">
                 <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
@@ -23,7 +35,9 @@
             </div>
             <p class="text-primary">
                 <small>
-                    Nota: Recuerde ingresar el dígito con los ceros necesarios según la numeración de la rifa, por ejemplo, 01, 001, etc. De lo contrario, el bloqueo no se realizará correctamente. En cuanto a las fechas, utilice el formato dd/mm.
+                    Nota: Recuerde ingresar el dígito con los ceros necesarios según la numeración de la rifa, por ejemplo,
+                    01, 001, etc. De lo contrario, el bloqueo no se realizará correctamente. En cuanto a las fechas, utilice
+                    el formato dd/mm.
                 </small>
             </p>
         </FormModal>
@@ -31,21 +45,26 @@
 </template>
 
 <script setup>
+import BlockedNumber from '@/Components/BlockedNumber.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
+import SelectForm from '@/Components/Form/SelectForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
-import { defineProps, ref } from 'vue';
-import BlockedNumber from '@/Components/BlockedNumber.vue';
+import { defineProps, ref, reactive, watch } from 'vue';
 
 const props = defineProps({
     blockeds: {
         type: Object,
         required: true,
     },
-    raffle: {
+    seller: {
+        type: Object,
+        required: true,
+    },
+    raffles: {
         type: Object,
         required: true,
     },
@@ -53,6 +72,7 @@ const props = defineProps({
 
 const form = useForm({
     number: null,
+    raffle_id: null,
     settings: {
         general_limit: null,
         individual_limit: null,
@@ -61,6 +81,12 @@ const form = useForm({
 
 const openModal = ref(false)
 
+const searchParams = new URLSearchParams(window.location.search);
+
+const queryParams = reactive({
+    raffle_id: searchParams.get('raffle_id') || null,
+})
+
 const onSubmit = () => {
     if (!form.settings.general_limit && !form.settings.individual_limit) {
         toast.error('Debe ingresar al menos un limite');
@@ -68,11 +94,13 @@ const onSubmit = () => {
     }
 
     if (props.blockeds.find((item) => item.number == form.number)) {
-        toast.error('Numero ya bloqueado');
+        toast.error('Digito ya bloqueado');
         return;
     }
 
-    form.post(route('clientarea.raffles.blocked-numbers.store', props.raffle.id), {
+    form.raffle_id = queryParams.raffle_id;
+
+    form.post(route('clientarea.sellers.blocked-numbers.store', props.seller.id), {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
@@ -87,11 +115,25 @@ const resetValues = () => {
     openModal.value = false
 };
 
+watch(() => queryParams, () => {
+    let params = { ...queryParams };
+
+    for (const key in params) {
+        if (!params[key]) delete params[key];
+    }
+
+    router.get(route('clientarea.sellers.blocked-numbers.index', props.seller.id), params, {
+        preserveState: true,
+        only: ['blockeds'],
+        replace: true,
+    });
+}, { deep: true });
+
 const destroy = (id) => {
     confirmAlert({
         message: "¿Está seguro de eliminar este registro?",
         onConfirm: () => {
-            router.delete(route("clientarea.raffles.blocked-numbers.destroy", [props.raffle.id, id]), {
+            router.delete(route("clientarea.sellers.blocked-numbers.destroy", [props.seller.id, id]), {
                 preserveScroll: true,
                 preserveState: true,
                 onSuccess: () => {

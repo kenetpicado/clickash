@@ -31,6 +31,11 @@ class RaffleRepository
         return Raffle::hasUser(auth()->user()->getOwnerId())->with('availability')->get(['id', 'name']);
     }
 
+    public function getRafflesNames()
+    {
+        return Raffle::hasUser(auth()->user()->getOwnerId())->get(['id', 'name']);
+    }
+
     public function getRaffleSettings($raffle_id)
     {
         $ownerId = auth()->user()->getOwnerId();

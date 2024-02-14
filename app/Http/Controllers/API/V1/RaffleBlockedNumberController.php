@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\RaffleBlockedNumberRequest;
+use App\Http\Requests\API\BlockedNumberRequest;
 use App\Models\BlockedNumber;
 use App\Repositories\BlockedNumberRepository;
 
@@ -21,7 +21,7 @@ class RaffleBlockedNumberController extends Controller
         ]);
     }
 
-    public function store(RaffleBlockedNumberRequest $request, $raffle)
+    public function store(BlockedNumberRequest $request, $raffle)
     {
         $this->blockedNumberRepository->updateOrCreate($request->validated(), $raffle);
 

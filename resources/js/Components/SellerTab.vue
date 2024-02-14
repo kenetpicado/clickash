@@ -21,6 +21,7 @@
                                     :icon="IconReportAnalytics" />
                             </div>
                             <div class="px-1 py-1">
+                                <DropdownItem :href="route('clientarea.sellers.blocked-numbers.index', i.id)" title="Dígitos bloqueados" :icon="IconLock" />
                                 <DropdownItem @click="edit(i)" title="Editar" :icon="IconEdit" />
                                 <DropdownItem @click="blockSeller(i.id)" :title="status[i.status]" :icon="IconLock" />
                                 <DropdownItem @click="destroy(i.id)" title="Eliminar" :icon="IconTrash" />

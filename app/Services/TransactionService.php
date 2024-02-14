@@ -62,21 +62,25 @@ class TransactionService
             }
 
             // CHECK IF THE NUMBER IS BLOCKED
-            $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $ownerId, $transaction['digit']);
+            // GENERAL CONFIG: $ownerId
+            // SELLER CONFIG: auth()->id()
+            foreach ([auth()->id(), $ownerId] as $current_user_id) {
+                $blockedNumber = $blockedNumberRepository->findWhere($request['raffle_id'], $current_user_id, $transaction['digit']);
 
-            if ($blockedNumber) {
-                if ($blockedNumber['settings']['individual_limit']) {
-                    self::checkIndividualLimit($transaction['amount'], $blockedNumber['settings']['individual_limit']);
-                }
+                if ($blockedNumber) {
+                    if (isset($blockedNumber['settings']['individual_limit'])) {
+                        self::checkIndividualLimit($transaction['amount'], $blockedNumber['settings']['individual_limit']);
+                    }
 
-                if ($blockedNumber['settings']['general_limit']) {
+                    if (isset($blockedNumber['settings']['general_limit'])) {
 
-                    $amount = collect($request['data'])
-                        ->where('hour', $transaction['hour'])
-                        ->where('digit', $transaction['digit'])
-                        ->sum('amount');
+                        $amount = collect($request['data'])
+                            ->where('hour', $transaction['hour'])
+                            ->where('digit', $transaction['digit'])
+                            ->sum('amount');
 
-                    self::checkGeneralLimit($transaction + ['raffle_id' => $request['raffle_id']], $blockedNumber['settings']['general_limit'], $amount);
+                        self::checkGeneralLimit($transaction + ['raffle_id' => $request['raffle_id']], $blockedNumber['settings']['general_limit'], $amount);
+                    }
                 }
             }
 

@@ -17,7 +17,7 @@
                     </div>
                     <div class="px-1 py-1">
                         <DropdownItem :href="route('clientarea.raffles.blocked-numbers.index', raffle.raffle_id)"
-                            title="Dígitos bloqueados" :icon="IconNumber" />
+                            title="Dígitos bloqueados" :icon="IconLock" />
 
                         <DropdownItem :href="route('clientarea.raffles.availability.index', raffle.raffle_id)"
                             title="Horario" :icon="IconDeviceWatch" />
@@ -88,6 +88,7 @@ import { toast } from '@/Use/toast';
 import { Link } from '@inertiajs/vue3';
 import DropdownItem from './DropdownItem.vue';
 import Dropdown from './Dropdown.vue';
+import { IconLock } from '@tabler/icons-vue';
 
 
 const props = defineProps({
