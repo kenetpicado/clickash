@@ -126,7 +126,7 @@ class TransactionService
 
         if ($transactionsTotalAmount + $amount > $limit) {
             $availableAmount = $limit - $transactionsTotalAmount;
-            abort(422, "El monto disponible para {$request['digit']} es C$" . $availableAmount);
+            abort(422, "El monto " . ($type == 'team' ? 'global' : 'personal') . " disponible para {$request['digit']} es C$" . $availableAmount);
         }
     }
 
