@@ -4,8 +4,8 @@
             <span class="text-gray-400">{{ Carbon.create(transaction.created_at).format('d/m/Y g:a') }}</span>
             <span class="text-gray-600">{{ transaction.deleted_at ? 'ELIMINADA' : transaction.status }}</span>
         </div>
-        <span class="block text-sm text-gray-600 mb-2 font-bold">
-            No. {{ transaction.id }}
+        <span v-if="showInvoice" class="block text-sm text-gray-600 mb-2 font-bold">
+            Recibo: {{ transaction.invoice_number }}
         </span>
         <span v-if="transaction.user" class="block text-sm text-gray-600 mb-2">
             {{ transaction.user.name }}
@@ -21,7 +21,7 @@
             <strong>Premio: C${{ transaction.prize.toLocaleString() }}</strong>
         </div>
         <div class="mt-3 text-end text-gray-600">
-            <strong>Total: C${{ transaction.amount.toLocaleString() }}</strong>
+            <strong>Total: C$ {{ transaction.amount.toLocaleString() }}</strong>
         </div>
     </div>
 </template>
@@ -33,6 +33,10 @@ const props = defineProps({
     transaction: {
         type: Object,
         required: true
+    },
+    showInvoice: {
+        type: Boolean,
+        default: false
     }
 })
 

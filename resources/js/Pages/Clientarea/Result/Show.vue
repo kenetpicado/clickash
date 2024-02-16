@@ -14,7 +14,7 @@
             No hay transacciones
         </div>
         <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-            <Transaction :transaction="transaction" v-for="transaction in transactions" :key="transaction.id" />
+            <Transaction :transaction="transaction" v-for="transaction in transactions" :key="transaction.id" :showInvoice="true" />
         </div>
 
     </ClientareaLayout>
