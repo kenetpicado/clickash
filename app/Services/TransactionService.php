@@ -174,27 +174,30 @@ class TransactionService
         return Transaction::where('invoice_number', $invoiceNumber)->exists();
     }
 
-    public function getInvoices(array $request)
+    public function getInvoices(array $request, $user = null)
     {
         $isSeller = auth()->user()->isSeller();
-        $invoices = $this->transactionRepository->getInvoicesPerDay($request, $isSeller);
 
-        if ($isSeller) {
-            $invoices->transform(function ($invoice) {
-                $invoice->user = auth()->user()->name . " (Tú)";
-                return $invoice;
-            });
-            $total = $this->transactionRepository->getUserTransactionsTotalPerDay(auth()->id(), $request);
-        } else {
-            $users = User::whereIn('id', $invoices->pluck('user_id')->unique())->withTrashed()->get(['id', 'name']);
+        if ($isSeller)
+            $user_id = auth()->id();
+        else
+            $user_id = $user;
 
-            $invoices->transform(function ($invoice) use ($users) {
-                $invoice->user = $users->where('id', $invoice->user_id)->value('name');
-                return $invoice;
-            });
+        $invoices = $this->transactionRepository->getInvoicesPerDay($request, $user_id);
 
+        if ($user_id)
+            $total = $this->transactionRepository->getUserTransactionsTotalPerDay($user_id, $request);
+        else
             $total = $this->transactionRepository->getTeamTransactionsTotalPerDay($request);
-        }
+
+        $users = User::whereIn('id', $invoices->pluck('user_id')->unique())
+            ->withTrashed()
+            ->get(['id', 'name']);
+
+        $invoices->transform(function ($invoice) use ($users, $isSeller) {
+            $invoice->user = $users->where('id', $invoice->user_id)->value('name') . ($isSeller ? ' (Tú)' : '');
+            return $invoice;
+        });
 
         return [
             'invoices' => $invoices,
@@ -211,21 +214,14 @@ class TransactionService
             ->orderBy('hour')
             ->get();
 
-        if ($transactions->isEmpty()) {
-            abort(404, 'No se encontraron transacciones');
-        }
-
         return [
-            'transactions' => $transactions,
-            'user' => DB::table('users')->where('id', $transactions->first()->user_id)->value('name'),
-            'raffle' => DB::table('raffles')->where('id', $transactions->first()->raffle_id)->value('name'),
+            'user' => DB::table('users')->where('id', $transactions->value('user_id'))->value('name'),
+            'raffle' => DB::table('raffles')->where('id', $transactions->value('user_id'))->value('name'),
             'invoice_number' => $invoice,
-            'created_at' => $transactions->first()->created_at->format('d/m/y g:i A'),
-            'status' => $transactions->first()->deleted_at
-                ? 'ELIMINADO ' .  $transactions->first()->deleted_at->format('d/m/y g:i A')
-                : 'VENDIDO',
-            'total' => 'C$ ' . number_format($transactions->sum('amount')),
-            'company' => auth()->user()->getCompanyName()
+            'total' => $transactions->sum('amount'),
+            'company' => auth()->user()->getCompanyName(),
+            'transactions' => $transactions,
+            'datetime' => $transactions->first()->created_at->format('d/m/y g:i A')
         ];
     }
 }

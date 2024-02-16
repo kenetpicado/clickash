@@ -13,7 +13,7 @@ use App\Http\Controllers\Clientarea\SellerArchingController;
 use App\Http\Controllers\Clientarea\SellerBlockedNumberController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\ToggleStatusController;
-use App\Http\Controllers\Clientarea\TransactionController;
+use App\Http\Controllers\Clientarea\InvoiceController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\RaffleCloneController;
 use App\Http\Controllers\Dashboard\RaffleController;
@@ -97,8 +97,8 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
         Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
             ->only(['index', 'store']);
 
-        Route::resource('transactions', TransactionController::class)
-            ->only(['index']);
+        Route::resource('invoices', InvoiceController::class)
+            ->only(['index', 'show']);
 
         Route::resource('results', ResultController::class)
             ->parameters(['results' => 'raffle'])

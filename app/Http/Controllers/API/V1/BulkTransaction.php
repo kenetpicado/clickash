@@ -65,14 +65,10 @@ class BulkTransaction extends Controller
 
         $data = collect($storedTransactions)->map(function ($transaction) {
             return [
-                'transaction_id' => $transaction['id'],
                 'digit' => $transaction['digit'],
-                'amount' => $transaction['super_x'] ? $transaction['amount'] / 2 : $transaction['amount'],
                 'total' => $transaction['amount'],
-                'hour' => Carbon::parse($transaction['hour'])->format('g:i A'),
                 'prize' => $transaction['prize'],
-                'status' => $transaction['status'],
-                'super_x' => $transaction['super_x'],
+                'hour' => Carbon::parse($transaction['hour'])->format('g:i A'),
             ];
         })
             ->sortBy('digit')
@@ -81,13 +77,12 @@ class BulkTransaction extends Controller
 
         return response()->json([
             'company' => auth()->user()->getCompanyName(),
+            'seller' => auth()->user()->name,
             'datetime' => Carbon::now()->format('d/m/y g:i A'),
             'raffle' => DB::table('raffles')->where('id', $validated['raffle_id'])->value('name'),
-            'seller' => auth()->user()->name,
-            'client' => $storedTransactions[0]['client'],
+            'invoice_number' => $invoiceNumber,
             'total' => $data->sum('total'),
             'multiplier' => $settings['multiplier'] ?? 70,
-            'invoice_number' => $invoiceNumber,
             'data' => $data,
         ]);
     }

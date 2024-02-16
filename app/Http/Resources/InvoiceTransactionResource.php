@@ -20,12 +20,11 @@ class InvoiceTransactionResource extends JsonResource
             $this->amount;
 
         return [
-            'id' => $this->id,
             'digit' => $this->digit,
-            'hour' => Carbon::parse($this->hour)->format('g:i A'),
             'amount' => $realAmount,
             'total' => $this->amount,
             'prize' => $this->prize,
+            'hour' => Carbon::parse($this->hour)->format('g:i A'),
         ];
     }
 }

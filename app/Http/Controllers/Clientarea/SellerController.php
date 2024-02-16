@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\SellerRequest;
 use App\Models\User;
-use App\Repositories\TransactionRepository;
 use App\Repositories\UserRepository;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly TransactionRepository $transactionRepository
+        private readonly TransactionService $transactionService
     ) {
     }
 
@@ -37,12 +37,12 @@ class SellerController extends Controller
 
     public function show(Request $request, User $seller)
     {
-        $filters = $request->all();
+        $data = $this->transactionService->getInvoices($request->all(), $seller->id);
 
         return inertia('Clientarea/Seller/Show', [
             'seller' => $seller,
-            'transactions' => $this->transactionRepository->getUserTransactionsPerDay($seller->id, $filters),
-            'daily_transactions' => $this->transactionRepository->getUserTransactionsTotalPerDay($seller->id, $filters),
+            'invoices' => $data['invoices'],
+            'total' => $data['total'],
         ]);
     }
 

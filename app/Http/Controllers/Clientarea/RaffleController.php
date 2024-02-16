@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\RaffleRequest;
 use App\Models\Raffle;
 use App\Repositories\RaffleUserRepository;
-use App\Repositories\TransactionRepository;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 
 class RaffleController extends Controller
 {
     public function __construct(
-        private readonly TransactionRepository $transactionRepository,
+        private readonly TransactionService $transactionService,
         private readonly RaffleUserRepository $raffleUserRepository,
     ) {
     }
@@ -27,11 +27,14 @@ class RaffleController extends Controller
     public function show(Request $request, Raffle $raffle)
     {
         $array = $request->all();
+        $array['raffle_id'] = $raffle->id;
+
+        $data = $this->transactionService->getInvoices($array);
 
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
-            'daily_transactions' => $this->transactionRepository->getRaffleTransactionsTotalPerDay($raffle->id, $array),
-            'transactions' => $this->transactionRepository->getRaffleTransactionsPerDay($raffle->id, $array),
+            'invoices' => $data['invoices'],
+            'total' => $data['total'],
         ]);
     }
 

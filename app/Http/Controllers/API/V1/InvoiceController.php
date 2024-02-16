@@ -32,12 +32,12 @@ class InvoiceController extends Controller
         return InvoiceTransactionResource::collection($data['transactions'])
             ->additional([
                 'company' => $data['company'],
-                'created_at' => $data['created_at'],
+                'seller' => $data['user'],
+                'datetime' => $data['datetime'],
                 'raffle' => $data['raffle'],
-                'user' => $data['user'],
-                'total' => $data['total'],
                 'invoice_number' => $data['invoice_number'],
-                'status' => $data['status'],
+                'total' => $data['total'],
+                'multiplier' => '',
             ]);
     }
 

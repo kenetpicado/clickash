@@ -21,7 +21,7 @@ const items = [
     },
     {
         icon: IconCurrencyDollar,
-        route: route('clientarea.transactions.index'),
+        route: route('clientarea.invoices.index'),
     },
     {
         icon: IconHome,

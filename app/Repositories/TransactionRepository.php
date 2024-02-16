@@ -36,19 +36,20 @@ class TransactionRepository
         return Transaction::whereIn('user_id', (new UserRepository)->getTeam());
     }
 
-    public function getInvoicesPerDay($request = [], $isSeller = false)
+    public function getInvoicesPerDay($request = [], $user_id = null)
     {
-        $query = $isSeller
-            ? Transaction::where('user_id', auth()->id())
+        $query = $user_id
+            ? Transaction::where('user_id', $user_id)
             : self::setTeam();
 
         return $query
-            ->selectRaw('invoice_number, MAX(created_at) as created_at, MAX(deleted_at) as deleted_at, MAX(user_id) as user_id, (SELECT MAX(name) FROM raffles WHERE raffles.id = MAX(raffle_id)) as raffle, SUM(amount) as total')
+            ->selectRaw('invoice_number, MAX(created_at) as created_at, MAX(deleted_at) as deleted_at, MAX(raffle_id) as raffle_id, MAX(user_id) as user_id, (SELECT MAX(name) FROM raffles WHERE raffles.id = MAX(raffle_id)) as raffle, SUM(amount) as total')
             ->groupBy('invoice_number')
             ->latest('created_at')
             ->day($request)
             ->trashed($request)
             ->whereNotNull('invoice_number')
+            ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
             ->paginate();
     }
 

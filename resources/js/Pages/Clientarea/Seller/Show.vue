@@ -25,14 +25,14 @@
             </div>
         </SwitchGroup>
 
-        <div v-if="transactions.data.length == 0" class="w-full text-center text-gray-400">
+        <div v-if="invoices.data.length == 0" class="w-full text-center text-gray-400">
             No hay transacciones
         </div>
-        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <Transaction :transaction="transaction" v-for="transaction in transactions.data" :key="transaction.id" />
+        <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <Invoice :invoice="i" v-for="i in invoices.data" :key="i.invoice_number" />
         </div>
 
-        <ThePaginator :links="transactions.links" />
+        <ThePaginator :links="invoices.links" />
     </ClientareaLayout>
 </template>
 
@@ -40,7 +40,7 @@
 import StatCard from '@/Components/StatCard.vue';
 import ThePaginator from '@/Components/ThePaginator.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
-import Transaction from '@/Components/Transaction.vue';
+import Invoice from '@/Components/Invoice.vue';
 import { IconCurrencyDollar } from '@tabler/icons-vue';
 import { computed, reactive, watch } from 'vue';
 import InputForm from '@/Components/Form/InputForm.vue';
@@ -52,21 +52,21 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    transactions: {
+    invoices: {
         type: Object,
         required: true,
     },
-    daily_transactions: {
+    total: {
         type: [Number, String],
         required: true,
-    }
+    },
 });
 
 const stats = computed(() => {
     return [
         {
-            title: queryParams.date ? 'Ventas' : 'Ventas de hoy',
-            value: "C$" + props.daily_transactions.toLocaleString(),
+            title: 'Total',
+            value: props.total.toLocaleString(),
             icon: IconCurrencyDollar,
         },
     ]
@@ -76,7 +76,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const queryParams = reactive({
     date: urlParams.get('date') ?? '',
-    trashed: Boolean(urlParams.get('trashed')),
+    trashed: urlParams.get('trashed') === 'true',
 });
 
 watch(() => queryParams, () => {
@@ -89,7 +89,7 @@ watch(() => queryParams, () => {
     router.get(route('clientarea.sellers.show', props.seller.id), params, {
         preserveState: true,
         preserveScroll: true,
-        only: ['transactions', 'daily_transactions'],
+        only: ['invoices', 'total'],
         replace: true,
     });
 }, { deep: true });

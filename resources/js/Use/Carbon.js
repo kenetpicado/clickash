@@ -109,6 +109,7 @@ export class Carbon {
             .replace("Y", this.date.getFullYear())
             .replace("m", month)
             .replace("d", formatValue(this.date.getDate()))
+            .replace("g:a", this.getTimeFormat())
             .replace("H", formatValue(this.date.getHours()))
             .replace("i", formatValue(this.date.getMinutes()))
             .replace("s", formatValue(this.date.getSeconds()))
