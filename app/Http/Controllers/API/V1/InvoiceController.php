@@ -17,7 +17,7 @@ class InvoiceController extends Controller
 
     public function index(Request $request)
     {
-        $data = $this->transactionService->getInvoices($request->all());
+        $data = $this->transactionService->getInvoices($request->all(), $request->get('user_id'));
 
         return InvoiceResource::collection($data['invoices'])
             ->additional([
