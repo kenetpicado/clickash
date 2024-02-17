@@ -14,8 +14,14 @@ class UserController extends Controller
 {
     public function index()
     {
+        $users = User::query()
+            ->whereNotIn('role', ['seller'])
+            ->withCount('sellers')
+            ->withTrashed()
+            ->get();
+
         return inertia('Dashboard/User/Index', [
-            'users' => User::whereNotIn('role', ['root', 'seller'])->withCount('sellers')->get(),
+            'users' => $users,
             'roles' => RoleEnum::cases(),
             'statuses' => UserStatusEnum::cases(),
         ]);

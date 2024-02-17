@@ -8,15 +8,7 @@
         </template>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <div v-for="i in availability" class="bg-card rounded-xl p-2 w-full">
-                <div class="flex justify-between">
-                    <span class="mb-2">{{ i.day }}</span>
-                </div>
-
-                <div class="text-xs text-gray-600">
-                    <pre class="bg-white w-full p-3">{{ i}}</pre>
-                </div>
-            </div>
+            <JsonContent v-for="i in availability" :title="i.day" :content="i"/>
         </div>
 
     </AppLayout>
@@ -24,6 +16,7 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import JsonContent from '@/Components/JsonContent.vue';
 
 const props = defineProps({
     user: {
@@ -42,8 +35,8 @@ const props = defineProps({
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.users.index'),
+        name: 'Inicio',
+        route: route('dashboard.index'),
     },
     {
         name: 'Usuarios',
@@ -52,6 +45,10 @@ const breads = [
     {
         name: 'Rifas',
         route: route('dashboard.users.show', props.user.id),
+    },
+    {
+        name: 'Horario',
+        route: route('dashboard.users.raffles.availability.index', [props.user.id, props.raffle.id]),
     },
 ];
 

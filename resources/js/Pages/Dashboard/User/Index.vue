@@ -8,52 +8,21 @@
             <AddButton @click="openModal = true" />
         </template>
 
-        <TableSection>
-            <template #header>
-                <th>Nombre</th>
-                <th>Compañia</th>
-                <th>Vendedores</th>
-                <th>Actividad</th>
-                <th>Estado</th>
-                <th>Accciones</th>
-            </template>
-
-            <template #body>
-                <tr v-for="(user, index) in users" class="hover:bg-gray-50">
-                    <td>
-                        {{ user.name }}
-                        <div class="text-gray-400 mt-2">
-                            {{ user.email }}
-                        </div>
-                    </td>
-                    <td>
-                        {{ user.company_name }}
-                    </td>
-                    <td>
-                        {{ user.sellers_count }} / {{ user.sellers_limit }}
-                    </td>
-                    <td>
-                        {{ user.online }}
-                    </td>
-                    <td> <span class="uppercase">{{ user.status }}</span></td>
-                    <td>
-                        <Dropdown>
-                            <div class="px-1 py-1">
-                                <DropdownItem :href="route('dashboard.users.show', user.id)" title="Rifas" :icon="IconGift" />
-                                <DropdownItem :href="route('dashboard.users.sellers', user.id)" title="Vendedores" :icon="IconUsers" />
-                            </div>
-                            <div class="px-1 py-1">
-                                <DropdownItem @click="edit(user)" title="Editar" :icon="IconEdit" />
-                                <DropdownItem @click="destroy(user.id)" title="Eliminar" :icon="IconTrash" />
-                            </div>
-                        </Dropdown>
-                    </td>
-                </tr>
-                <tr v-if="users.length == 0">
-                    <td colspan="6" class="text-center">No data to display</td>
-                </tr>
-            </template>
-        </TableSection>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <JsonContent v-for="user in users" :title="user.name" :content="cleanValues(user)">
+                <Dropdown>
+                    <div class="px-1 py-1">
+                        <DropdownItem :href="route('dashboard.users.show', user.id)" title="Rifas" :icon="IconGift" />
+                        <DropdownItem :href="route('dashboard.users.sellers', user.id)" title="Vendedores"
+                            :icon="IconUsers" />
+                    </div>
+                    <div class="px-1 py-1">
+                        <DropdownItem @click="edit(user)" title="Editar" :icon="IconEdit" />
+                        <DropdownItem @click="destroy(user.id)" title="Eliminar" :icon="IconTrash" />
+                    </div>
+                </Dropdown>
+            </JsonContent>
+        </div>
 
         <FormModal :show="openModal" title="Usuario" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Name" v-model="form.name" required />
@@ -82,11 +51,11 @@ import DropdownItem from '@/Components/DropdownItem.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
-import TableSection from '@/Components/TableSection.vue';
 import { useUser } from '@/Composables/useUser.js';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { IconEdit, IconGift, IconTrash, IconUsers } from '@tabler/icons-vue';
 import { ref } from 'vue';
+import JsonContent from '@/Components/JsonContent.vue';
 
 defineProps({
     users: {
@@ -107,11 +76,11 @@ const { destroy, store, update, form } = useUser();
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.users.index'),
+        name: 'Inicio',
+        route: route('dashboard.index'),
     },
     {
-        name: 'Users',
+        name: 'Usuarios',
         route: route('dashboard.users.index'),
     },
 ];
@@ -137,5 +106,15 @@ const resetValues = () => {
     openModal.value = false;
     isNew.value = true;
 };
+
+function cleanValues(user) {
+    delete user.email_verified_at;
+    delete user.user_id;
+    delete user.created_at;
+    delete user.updated_at;
+    delete user.last_login;
+    delete user.deleted_at;
+    return user;
+}
 
 </script>
