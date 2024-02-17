@@ -19,7 +19,7 @@ defineProps({
 
 <template>
     <Head :title="title" />
-    <section class="flex w-full">
+    <section class="flex w-full bg-gray-100">
         <Sidebar />
 
         <main class="w-full p-4 lg:p-8">
@@ -28,7 +28,7 @@ defineProps({
                 <li class="flex items-center" v-for="(bread, index) in breads">
                     <IconChevronRight v-if="index != 0" class="text-gray-300" />
                     <Link :href="bread.route">
-                    <span class="text-sm me-2 tracking-wider text-basic">
+                    <span class="text-sm me-2 tracking-wider text-gray-500">
                         {{ bread.name }}
                     </span>
                     </Link>
@@ -36,7 +36,7 @@ defineProps({
             </ol>
 
             <div class="w-full">
-                <div class="flex items-center justify-between h-10 mb-6 text-basic">
+                <div class="flex items-center justify-between h-10 mb-6">
                     <slot name="header" />
                 </div>
                 <slot />

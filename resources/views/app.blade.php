@@ -56,7 +56,7 @@
         }
 
         pre {
-            background-color: #f9f5f2;
+            background-color: #ffffff;
             padding: 1rem;
             border-radius: 1rem;
         }

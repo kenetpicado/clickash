@@ -48,7 +48,7 @@ const submit = () => {
 
                 <Checkbox v-model:checked="form.remember" text="Recordarme" />
 
-                <button type="submit" class="w-full primary-button">
+                <button type="submit" class="w-full primary-button py-3">
                     Entrar
                 </button>
             </form>

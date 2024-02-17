@@ -9,23 +9,15 @@
         </template>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <div v-for="raffle in raffles" class="bg-card rounded-xl p-2 w-full">
-                <div class="flex justify-between">
-                    <span class="mb-2">{{ raffle.name }}</span>
-
-                    <Dropdown>
-                        <div class="px-1 py-1">
-                            <DropdownItem :href="route('dashboard.users.raffles.availability.index', [user.id, raffle.id])"
-                                title="Horario" :icon="IconDeviceWatch" />
-                            <DropdownItem @click="destroy(raffle.id)" title="Eliminar" :icon="IconTrash" />
-                        </div>
-                    </Dropdown>
-                </div>
-
-                <div class="text-xs text-gray-600">
-                    <pre class="bg-white w-full p-3">{{ JSON.parse(raffle.pivot.settings) }}</pre>
-                </div>
-            </div>
+            <JsonContent v-for="raffle in raffles" :title="raffle.name" :content="JSON.parse(raffle.pivot.settings)">
+                <Dropdown>
+                    <div class="px-1 py-1">
+                        <DropdownItem :href="route('dashboard.users.raffles.availability.index', [user.id, raffle.id])"
+                            title="Horario" :icon="IconDeviceWatch" />
+                        <DropdownItem @click="destroy(raffle.id)" title="Eliminar" :icon="IconTrash" />
+                    </div>
+                </Dropdown>
+            </JsonContent>
         </div>
 
         <FormModal :show="openModal" title="Rifas" @onCancel="resetValues" @onSubmit="onSubmit">
@@ -50,6 +42,7 @@ import { router } from '@inertiajs/vue3';
 import { IconDeviceWatch } from '@tabler/icons-vue';
 import { IconTrash } from '@tabler/icons-vue';
 import { ref } from 'vue';
+import JsonContent from '@/Components/JsonContent.vue';
 
 const props = defineProps({
     user: {
@@ -68,12 +61,16 @@ const props = defineProps({
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.users.index'),
+        name: 'Inicio',
+        route: route('dashboard.index'),
     },
     {
         name: 'Usuarios',
         route: route('dashboard.users.index'),
+    },
+    {
+        name: 'Rifas',
+        route: route('dashboard.users.show', props.user.id),
     },
 ];
 

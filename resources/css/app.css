@@ -11,7 +11,7 @@
         @apply px-6 py-4;
     }
     th{
-        @apply px-6 py-4 text-xs text-gray-500;
+        @apply px-6 py-4 font-bold text-gray-400 uppercase text-xs tracking-wider;
     }
     *:focus {
         -webkit-tap-highlight-color: transparent;
@@ -23,11 +23,11 @@
 
 @layer components {
     .primary-button {
-        @apply inline-flex justify-center items-center px-4 py-2 bg-primary rounded-xl text-sm text-white font-medium active:bg-primary-dark duration-150 transition ease-in-out;
+        @apply inline-flex justify-center items-center px-5 py-2 tracking-wider bg-primary rounded-xl text-sm text-white active:bg-primary-dark duration-150 transition ease-in-out;
     }
 
     .secondary-button {
-        @apply inline-flex justify-center items-center px-4 py-2 bg-white border-2 border-primary rounded-xl text-sm text-primary font-medium;
+        @apply inline-flex justify-center items-center px-5 py-2 bg-white border-2 border-primary rounded-xl text-sm text-primary;
     }
 
     .simple-button {

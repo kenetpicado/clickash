@@ -25,6 +25,10 @@ class InvoiceController extends Controller
             ]);
     }
 
+    /**
+     * Show the transactions of a specific invoice.
+     * This resource could be used to print the invoice .
+    */
     public function show($invoice)
     {
         $data = $this->transactionService->getInvoiceTransactions($invoice);

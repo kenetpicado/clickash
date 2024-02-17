@@ -9,27 +9,23 @@
         </template>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <div v-for="raffle in raffles" class="bg-card rounded-xl p-2 w-full">
-                <div class="flex justify-between">
-                    <span class="mb-2">{{ raffle.name }}</span>
-
-                    <Dropdown>
-                        <div class="px-1 py-1">
-                            <DropdownItem @click="setToClone(raffle)" title="Clonar" :icon="IconCopy" />
-                            <DropdownItem @click="edit(raffle)" title="Editar" :icon="IconEdit" />
-                        </div>
-                    </Dropdown>
-                </div>
-
-                <div class="text-xs text-gray-600">
-                    <pre class="bg-white w-full p-3">{{ raffle.settings }}</pre>
-                </div>
-            </div>
+            <JsonContent v-for="raffle in raffles" :title="raffle.name" :content="raffle.settings">
+                <Dropdown>
+                    <div class="px-1 py-1">
+                        <DropdownItem @click="setToClone(raffle)" title="Clonar" :icon="IconCopy" />
+                        <DropdownItem @click="edit(raffle)" title="Editar" :icon="IconEdit" />
+                    </div>
+                </Dropdown>
+            </JsonContent>
         </div>
 
         <FormModal :show="openModal" title="Rifa" @onCancel="resetValues" @onSubmit="onSubmit">
             <InputForm text="Nombre" v-model="form.name" />
             <InputForm text="Imagen" v-model="form.image" type="url" />
+
+            <div class="w-40 h-40 overflow-hidden mb-6" v-if="form.image">
+                <img :src="form.image" alt="" class="w-full h-full">
+            </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <InputForm text="Limite general C$" v-model="form.settings.general_limit" type="number" />
@@ -69,6 +65,7 @@ import { toast } from "@/Use/toast";
 import { IconCopy } from '@tabler/icons-vue';
 import { IconEdit } from '@tabler/icons-vue';
 import { ref, watch } from 'vue';
+import JsonContent from '@/Components/JsonContent.vue';
 
 defineProps({
     raffles: {
@@ -79,8 +76,8 @@ defineProps({
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.raffles.index'),
+        name: 'Inicio',
+        route: route('dashboard.index'),
     },
     {
         name: 'Rifas',
