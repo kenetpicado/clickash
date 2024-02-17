@@ -10,11 +10,6 @@
             <InputForm text="Name" v-model="form.name" required />
             <InputForm text="Email" v-model="form.email" type="email" required />
             <InputForm text="Company" v-model="form.company_name" required />
-            <!-- <InputForm text="Password" v-model="form.password" type="password" />
-            <InputForm text="Password confirmation" v-model="form.password_confirmation" type="password" /> -->
-            <!-- <div class="col-span-2 mb-2 text-end">
-                <span class="text-sm text-gray-600">Leave password blank if you don't want to change it</span>
-            </div> -->
         </FormSection>
     </AppLayout>
 </template>
