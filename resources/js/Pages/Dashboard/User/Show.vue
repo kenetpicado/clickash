@@ -8,6 +8,10 @@
             <AddButton @click="openModal = true" />
         </template>
 
+        <div v-if="raffles.length == 0">
+            <p class="text-center text-gray-400">No hay rifas disponibles</p>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
             <JsonContent v-for="raffle in raffles" :title="raffle.name" :content="JSON.parse(raffle.pivot.settings)">
                 <Dropdown>

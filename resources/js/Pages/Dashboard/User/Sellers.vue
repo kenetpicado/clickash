@@ -7,50 +7,16 @@
             </span>
         </template>
 
-        <TableSection>
-            <template #header>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Actividad</th>
-                <th>Estado</th>
-            </template>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <JsonContent v-for="i in sellers" :title="i.name" :content="cleanValues(i)"/>
+        </div>
 
-            <template #body>
-                <tr v-for="(user, index) in sellers" class="hover:bg-gray-50">
-                    <td>
-                        {{ index + 1 }}
-                    </td>
-                    <td>
-                        {{ user.name }}
-                    </td>
-                    <td>
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        <span v-if="user.online == 'Now'" class="badge-primary">
-                            {{ user.online }}
-                        </span>
-
-                        <span v-else>
-                            {{ user.online }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="uppercase">{{ user.status }}</span>
-                    </td>
-                </tr>
-                <tr v-if="sellers.length == 0">
-                    <td colspan="4" class="text-center">No data to display</td>
-                </tr>
-            </template>
-        </TableSection>
     </AppLayout>
 </template>
 
 <script setup>
-import TableSection from '@/Components/TableSection.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import JsonContent from '@/Components/JsonContent.vue';
 
 const props = defineProps({
     user: {
@@ -65,13 +31,27 @@ const props = defineProps({
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.users.index'),
+        name: 'Inicio',
+        route: route('dashboard.index'),
     },
     {
         name: 'Usuarios',
         route: route('dashboard.users.index'),
     },
+    {
+        name: 'Vendedores',
+        route: route('dashboard.users.sellers', props.user.id),
+    },
 ];
+
+function cleanValues(user) {
+    delete user.email_verified_at;
+    delete user.user_id;
+    delete user.created_at;
+    delete user.updated_at;
+    delete user.last_login;
+    delete user.deleted_at;
+    return user;
+}
 
 </script>
