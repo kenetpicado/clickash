@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class AvailabilityRepository
 {
-    public function getByRaffle($raffle)
+    public function getRaffleAvailability($raffle)
     {
         return Availability::query()
             ->where('user_id', auth()->id())
@@ -17,28 +17,9 @@ class AvailabilityRepository
             ->get(['id', 'order', 'day', 'start_time', 'end_time', 'blocked_hours']);
     }
 
-    public function updateOrCreate(array $request, $raffle): void
-    {
-        Availability::updateOrCreate([
-            'day' => $request['day'],
-            'order' => $request['order'],
-            'raffle_id' => $raffle,
-            'user_id' => auth()->id(),
-        ], [
-            'start_time' => $request['start_time'],
-            'end_time' => $request['end_time'],
-            'blocked_hours' => (new DateTimeServiceCopy)->formatHours($request['blocked_hours']),
-        ]);
-    }
-
     public function update(array $request, $id)
     {
-        Availability::where('id', $id)
-            ->update([
-                'start_time' => $request['start_time'],
-                'end_time' => $request['end_time'],
-                'blocked_hours' => (new DateTimeServiceCopy)->formatHours($request['blocked_hours']),
-            ]);
+        Availability::where('id', $id)->update($request);
     }
 
     public function getTodayBlockedHours($raffle_id, $user_id)
@@ -58,5 +39,10 @@ class AvailabilityRepository
             ->unique()
             ->sort()
             ->values();
+    }
+
+    public function store(array $request): void
+    {
+        Availability::create($request);
     }
 }

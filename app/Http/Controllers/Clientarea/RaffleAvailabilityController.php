@@ -4,42 +4,43 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\RaffleAvailabilityRequest;
+use App\Http\Resources\AvailabilityResource;
 use App\Models\Availability;
 use App\Models\Raffle;
-use App\Repositories\AvailabilityRepository;
+use App\Services\AvailabilityService;
 
 class RaffleAvailabilityController extends Controller
 {
     public function __construct(
-        private readonly AvailabilityRepository $availabilityRepository
+        private readonly AvailabilityService $availabilityService
     ) {
     }
 
     public function index(Raffle $raffle)
     {
         return inertia('Clientarea/Raffle/Availability', [
-            'availability' => $this->availabilityRepository->getByRaffle($raffle->id),
             'raffle' => $raffle,
+            'availability' => AvailabilityResource::collection($this->availabilityService->getRaffleAvailability($raffle->id))->resolve(),
         ]);
     }
 
     public function store(RaffleAvailabilityRequest $request, $raffle)
     {
-        $this->availabilityRepository->updateOrCreate($request->validated(), $raffle);
+        $this->availabilityService->store($request->validated());
 
         return back();
     }
 
     public function update(RaffleAvailabilityRequest $request, $raffle, $availability)
     {
-        $this->availabilityRepository->update($request->validated(), $availability);
+        $this->availabilityService->update($request->validated(), $availability);
 
         return back();
     }
 
-    public function destroy($raffle, $availability)
+    public function destroy($raffle, Availability $availability)
     {
-        Availability::where('id', $availability)->delete();
+        $availability->delete();
 
         return back();
     }

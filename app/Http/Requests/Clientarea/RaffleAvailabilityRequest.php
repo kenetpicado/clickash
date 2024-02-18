@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Clientarea;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RaffleAvailabilityRequest extends FormRequest
 {
@@ -12,6 +13,13 @@ class RaffleAvailabilityRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'raffle_id' => $this->route('raffle'),
+        ]);
     }
 
     /**
@@ -25,14 +33,14 @@ class RaffleAvailabilityRequest extends FormRequest
             'start_time' => 'required',
             'end_time' => 'required',
             'blocked_hours' => 'required|array|min:1',
-        ] + ($this->isMethod('POST') ? $this->store() : []);
-    }
-
-    public function store()
-    {
-        return [
-            'order' => 'required|numeric',
-            'day' => 'required',
+            'raffle_id' => 'required',
+            'day' => [
+                'required',
+                Rule::unique('availabilities')
+                    ->where('user_id', auth()->id())
+                    ->where('raffle_id', $this->raffle_id)
+                    ->ignore($this->route('availability')),
+            ],
         ];
     }
 
@@ -40,6 +48,13 @@ class RaffleAvailabilityRequest extends FormRequest
     {
         return [
             'blocked_hours' => 'sorteos',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'day.unique' => 'Ya existe un registro para este día.',
         ];
     }
 }

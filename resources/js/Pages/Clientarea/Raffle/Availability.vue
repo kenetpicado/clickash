@@ -8,13 +8,14 @@
                 Nuevo
             </button>
         </template>
+
         <div v-if="availability.length == 0" class="w-full text-center text-gray-400">
             No hay horario
         </div>
         <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
             <div v-for="a in availability" class="bg-card p-4 rounded-xl text-gray-600">
                 <div class="flex justify-between items-center mb-2">
-                    <span>{{ a.day }}</span>
+                    <span>{{ a.day }}: {{ a.time_label }}</span>
                     <Dropdown>
                         <div class="px-1 py-1">
                             <DropdownItem @click="editDay(a)" title="Editar" :icon="IconEdit" />
@@ -22,35 +23,20 @@
                         </div>
                     </Dropdown>
                 </div>
-                <div class="grid grid-cols-2 gap-2 mb-4">
-                    <div>
-                        <strong class="text-sm">Hora de inicio</strong>
-                        <div>
-                            {{ Carbon.create().setTime(a.start_time).getTimeFormat() }}
-                        </div>
-                    </div>
-                    <div>
-                        <strong class="text-sm">Hora de fin</strong>
-                        <div>
-                            {{ Carbon.create().setTime(a.end_time).getTimeFormat() }}
-                        </div>
-                    </div>
-                </div>
                 <h2 class="font-semibold mb-2 text-sm">Sorteos</h2>
-                <div class="flex items-center gap-3 overflow-x-auto hide-scrollbar text-sm">
-                    <div v-for="hour in a.blocked_hours"
-                        class="inline-flex items-center bg-white px-2 py-1 rounded-xl whitespace-nowrap">
-                        {{ Carbon.create().setTime(hour).getTimeFormat() }}
+
+                <div class="grid grid-cols-3 lg:grid-cols-4 gap-2">
+                    <div v-for="hour in a.blocked_hours_parsed" class="text-sm text-white text-center rounded-xl py-1 mb-1" :class="getBgColor(hour)">
+                        {{ hour }}
                     </div>
                 </div>
             </div>
         </div>
 
         <FormModal :show="openModal" title="Horario" @onCancel="resetValues" @onSubmit="onSubmit">
-            <SelectForm v-model="form.order" text="Dia" required v-if="isNew">
-                <option v-if="availableDays.length > 0" value="" disabled selected>Seleccione un dia</option>
-                <option v-else value="" disabled selected>No hay dias disponibles</option>
-                <option v-for="day in availableDays" :value="day.order">{{ day.name }}</option>
+            <SelectForm v-model="form.day" text="Dia" name="day">
+                <option value="" selected>Seleccione un dia</option>
+                <option v-for="day in days" :value="day">{{ day }}</option>
             </SelectForm>
             <div class="grid grid-cols-2 gap-2">
                 <InputForm text="Hora incio" v-model="form.start_time" type="time" required />
@@ -71,7 +57,7 @@
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
                 <div v-for="(hour, index) in form.blocked_hours"
                     class="border px-2 py-1 rounded-xl flex items-center justify-between">
-                    <span> {{ Carbon.create().setTime(hour).getTimeFormat() }}</span>
+                    <span>{{ hour }}</span>
                     <span role="button">
                         <IconTrash size="18" @click="popHour(index)" />
                     </span>
@@ -88,12 +74,11 @@ import InputForm from '@/Components/Form/InputForm.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
-import { Carbon } from '@/Use/Carbon';
 import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
 import { IconEdit, IconTrash } from '@tabler/icons-vue';
-import { computed, defineProps, ref, watch } from 'vue';
+import { defineProps, ref } from 'vue';
 
 const props = defineProps({
     availability: {
@@ -112,7 +97,6 @@ const selectedHour = ref(null);
 
 const form = useForm({
     id: null,
-    order: null,
     day: null,
     start_time: "07:00:00",
     end_time: "21:00:00",
@@ -120,54 +104,7 @@ const form = useForm({
     blocked_hours: ["11:00:00", "15:00:00", "21:00:00"],
 });
 
-const week = [
-    {
-        order: 0,
-        name: "Domingo"
-    },
-    {
-        order: 1,
-        name: "Lunes"
-    },
-    {
-        order: 2,
-        name: "Martes"
-    },
-    {
-        order: 3,
-        name: "Miercoles"
-    },
-    {
-        order: 4,
-        name: "Jueves"
-    },
-    {
-        order: 5,
-        name: "Viernes"
-    },
-    {
-        order: 6,
-        name: "Sabado"
-    },
-]
-
-const availableDays = computed(() => {
-    let days = [];
-
-    week.forEach((item) => {
-        if (!props.availability.find((day) => day.day == item.name)) {
-            days.push(item);
-        }
-    });
-
-    return days;
-});
-
-watch(() => form.order, (value) => {
-    if (value) {
-        form.day = week.find((item) => item.order == value).name;
-    }
-});
+const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 
 const resetValues = () => {
     form.reset();
@@ -181,22 +118,18 @@ const editDay = (day) => {
     form.start_time = day.start_time;
     form.end_time = day.end_time;
     form.blocked_hours = day.blocked_hours;
+    form.day = day.day;
     isNew.value = false;
     openModal.value = true
 }
 
 const pushToBlockedHours = () => {
     if (!selectedHour.value) {
-        toast.error('Debe seleccionar una hora');
+        toast.error('Seleccione una hora');
         return;
     }
 
-    if (selectedHour.value) {
-        if (!form.blocked_hours.find((item) => item == selectedHour.value + ":00")) {
-            form.blocked_hours.push(selectedHour.value + ":00");
-        }
-        selectedHour.value = null;
-    }
+    form.blocked_hours.push(selectedHour.value);
 }
 
 const onSubmit = () => {
@@ -207,7 +140,7 @@ const onSubmit = () => {
             onSuccess: () => {
                 resetValues();
                 toast.success('Guardado correctamente');
-            }
+            },
         });
     } else {
         form.put(route('clientarea.raffles.availability.update', [props.raffle.id, form.id]), {
@@ -216,7 +149,7 @@ const onSubmit = () => {
             onSuccess: () => {
                 resetValues();
                 toast.success('Actualizado correctamente');
-            }
+            },
         });
     }
 }
@@ -238,6 +171,15 @@ const destroyDay = (id) => {
             });
         },
     });
+}
+
+function getBgColor (hour){
+    if (hour.includes("11:")) return "bg-cyan-600";
+    if (hour.includes("3:")) return "bg-amber-600";
+    if (hour.includes("9:")) return "bg-indigo-600";
+    if (hour.includes("6:")) return "bg-emerald-600";
+
+    return "bg-rose-600";
 }
 
 </script>

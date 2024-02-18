@@ -13,7 +13,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <JsonContent v-for="raffle in user.raffles" :title="raffle.name" :content="JSON.parse(raffle.pivot.settings)">
+            <JsonContent v-for="raffle in user.raffles" :title="raffle.name" :content="raffle.settings">
                 <Dropdown>
                     <div class="px-1 py-1">
                         <DropdownItem :href="route('dashboard.users.raffles.availability.index', [user.id, raffle.id])"

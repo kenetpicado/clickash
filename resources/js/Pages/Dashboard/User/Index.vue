@@ -71,10 +71,6 @@ defineProps({
         type: Object,
         required: true,
     },
-    roles: {
-        type: Object,
-        required: true,
-    },
 });
 
 const { destroy, store, update, form } = useUser();
