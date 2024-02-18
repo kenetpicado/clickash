@@ -6,7 +6,7 @@
             </span>
         </template>
 
-        <RaffleTab :raffles="raffles" />
+        <RaffleTab :raffles="raffles.data" />
 
     </ClientareaLayout>
 </template>

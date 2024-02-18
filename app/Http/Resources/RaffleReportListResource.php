@@ -17,7 +17,7 @@ class RaffleReportListResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'hours' => $this->hours,
+            'hours' => $this->availability->pluck('blocked_hours')->flatten()->unique()->sort()->values(),
         ];
     }
 }

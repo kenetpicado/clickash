@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\RaffleRepository;
-use Carbon\Carbon;
+use App\Repositories\RaffleUserRepository;
 
 class RaffleService
 {
@@ -12,38 +12,20 @@ class RaffleService
     ) {
     }
 
-    public function getRafflesWithHours()
+    public function getRafflesWithAvailability()
     {
-        $raffles = (new RaffleRepository)->getRafflesWithAvailability();
+        if (!auth()->user()->isEnabled())
+            return [];
 
-        $raffles->transform(function ($raffle) {
-            $raffle->hours = $raffle->availability
-                ->pluck('blocked_hours')
-                ->flatten()
-                ->unique()
-                ->sort()
-                ->values()
-                ->map(function ($hour) {
-                    return [
-                        'value' => $hour,
-                        'label' => Carbon::parse($hour)->format('g:i A'),
-                    ];
-                });
-
-            unset($raffle->availability);
-
-            return $raffle;
-        });
-
-        return $raffles;
+        return $this->raffleRepository->getRafflesWithAvailability(auth()->user()->getOwnerId());
     }
 
     public function getAssignedRaffles()
     {
-        if (auth()->user()->isEnabled())
-            return $this->raffleRepository->getAssignedRaffles(auth()->user()->getOwnerId());
+        if (!auth()->user()->isEnabled())
+            return [];
 
-        return [];
+        return $this->raffleRepository->getAssignedRaffles(auth()->user()->getOwnerId());
     }
 
     public function getUnassignedRaffles($user_id)
@@ -53,9 +35,19 @@ class RaffleService
 
     public function getAssignedRafflesWithAvailability($user_id)
     {
-        if (auth()->user()->isEnabled())
-            return $this->raffleRepository->getAssignedRafflesWithAvailability($user_id);
+        if (!auth()->user()->isEnabled())
+            return [];
 
-        return [];
+        return $this->raffleRepository->getAssignedRafflesWithAvailability($user_id);
+    }
+
+    public function updateUserSettings($raffle, $settings): void
+    {
+        (new RaffleUserRepository)->updateSettings($raffle, $settings);
+    }
+
+    public function getRaffle($raffle_id)
+    {
+        return $this->raffleRepository->getRaffle($raffle_id, auth()->user()->getOwnerId());
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RaffleReportListResource;
 use App\Services\RaffleService;
-use Illuminate\Http\Request;
 
 class RaffleReportListController extends Controller
 {
@@ -14,8 +13,8 @@ class RaffleReportListController extends Controller
     ) {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke()
     {
-        return RaffleReportListResource::collection($this->raffleService->getRafflesWithHours());
+        return RaffleReportListResource::collection($this->raffleService->getRafflesWithAvailability());
     }
 }

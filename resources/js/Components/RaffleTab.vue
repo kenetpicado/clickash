@@ -33,24 +33,24 @@
                     <img v-else src="/games.png" alt="" class="w-full h-full">
                 </div>
                 <div class="flex flex-col gap-1 text-xs">
-                    <span>Super X: {{ raffle.pivot.settings.super_x ? 'Activado' : 'Desactivado' }}</span>
-                    <span v-if="raffle.pivot.settings.general_limit">
-                        Limite general: C${{ raffle.pivot.settings.general_limit }}
+                    <span>Super X: {{ raffle.settings.super_x ? 'Activado' : 'Desactivado' }}</span>
+                    <span v-if="raffle.settings.general_limit">
+                        Limite general: C${{ raffle.settings.general_limit }}
                     </span>
-                    <span v-if="raffle.pivot.settings.individual_limit">
-                        Limite individual: C${{ raffle.pivot.settings.individual_limit }}
+                    <span v-if="raffle.settings.individual_limit">
+                        Limite individual: C${{ raffle.settings.individual_limit }}
                     </span>
-                    <span v-if="raffle.pivot.settings.multiplier">
-                        Multiplicador: {{ raffle.pivot.settings.multiplier }}
+                    <span v-if="raffle.settings.multiplier">
+                        Multiplicador: {{ raffle.settings.multiplier }}
                     </span>
                 </div>
             </div>
             <div class="w-full text-center bg-white py-1 rounded-xl text-primary text-xs">
-                <span v-if="raffle.pivot.settings.date">
+                <span v-if="raffle.settings.date">
                     Fecha
                 </span>
                 <span v-else>
-                    Desde {{ raffle.pivot.settings.min }} hasta {{ raffle.pivot.settings.max }}
+                    Desde {{ raffle.settings.min }} hasta {{ raffle.settings.max }}
                 </span>
             </div>
         </div>
@@ -111,7 +111,7 @@ const form = useForm({
 });
 
 function edit(raffle) {
-    form.raffle_name = raffle.raffle.name;
+    form.raffle_name = raffle.name;
     form.raffle_id = raffle.id;
     Object.assign(form.settings, raffle.settings);
     openModal.value = true;

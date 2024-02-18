@@ -29,7 +29,7 @@ class SellerReportController extends Controller
         return inertia('Clientarea/Seller/Report', [
             'seller' => $seller,
             'sales' => $sales ?? [],
-            'raffles' => $this->raffleService->getRafflesWithHours(),
+            'raffles' => $this->raffleService->getRafflesWithAvailability(),
         ]);
     }
 }

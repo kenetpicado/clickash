@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UpdateSettingsRequest;
 use App\Http\Resources\RaffleResource;
 use App\Http\Resources\TransactionResource;
-use App\Repositories\RaffleUserRepository;
 use App\Repositories\TransactionRepository;
 use App\Services\RaffleService;
 use Illuminate\Http\Request;
@@ -16,7 +15,6 @@ class RaffleController extends Controller
     public function __construct(
         private readonly RaffleService $raffleService,
         private readonly TransactionRepository $transactionRepository,
-        private readonly RaffleUserRepository $raffleUserRepository,
     ) {
     }
 
@@ -25,6 +23,9 @@ class RaffleController extends Controller
         return RaffleResource::collection($this->raffleService->getAssignedRafflesWithAvailability(auth()->user()->getOwnerId()));
     }
 
+    /**
+     * TODO: Debe eliminarse cuando se implemente la vista de recibos
+     */
     public function show(Request $request, $raffle)
     {
         $array = $request->all();
@@ -37,7 +38,7 @@ class RaffleController extends Controller
 
     public function update(UpdateSettingsRequest $request, $raffle)
     {
-        $this->raffleUserRepository->updateSettings($raffle, $request->settings);
+        $this->raffleService->updateUserSettings($raffle, $request->settings);
 
         return self::index();
     }

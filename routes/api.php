@@ -9,7 +9,6 @@ use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RaffleHourController;
-use App\Http\Controllers\API\V1\RaffleParsedHourController;
 use App\Http\Controllers\API\V1\RaffleReportListController;
 use App\Http\Controllers\API\V1\RaffleSettingController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
@@ -81,9 +80,6 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('raffles/{raffle}/hours', RaffleHourController::class)
             ->name('raffles.hours');
-
-        Route::get('raffles/{raffle}/parsed-hours', RaffleParsedHourController::class)
-            ->name('raffles.parsed-hours');
 
         Route::get('raffles-report-list', RaffleReportListController::class)
             ->name('raffles.report-list');
