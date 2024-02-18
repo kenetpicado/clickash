@@ -16,15 +16,17 @@
             </SelectForm>
         </div>
 
-        <div v-if="!queryParams.raffle_id" class="w-full text-center text-gray-400">
-            Por favor seleccione una rifa
-        </div>
-        <div v-else-if="blockeds.length == 0" class="w-full text-center text-gray-400">
+        <div v-if="blockeds.length == 0" class="w-full text-center text-gray-400">
             No hay dígitos bloqueados 😥️
         </div>
-        <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <BlockedNumber v-for="i in blockeds" :digit="i" :key="i.id" @destroy="destroy" />
-        </div>
+
+        <template v-else v-for="group in Object.groupBy(blockeds, ({ raffle }) => raffle.name)">
+            <h2 class="text-xl font-bold mb-2 text-gray-600">{{ group[0].raffle.name }}</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4 w-full">
+                <BlockedNumber v-for="i in group" :digit="i" :key="i.id" @destroy="destroy" />
+            </div>
+        </template>
+
 
         <FormModal :show="openModal" :title="raffles.find((i) => queryParams.raffle_id == i.id)?.name"
             @onCancel="resetValues" @onSubmit="onSubmit">
@@ -88,16 +90,6 @@ const queryParams = reactive({
 })
 
 const onSubmit = () => {
-    if (!form.settings.general_limit && !form.settings.individual_limit) {
-        toast.error('Debe ingresar al menos un limite');
-        return;
-    }
-
-    if (props.blockeds.find((item) => item.number == form.number)) {
-        toast.error('Digito ya bloqueado');
-        return;
-    }
-
     form.raffle_id = queryParams.raffle_id;
 
     form.post(route('clientarea.sellers.blocked-numbers.store', props.seller.id), {
@@ -106,6 +98,9 @@ const onSubmit = () => {
         onSuccess: () => {
             resetValues();
             toast.success('Agregado correctamente');
+        },
+        onError: (e) => {
+            toast.error(e.message);
         }
     });
 }

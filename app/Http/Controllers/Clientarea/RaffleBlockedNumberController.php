@@ -6,33 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\BlockedNumberRequest;
 use App\Models\BlockedNumber;
 use App\Models\Raffle;
-use App\Repositories\BlockedNumberRepository;
+use App\Services\BlockedNumberService;
 
 class RaffleBlockedNumberController extends Controller
 {
     public function __construct(
-        private readonly BlockedNumberRepository $blockedNumberRepository
+        private readonly BlockedNumberService $blockedNumberService
     ) {
     }
 
     public function index(Raffle $raffle)
     {
         return inertia('Clientarea/Raffle/BlockedNumber', [
-            'blockeds' => $this->blockedNumberRepository->getByRaffle($raffle->id),
             'raffle' => $raffle,
+            'blockeds' => $this->blockedNumberService->getRaffleBlockedNumbers($raffle->id),
         ]);
     }
 
     public function store(BlockedNumberRequest $request, $raffle)
     {
-        $this->blockedNumberRepository->updateOrCreate($request->validated(), $raffle);
+        try {
+            $this->blockedNumberService->store($request->validated());
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
 
         return back();
     }
 
-    public function destroy($raffle, $blockedNumber)
+    public function destroy($raffle, BlockedNumber $blockedNumber)
     {
-        BlockedNumber::where('id', $blockedNumber)->delete();
+        $blockedNumber->delete();
 
         return back();
     }

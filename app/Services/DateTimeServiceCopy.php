@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 
-class DateTimeService
+class DateTimeServiceCopy
 {
     public function getBlockedHourMessage($currentTime, $blockedHour)
     {

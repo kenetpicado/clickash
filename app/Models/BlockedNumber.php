@@ -19,4 +19,9 @@ class BlockedNumber extends Model
     protected $casts = [
         'settings' => 'array',
     ];
+
+    public function raffle()
+    {
+        return $this->belongsTo(Raffle::class);
+    }
 }

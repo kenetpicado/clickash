@@ -17,9 +17,11 @@ class RaffleRepository
             ->get(['raffles.id', 'name']);
     }
 
-    public function getRafflesNames()
+    public function getRaffleNames()
     {
-        return Raffle::hasUser(auth()->user()->getOwnerId())->get(['id', 'name']);
+        return Raffle::query()
+            ->whereHas('users', fn ($query) => $query->where('users.id', auth()->user()->getOwnerId()))
+            ->get(['raffles.id', 'name']);
     }
 
     public function getUnassignedRaffles($user_id)

@@ -50,4 +50,9 @@ class RaffleService
     {
         return $this->raffleRepository->getRaffle($raffle_id, auth()->user()->getOwnerId());
     }
+
+    public function getRaffleNames()
+    {
+        return $this->raffleRepository->getRaffleNames();
+    }
 }

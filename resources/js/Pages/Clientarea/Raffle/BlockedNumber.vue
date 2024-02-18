@@ -62,22 +62,15 @@ const form = useForm({
 const openModal = ref(false)
 
 const onSubmit = () => {
-    if (!form.settings.general_limit && !form.settings.individual_limit) {
-        toast.error('Debe ingresar al menos un limite');
-        return;
-    }
-
-    if (props.blockeds.find((item) => item.number == form.number)) {
-        toast.error('Numero ya bloqueado');
-        return;
-    }
-
     form.post(route('clientarea.raffles.blocked-numbers.store', props.raffle.id), {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
             resetValues();
             toast.success('Agregado correctamente');
+        },
+        onError: (e) => {
+            toast.error(e.message);
         }
     });
 }

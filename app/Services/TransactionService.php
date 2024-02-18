@@ -29,7 +29,7 @@ class TransactionService
         $availabilityRepository = new AvailabilityRepository();
         $blockedNumberRepository = new BlockedNumberRepository();
         $raffleUserRepository = new RaffleUserRepository();
-        $dateTimeService = new DateTimeService();
+        $dateTimeService = new DateTimeServiceCopy();
 
         $ownerId = auth()->user()->getOwnerId();
 

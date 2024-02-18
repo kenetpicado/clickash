@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Availability;
-use App\Services\DateTimeService;
+use App\Services\DateTimeServiceCopy;
 use Carbon\Carbon;
 
 class AvailabilityRepository
@@ -27,7 +27,7 @@ class AvailabilityRepository
         ], [
             'start_time' => $request['start_time'],
             'end_time' => $request['end_time'],
-            'blocked_hours' => (new DateTimeService)->formatHours($request['blocked_hours']),
+            'blocked_hours' => (new DateTimeServiceCopy)->formatHours($request['blocked_hours']),
         ]);
     }
 
@@ -37,7 +37,7 @@ class AvailabilityRepository
             ->update([
                 'start_time' => $request['start_time'],
                 'end_time' => $request['end_time'],
-                'blocked_hours' => (new DateTimeService)->formatHours($request['blocked_hours']),
+                'blocked_hours' => (new DateTimeServiceCopy)->formatHours($request['blocked_hours']),
             ]);
     }
 

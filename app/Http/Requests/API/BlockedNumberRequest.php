@@ -14,6 +14,13 @@ class BlockedNumberRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        if ($this->route('raffle')) {
+            $this->merge(['raffle_id' => $this->route('raffle')]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +31,7 @@ class BlockedNumberRequest extends FormRequest
         return [
             'number' => 'required|numeric',
             'settings' => 'required|array',
-            'raffle_id' => 'nullable',
+            'raffle_id' => 'required',
         ];
     }
 }

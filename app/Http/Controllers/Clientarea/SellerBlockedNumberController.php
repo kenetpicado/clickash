@@ -6,35 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\BlockedNumberRequest;
 use App\Models\BlockedNumber;
 use App\Models\User;
-use App\Repositories\RaffleRepository;
+use App\Services\BlockedNumberService;
+use App\Services\RaffleService;
 use Illuminate\Http\Request;
 
 class SellerBlockedNumberController extends Controller
 {
     public function __construct(
-        private readonly RaffleRepository $raffleRepository
+        private readonly BlockedNumberService $blockedNumberService,
+        private readonly RaffleService $raffleService
     ) {
     }
 
     public function index(Request $request, User $seller)
     {
-        if ($request->raffle_id) {
-            $blockeds = $seller->blockedNumbers()
-                ->where('raffle_id', $request->raffle_id)
-                ->orderBy('number')
-                ->get();
-        }
-
         return inertia('Clientarea/Seller/BlockedNumber/Index', [
             'seller' => $seller,
-            'raffles' => $this->raffleRepository->getRafflesNames(),
-            'blockeds' => fn () => $blockeds ?? [],
+            'raffles' => $this->raffleService->getRaffleNames(),
+            'blockeds' => $this->blockedNumberService->getUserBlockedNumbers($seller->id, $request->get('raffle_id')),
         ]);
     }
 
-    public function store(BlockedNumberRequest $request, User $seller)
+    public function store(BlockedNumberRequest $request, $seller)
     {
-        $seller->blockedNumbers()->create($request->validated());
+        try {
+            $this->blockedNumberService->store($request->validated(), $seller);
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
 
         return back();
     }
