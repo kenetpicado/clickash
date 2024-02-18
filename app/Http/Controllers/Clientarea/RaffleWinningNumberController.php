@@ -4,56 +4,47 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\WinningNumberRequest;
-use App\Models\Raffle;
+use App\Http\Resources\RaffleResource;
+use App\Http\Resources\WinningNumberResource;
 use App\Models\WinningNumber;
-use App\Repositories\RaffleUserRepository;
-use App\Repositories\TransactionRepository;
-use App\Repositories\WinningNumberRepository;
-use App\Services\AvailabilityService;
-use Carbon\Carbon;
+use App\Services\RaffleService;
+use App\Services\WinningNumberService;
+use Exception;
 
 class RaffleWinningNumberController extends Controller
 {
     public function __construct(
-        private readonly WinningNumberRepository $winningNumberRepository,
-        private readonly TransactionRepository $transactionRepository,
-        private readonly AvailabilityService $availabilityService,
-        private readonly RaffleUserRepository $raffleUserRepository
+        private readonly WinningNumberService $winningNumberService,
+        private readonly RaffleService $raffleService
     ) {
     }
 
-    public function index(Raffle $raffle)
+    public function index($raffle)
     {
         return inertia('Clientarea/Raffle/WinningNumber', [
-            'raffle' => $raffle,
-            'winning_numbers' => $this->winningNumberRepository->getByRaffle($raffle->id),
-            'hours' => $this->availabilityService->getPastHours($raffle->id),
-            'settings' => $this->raffleUserRepository->getSettings(auth()->user()->getOwnerId(), $raffle->id),
+            'raffle' => RaffleResource::make($this->raffleService->getRaffle($raffle))->resolve(),
+            'winning_numbers' => WinningNumberResource::collection($this->winningNumberService->getWinningNumbers($raffle))->resolve(),
         ]);
     }
 
     public function store(WinningNumberRequest $request, $raffle)
     {
-        if (Carbon::parse($request->hour)->isFuture()) {
-            return back()->withErrors(['message' => 'No puedes registrar una turno que no ha pasado']);
+        try {
+            $this->winningNumberService->store($request->validated(), $raffle);
+        } catch (Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
         }
-
-        $winningNumber = $this->winningNumberRepository->store($request->validated(), $raffle);
-
-        $this->transactionRepository->setWinningTransactions($winningNumber);
 
         return back();
     }
 
     public function destroy($raffle, WinningNumber $winningNumber)
     {
-        if ($winningNumber->created_at->diffInMinutes(Carbon::now()) > 30) {
-            return back()->withErrors(['message' => 'No es posible eliminar este registro']);
+        try {
+            $this->winningNumberService->destroy($winningNumber);
+        } catch (Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
         }
-
-        $this->transactionRepository->revertWinningTransactions($winningNumber);
-
-        $winningNumber->delete();
 
         return back();
     }

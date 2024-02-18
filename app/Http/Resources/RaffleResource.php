@@ -20,7 +20,9 @@ class RaffleResource extends JsonResource
             'name' => $this->name,
             'image' => $this->image,
             'settings' => $this->pivot->settings,
-            'blocked_hours' => collect($this->currentAvailability?->blocked_hours ?? [])->filter(fn ($value) => Carbon::now()->lt($value))->values(),
+            'blocked_hours' => collect($this->currentAvailability?->blocked_hours ?? [])
+                ->when(auth()->user()->isSeller(), fn ($collection) => $collection->filter(fn ($value) => Carbon::now()->lt($value)))
+                ->values(),
         ];
     }
 }

@@ -25,25 +25,22 @@
 
         <FormModal :show="openModal" title="Resultado" @onCancel="resetValues" @onSubmit="onSubmit">
 
-            <div class="text-red-500 mb-4" v-if="hours.length == 0">
-                No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en
-                "Horario"
+            <div class="text-red-500 mb-4" v-if="raffle.blocked_hours.length == 0">
+                No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en "Horario"
             </div>
 
             <SelectForm v-else v-model="form.hour" text="Turno" required>
                 <option value="" disabled selected>Seleccione un turno</option>
-                <option v-for="hour in hours" :value="hour">
+                <option v-for="hour in raffle.blocked_hours" :value="hour">
                     {{ Carbon.create().setTime(hour).getTimeFormat() }}
                 </option>
             </SelectForm>
 
-            <InputForm v-if="settings.date" v-model="selectedDate" type="date" text="Fecha" required />
-            <InputForm v-else v-model="form.number" type="number" text="Numero" required />
+            <InputForm v-if="raffle.settings.date" v-model="selectedDate" type="date" text="Fecha" required />
+            <InputForm v-else v-model="form.number" type="number" text="Dígito" required />
 
             <div class="text-gray-400 text-sm">
-                Verifique que los datos ingresados sean correctos antes de guardar, ya que para garantizar la integridad de
-                los datos no se permite
-                eliminar ni editar los resultados.
+                Verifique que los datos ingresados sean correctos antes de guardar.
             </div>
 
             <div class="mt-5 text-basic" v-if="form.number && form.hour">
@@ -77,14 +74,6 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    hours: {
-        type: Object,
-        required: true,
-    },
-    settings: {
-        type: Object,
-        required: true,
-    },
     raffle: {
         type: Object,
         required: true,
@@ -103,8 +92,9 @@ const stats = computed(() => {
     return props.winning_numbers.map((result) => {
         return {
             id: result.id,
-            title: "Turno: " + Carbon.create().setTime(result.hour).getTimeFormat(),
+            title: "Turno: " + result.hour,
             value: "Dígito: " + result.number,
+            date: "Fecha: " + result.date,
             icon: IconCheck,
         }
     })
@@ -128,14 +118,14 @@ const onSubmit = () => {
         return;
     }
 
-    if (props.settings.max) {
-        if (form.number.length > props.settings.max.length) {
-            toast.error("Los números solo pueden contener " + props.settings.max.length + " digitos");
+    if (props.raffle.settings.max) {
+        if (form.number.length > props.raffle.settings.max.length) {
+            toast.error("Los números solo pueden contener " + props.raffle.settings.max.length + " digitos");
             return;
         }
 
-        if (parseInt(form.number) > parseInt(props.settings.max)) {
-            toast.error('El número ingresado supera el máximo permitido: ' + props.settings.max);
+        if (parseInt(form.number) > parseInt(props.raffle.settings.max)) {
+            toast.error('El número ingresado supera el máximo permitido: ' + props.raffle.settings.max);
             return;
         }
     }
@@ -151,6 +141,9 @@ const onSubmit = () => {
                     resetValues();
                     toast.success('Guardado correctamente');
                 },
+                onError: (err) => {
+                    toast.error(err.message);
+                }
             });
         }
     });

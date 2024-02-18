@@ -7,12 +7,15 @@ use Carbon\Carbon;
 
 class WinningNumberRepository
 {
-    public function getByRaffle($raffle_id, $loadRaffle = false)
+    public function getByRaffle($raffle_id, $request = [])
     {
         return WinningNumber::where('raffle_id', $raffle_id)
             ->where('user_id', auth()->id())
-            ->when($loadRaffle, fn ($query) => $query->with('raffle:id,name'))
-            ->whereDate('date', Carbon::today())
+            ->when(isset($request['date']), function ($query) use ($request) {
+                $query->whereDate('date', Carbon::parse($request['date']));
+            }, function ($query) {
+                $query->whereDate('date', Carbon::today());
+            })
             ->orderBy('hour')
             ->get(['id', 'number', 'hour', 'date', 'raffle_id']);
     }
@@ -32,7 +35,7 @@ class WinningNumberRepository
     {
         return WinningNumber::where('raffle_id', $raffle)
             ->where('hour', $hour)
-            ->where('date', Carbon::now()->format('Y-m-d'))
+            ->where('date', Carbon::today())
             ->exists();
     }
 }

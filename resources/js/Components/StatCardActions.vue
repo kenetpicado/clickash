@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-card h-20 rounded-xl">
+    <div class="bg-card rounded-xl">
         <div class="flex h-full items-center justify-between p-4">
             <div class="text-gray-600">
                 <div class="font-bold text-lg">
@@ -7,6 +7,9 @@
                 </div>
                 <div class="text-sm">
                     {{ stat.title }}
+                </div>
+                <div v-if="stat.date" class="text-sm">
+                    {{ stat.date }}
                 </div>
             </div>
             <div>
