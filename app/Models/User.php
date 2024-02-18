@@ -18,6 +18,9 @@ class User extends Authenticatable
     use Notifiable;
     use SoftDeletes;
 
+    const STATUS_ENABLED = 'enabled';
+    const STATUS_DISABLED = 'disabled';
+
     /**
      * The attributes that are mass assignable.
      *

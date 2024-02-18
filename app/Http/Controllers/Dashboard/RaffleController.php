@@ -22,16 +22,16 @@ class RaffleController extends Controller
         return back();
     }
 
-    public function update(RaffleRequest $request, $raffle)
+    public function update(RaffleRequest $request, Raffle $raffle)
     {
-        Raffle::where('id', $raffle)->update($request->validated());
+        $raffle->update($request->validated());
 
         return back();
     }
 
-    public function destroy($raffle)
+    public function destroy(Raffle $raffle)
     {
-        Raffle::where('id', $raffle)->delete();
+        $raffle->delete();
 
         return back();
     }

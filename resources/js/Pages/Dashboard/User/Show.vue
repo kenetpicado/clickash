@@ -8,12 +8,12 @@
             <AddButton @click="openModal = true" />
         </template>
 
-        <div v-if="raffles.length == 0">
+        <div v-if="user.raffles.length == 0">
             <p class="text-center text-gray-400">No hay rifas disponibles</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            <JsonContent v-for="raffle in raffles" :title="raffle.name" :content="JSON.parse(raffle.pivot.settings)">
+            <JsonContent v-for="raffle in user.raffles" :title="raffle.name" :content="JSON.parse(raffle.pivot.settings)">
                 <Dropdown>
                     <div class="px-1 py-1">
                         <DropdownItem :href="route('dashboard.users.raffles.availability.index', [user.id, raffle.id])"
@@ -27,7 +27,7 @@
         <FormModal :show="openModal" title="Rifas" @onCancel="resetValues" @onSubmit="onSubmit">
             <SelectForm text="Rifas disponibles" v-model="raffle" required>
                 <option selected disabled value="">Seleccionar rifa</option>
-                <option v-for="raffle in all_raffles" :value="raffle.id">{{ raffle.name }}</option>
+                <option v-for="raffle in raffles" :value="raffle.id">{{ raffle.name }}</option>
             </SelectForm>
         </FormModal>
     </AppLayout>
@@ -38,15 +38,14 @@ import AddButton from '@/Components/Buttons/AddButton.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownItem from '@/Components/DropdownItem.vue';
 import SelectForm from '@/Components/Form/SelectForm.vue';
+import JsonContent from '@/Components/JsonContent.vue';
 import FormModal from '@/Components/Modal/FormModal.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router } from '@inertiajs/vue3';
-import { IconDeviceWatch } from '@tabler/icons-vue';
-import { IconTrash } from '@tabler/icons-vue';
+import { IconDeviceWatch, IconTrash } from '@tabler/icons-vue';
 import { ref } from 'vue';
-import JsonContent from '@/Components/JsonContent.vue';
 
 const props = defineProps({
     user: {
@@ -54,10 +53,6 @@ const props = defineProps({
         required: true,
     },
     raffles: {
-        type: Object,
-        required: true,
-    },
-    all_raffles: {
         type: Object,
         required: true,
     },
@@ -74,7 +69,7 @@ const breads = [
     },
     {
         name: 'Rifas',
-        route: route('dashboard.users.show', props.user.id),
+        route: window.location.href,
     },
 ];
 

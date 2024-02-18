@@ -40,7 +40,7 @@ const breads = [
     },
     {
         name: 'Vendedores',
-        route: route('dashboard.users.sellers', props.user.id),
+        route: window.location.href,
     },
 ];
 

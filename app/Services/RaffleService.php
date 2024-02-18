@@ -60,4 +60,9 @@ class RaffleService
 
         return $raffles;
     }
+
+    public function getUnassignedRaffles($user_id)
+    {
+        return $this->raffleRepository->getUnassignedRaffles($user_id);
+    }
 }

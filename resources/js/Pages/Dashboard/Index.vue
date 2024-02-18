@@ -1,5 +1,5 @@
 <template>
-    <AppLayout title="Users" :breads="breads">
+    <AppLayout title="Inicio" :breads="breads">
         <template #header>
             <span class="title">
                 Inicio
@@ -18,32 +18,28 @@ import { IconUsers } from '@tabler/icons-vue';
 import StatCard from '@/Components/StatCard.vue';
 
 const props = defineProps({
-    users_count: {
-        type: Number,
-        default: 0,
-    },
-    sellers_count: {
-        type: Number,
-        default: 0,
+    users: {
+        type: Object,
+        required: true,
     },
 });
 
 const breads = [
     {
-        name: 'Home',
-        route: route('dashboard.users.index'),
+        name: 'Inicio',
+        route: route('dashboard.index'),
     },
 ];
 
 const stats = [
     {
-        value: props.users_count,
-        title: 'Propietarios registrados',
+        value: props.users.owners,
+        title: 'Propietarios',
         icon: IconUsers,
     },
     {
-        value: props.sellers_count,
-        title: 'Vendedores registrados',
+        value: props.users.sellers,
+        title: 'Vendedores',
         icon: IconUsers,
     },
 ]

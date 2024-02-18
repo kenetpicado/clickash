@@ -81,7 +81,7 @@ const breads = [
     },
     {
         name: 'Rifas',
-        route: route('dashboard.raffles.index'),
+        route: window.location.href,
     },
 ];
 
@@ -105,30 +105,29 @@ watch(() => form.settings.date, (value) => {
 
 function onSubmit() {
     if (isNaN(form.settings.min)) {
-        toast.error('Min must be a number');
+        toast.error('El mínimo debe ser un número');
         return;
     }
 
     if (isNaN(form.settings.max)) {
-        toast.error('Max must be a number');
+        toast.error('El máximo debe ser un número');
         return;
     }
 
     if (isNaN(form.settings.general_limit)) {
-        toast.error('General Limit must be a number');
+        toast.error('El límite general debe ser un número');
         return;
     }
 
     if (isNaN(form.settings.individual_limit)) {
-        toast.error('Individual Limit must be a number');
+        toast.error('El límite individual debe ser un número');
         return;
     }
 
-    if (isNew.value) {
+    if (isNew.value)
         store(resetValues)
-    } else {
+    else
         update(resetValues)
-    }
 }
 
 const resetValues = () => {

@@ -64,4 +64,11 @@ class RaffleRepository
 
         return $raffle;
     }
+
+    public function getUnassignedRaffles($user_id)
+    {
+        return Raffle::query()
+            ->whereDoesntHave('users', fn ($query) => $query->where('users.id', $user_id))
+            ->get(['raffles.id', 'name']);
+    }
 }

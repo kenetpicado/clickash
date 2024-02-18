@@ -2,69 +2,52 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Enums\RoleEnum;
-use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\UserRequest;
-use App\Models\Raffle;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Services\RaffleService;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private readonly UserService $userService,
+        private readonly RaffleService $raffleService,
+    ) {
+    }
+
     public function index()
     {
-        $users = User::query()
-            ->whereNotIn('role', ['seller'])
-            ->withCount('sellers')
-            ->withTrashed()
-            ->get();
-
         return inertia('Dashboard/User/Index', [
-            'users' => $users,
-            'roles' => RoleEnum::cases(),
-            'statuses' => UserStatusEnum::cases(),
+            'users' => $this->userService->getAdministrativeUsers(),
         ]);
     }
 
     public function show(User $user)
     {
-        $raffles = $user->raffles()->get();
-
-        $all_raffles = Raffle::whereNotIn('id', $raffles->pluck('id'))->get(['id', 'name']);
-
         return inertia('Dashboard/User/Show', [
-            'user' => $user,
-            'raffles' => $raffles,
-            'all_raffles' => $all_raffles,
+            'user' => $user->load('raffles'),
+            'raffles' => $this->raffleService->getUnassignedRaffles($user->id),
         ]);
     }
 
     public function store(UserRequest $request)
     {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'sellers_limit' => $request->sellers_limit,
-            'company_name' => $request->company_name,
-            'role' => $request->role,
-            'status' => UserStatusEnum::ENABLED,
-        ]);
+        $this->userService->createUser($request->validated());
 
         return back();
     }
 
-    public function update(UserRequest $request, $user)
+    public function update(UserRequest $request, User $user)
     {
-        User::where('id', $user)->update($request->validated());
+        $user->update($request->validated());
 
         return back();
     }
 
-    public function destroy($user)
+    public function destroy(User $user)
     {
-        User::where('id', $user)->delete();
+        $user->delete();
 
         return back();
     }

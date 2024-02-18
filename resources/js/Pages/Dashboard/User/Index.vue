@@ -25,19 +25,28 @@
         </div>
 
         <FormModal :show="openModal" title="Usuario" @onCancel="resetValues" @onSubmit="onSubmit">
-            <InputForm text="Name" v-model="form.name" required />
-            <InputForm text="Email" v-model="form.email" type="email" required />
-            <InputForm text="Company name" v-model="form.company_name" required />
+            <InputForm text="Nombre" name="name" v-model="form.name" required />
+            <InputForm text="Correo" name="email" v-model="form.email" type="email" required />
+            <InputForm text="Empresa" name="company_name" v-model="form.company_name" required />
+
             <template v-if="isNew">
-                <InputForm text="Password" v-model="form.password" type="password" required />
-                <InputForm text="Password confirmation" v-model="form.password_confirmation" type="password" required />
+                <InputForm text="Contraseña" v-model="form.password" name="password" type="password" required />
+                <InputForm text="Confirmar contraseña" v-model="form.password_confirmation" name="password_confimation"
+                    type="password" required />
             </template>
-            <InputForm text="Sellers limit" v-model="form.sellers_limit" type="number" />
+
+            <InputForm text="Vendedores" v-model="form.sellers_limit" type="number" name="sellers_limit" />
+
             <SelectForm v-model="form.role" text="Role">
-                <option v-for="role in roles" :value="role">{{ role }}</option>
+                <option v-for="role in roles" :value="role.value">
+                    {{ role.name }}
+                </option>
             </SelectForm>
-            <SelectForm v-if="!isNew" v-model="form.status" text="Status">
-                <option v-for="status in statuses" :value="status">{{ status }}</option>
+
+            <SelectForm v-if="!isNew" v-model="form.status" text="Estado" name="status">
+                <option v-for="status in statuses" :value="status.value">
+                    {{ status.name }}
+                </option>
             </SelectForm>
         </FormModal>
 
@@ -66,13 +75,31 @@ defineProps({
         type: Object,
         required: true,
     },
-    statuses: {
-        type: Object,
-        required: true,
-    },
 });
 
 const { destroy, store, update, form } = useUser();
+
+const statuses = [
+    {
+        name: 'Activo',
+        value: 'enabled',
+    },
+    {
+        name: 'Inactivo',
+        value: 'disabled',
+    },
+];
+
+const roles = [
+    {
+        name: 'Administrador',
+        value: 'root',
+    },
+    {
+        name: 'Propietario',
+        value: 'owner',
+    },
+]
 
 const breads = [
     {
@@ -81,7 +108,7 @@ const breads = [
     },
     {
         name: 'Usuarios',
-        route: route('dashboard.users.index'),
+        route: window.location.href,
     },
 ];
 

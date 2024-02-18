@@ -48,7 +48,7 @@ const breads = [
     },
     {
         name: 'Horario',
-        route: route('dashboard.users.raffles.availability.index', [props.user.id, props.raffle.id]),
+        route: window.location.href,
     },
 ];
 
