@@ -4,7 +4,7 @@ namespace App\Http\Requests\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RaffleRequest extends FormRequest
+class UpdateSettingsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

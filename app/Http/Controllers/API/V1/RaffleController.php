@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\RaffleRequest;
+use App\Http\Requests\API\UpdateSettingsRequest;
 use App\Http\Resources\RaffleResource;
 use App\Http\Resources\TransactionResource;
 use App\Repositories\RaffleUserRepository;
@@ -22,7 +22,7 @@ class RaffleController extends Controller
 
     public function index()
     {
-        return RaffleResource::collection($this->raffleService->getRaffles());
+        return RaffleResource::collection($this->raffleService->getAssignedRafflesWithAvailability(auth()->user()->getOwnerId()));
     }
 
     public function show(Request $request, $raffle)
@@ -35,7 +35,7 @@ class RaffleController extends Controller
             ]);
     }
 
-    public function update(RaffleRequest $request, $raffle)
+    public function update(UpdateSettingsRequest $request, $raffle)
     {
         $this->raffleUserRepository->updateSettings($raffle, $request->settings);
 

@@ -14,11 +14,7 @@ class RaffleUserRepository
 
     public function updateSettings($raffle, $settings): void
     {
-        RaffleUser::where('user_id', auth()->id())
-            ->where('raffle_id', $raffle)
-            ->update([
-                'settings' => $settings,
-            ]);
+        RaffleUser::where('user_id', auth()->id())->where('raffle_id', $raffle)->update(['settings' => $settings]);
     }
 
     public function getSettings($user_id, $raffle_id)

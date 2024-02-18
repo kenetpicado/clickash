@@ -18,7 +18,7 @@
                     </div>
                     <div class="px-1 py-1">
                         <DropdownItem @click="edit(user)" title="Editar" :icon="IconEdit" />
-                        <DropdownItem @click="destroy(user.id)" title="Eliminar" :icon="IconTrash" />
+                        <DropdownItem v-if="user.role != 'root'" @click="destroy(user.id)" title="Eliminar" :icon="IconTrash" />
                     </div>
                 </Dropdown>
             </JsonContent>

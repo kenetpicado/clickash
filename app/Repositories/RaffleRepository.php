@@ -3,29 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\Raffle;
+use App\Models\User;
 use Carbon\Carbon;
 
 class RaffleRepository
 {
-    public function getRaffles()
-    {
-        $ownerId = auth()->user()->getOwnerId();
-
-        return Raffle::hasUser($ownerId)
-            ->with([
-                'currentAvailability' => function ($query) use ($ownerId) {
-                    $query->where('user_id', $ownerId)->select('id', 'raffle_id', 'user_id', 'blocked_hours');
-                },
-            ])
-            ->select('id', 'name', 'image')
-            ->addSelect([
-                'settings' => function ($query) use ($ownerId) {
-                    $query->select('settings')->from('raffle_user')->where('user_id', $ownerId)->whereColumn('raffle_id', 'raffles.id');
-                },
-            ])
-            ->get();
-    }
-
     public function getRafflesWithAvailability()
     {
         return Raffle::hasUser(auth()->user()->getOwnerId())->with('availability')->get(['id', 'name']);
@@ -69,6 +51,21 @@ class RaffleRepository
     {
         return Raffle::query()
             ->whereDoesntHave('users', fn ($query) => $query->where('users.id', $user_id))
-            ->get(['raffles.id', 'name']);
+            ->get(['raffles.id', 'name', 'image']);
+    }
+
+    public function getAssignedRaffles($user_id)
+    {
+        return User::find($user_id)->raffles()->get(['raffles.id', 'name', 'image']);
+    }
+
+    public function getAssignedRafflesWithAvailability($user_id)
+    {
+        return User::find($user_id)
+            ->raffles()
+            ->with([
+                'currentAvailability' => fn ($query) => $query->where('user_id', $user_id)
+            ])
+            ->get(['raffles.id', 'name', 'image']);
     }
 }

@@ -12,29 +12,6 @@ class RaffleService
     ) {
     }
 
-    public function getRaffles()
-    {
-        $raffles = [];
-        $isOwner = auth()->user()->isOwner();
-
-        if (auth()->user()->isEnabled()) {
-
-            $raffles = $this->raffleRepository->getRaffles();
-
-            $raffles->transform(function ($raffle) use ($isOwner) {
-                $raffle->blocked_hours = collect($raffle->currentAvailability->blocked_hours ?? [])
-                    ->filter(fn ($value) => $isOwner ? $value : Carbon::parse($value)->isFuture())
-                    ->values();
-
-                unset($raffle->currentAvailability);
-
-                return $raffle;
-            });
-        }
-
-        return $raffles;
-    }
-
     public function getRafflesWithHours()
     {
         $raffles = (new RaffleRepository)->getRafflesWithAvailability();
@@ -61,8 +38,24 @@ class RaffleService
         return $raffles;
     }
 
+    public function getAssignedRaffles()
+    {
+        if (auth()->user()->isEnabled())
+            return $this->raffleRepository->getAssignedRaffles(auth()->user()->getOwnerId());
+
+        return [];
+    }
+
     public function getUnassignedRaffles($user_id)
     {
         return $this->raffleRepository->getUnassignedRaffles($user_id);
+    }
+
+    public function getAssignedRafflesWithAvailability($user_id)
+    {
+        if (auth()->user()->isEnabled())
+            return $this->raffleRepository->getAssignedRafflesWithAvailability($user_id);
+
+        return [];
     }
 }
