@@ -21,7 +21,7 @@ class RaffleController extends Controller
     public function index()
     {
         return inertia('Clientarea/Raffle/Index', [
-            'raffles' => RaffleResource::collection($this->raffleService->getAssignedRaffles()),
+            'raffles' => RaffleResource::collection($this->raffleService->getAssignedRaffles())->resolve(),
         ]);
     }
 
