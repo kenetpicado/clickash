@@ -54,4 +54,9 @@ class UserService
 
         $this->userRepository->createSeller($request);
     }
+
+    public function toggleStatus($seller)
+    {
+        $this->userRepository->toggleStatus($seller);
+    }
 }

@@ -11,6 +11,7 @@ class DashboardController extends Controller
         private readonly UserService $userService
     ) {
     }
+
     public function __invoke()
     {
         return inertia('Dashboard/Index', [
