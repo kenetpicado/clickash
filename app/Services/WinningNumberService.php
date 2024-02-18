@@ -8,8 +8,8 @@ use Carbon\Carbon;
 
 class WinningNumberService
 {
-    private $winningNumberRepository;
-    private $transactionRepository;
+    private WinningNumberRepository $winningNumberRepository;
+    private TransactionRepository $transactionRepository;
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class WinningNumberService
         return $this->winningNumberRepository->getWinningNumbers($raffle_id, $request);
     }
 
-    public function store(array $request, $raffle_id)
+    public function store(array $request, $raffle_id): void
     {
         if (Carbon::parse($request['hour'])->isFuture()) {
             throw new \Exception('No puedes registrar una turno que no ha pasado', 403);
@@ -37,7 +37,7 @@ class WinningNumberService
         $this->transactionRepository->setWinningTransactions($winningNumber);
     }
 
-    public function destroy($winningNumber)
+    public function destroy($winningNumber): void
     {
         if ($winningNumber->created_at->diffInMinutes(Carbon::now()) > 30) {
             throw new \Exception('No puedes eliminar despues de 30 minutos', 403);
