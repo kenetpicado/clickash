@@ -5,32 +5,32 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\SellerRequest;
 use App\Models\User;
-use App\Repositories\UserRepository;
 use App\Services\TransactionService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly TransactionService $transactionService
+        private readonly TransactionService $transactionService,
+        private readonly UserService $userService
     ) {
     }
 
     public function index()
     {
         return inertia('Clientarea/Seller/Index', [
-            'sellers' => $this->userRepository->getSellers(),
+            'sellers' => $this->userService->getSellers(),
         ]);
     }
 
     public function store(SellerRequest $request)
     {
-        if ($this->userRepository->hasReachedSellerLimit()) {
-            return back()->withErrors(['message' => 'Ha alcanzado el límite de vendedores permitidos']);
+        try {
+            $this->userService->createSeller($request->validated());
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
         }
-
-        $this->userRepository->createSeller($request->validated());
 
         return back();
     }
@@ -46,16 +46,16 @@ class SellerController extends Controller
         ]);
     }
 
-    public function update(SellerRequest $request, $seller)
+    public function update(SellerRequest $request, User $seller)
     {
-        User::where('id', $seller)->update($request->validated());
+        $seller->update($request->validated());
 
         return back();
     }
 
-    public function destroy($seller)
+    public function destroy(User $seller)
     {
-        User::where('id', $seller)->delete();
+        $seller->delete();
 
         return back();
     }

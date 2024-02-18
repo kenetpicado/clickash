@@ -25,8 +25,7 @@ export function useSeller() {
                 if (onDone) onDone();
             },
             onError: (err) => {
-                toast.error(err.message);
-                if (onDone) onDone();
+                toast.error(err.message);;
             },
         });
     }

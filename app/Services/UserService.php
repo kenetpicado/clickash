@@ -3,10 +3,18 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
+    private UserRepository $userRepository;
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+
     public function countRoles()
     {
         return User::selectRaw("COUNT(CASE WHEN role = 'owner' THEN 1 END) AS owners, COUNT(CASE WHEN role = 'seller' THEN 1 END) AS sellers")->first();
@@ -31,5 +39,19 @@ class UserService
             ->whereNotIn('role', ['seller'])
             ->withCount('sellers')
             ->get();
+    }
+
+    public function getSellers()
+    {
+        return $this->userRepository->getSellers();
+    }
+
+    public function createSeller(array $request)
+    {
+        if ($this->userRepository->hasReachedSellerLimit()) {
+            throw new \Exception('Ha alcanzado el límite de vendedores permitidos', 403);
+        }
+
+        $this->userRepository->createSeller($request);
     }
 }

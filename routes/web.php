@@ -94,9 +94,6 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
         Route::get('raffles/{raffle}/reports', RaffleReportController::class)
             ->name('raffles.reports');
 
-        Route::resource('raffles.winning-numbers', RaffleWinningNumberController::class)
-            ->only(['index', 'store']);
-
         Route::resource('invoices', InvoiceController::class)
             ->only(['index', 'show']);
 

@@ -8,33 +8,30 @@ use App\Http\Resources\SellerResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\User;
 use App\Repositories\TransactionRepository;
-use App\Repositories\UserRepository;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private readonly UserService $userService,
         private readonly TransactionRepository $transactionRepository
     ) {
     }
 
     public function index()
     {
-        return SellerResource::collection($this->userRepository->getSellers());
+        return SellerResource::collection($this->userService->getSellers());
     }
 
     public function store(SellerRequest $request)
     {
-        if ($this->userRepository->hasReachedSellerLimit()) {
-            abort(403, 'Ha alcanzado el límite de vendedores permitidos');
-        }
-
-        $this->userRepository->createSeller($request->validated());
+        $this->userService->createSeller($request->validated());
 
         return self::index();
     }
 
+    // TODO: Debe eliminarse cuando se implemente la vista de recibos
     public function show(Request $request, User $seller)
     {
         $array = $request->all();
@@ -45,16 +42,16 @@ class SellerController extends Controller
             ]);
     }
 
-    public function update(SellerRequest $request, $seller)
+    public function update(SellerRequest $request, User $seller)
     {
-        User::where('id', $seller)->update($request->validated());
+        $seller->update($request->validated());
 
         return self::index();
     }
 
-    public function destroy($seller)
+    public function destroy(User $seller)
     {
-        User::where('id', $seller)->delete();
+        $seller->delete();
 
         return self::index();
     }
