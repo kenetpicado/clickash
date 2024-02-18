@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class WinningNumberRepository
 {
-    public function getByRaffle($raffle_id, $request = [])
+    public function getWinningNumbers($raffle_id, $request = [])
     {
         return WinningNumber::where('raffle_id', $raffle_id)
             ->where('user_id', auth()->id())

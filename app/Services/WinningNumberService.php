@@ -19,7 +19,7 @@ class WinningNumberService
 
     public function getWinningNumbers($raffle_id, $request = [])
     {
-        return $this->winningNumberRepository->getByRaffle($raffle_id, $request);
+        return $this->winningNumberRepository->getWinningNumbers($raffle_id, $request);
     }
 
     public function store(array $request, $raffle_id)
