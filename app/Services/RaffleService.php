@@ -4,12 +4,15 @@ namespace App\Services;
 
 use App\Repositories\RaffleRepository;
 use App\Repositories\RaffleUserRepository;
+use Carbon\Carbon;
 
 class RaffleService
 {
-    public function __construct(
-        private readonly RaffleRepository $raffleRepository,
-    ) {
+    private RaffleRepository $raffleRepository;
+
+    public function __construct()
+    {
+        $this->raffleRepository = new RaffleRepository;
     }
 
     public function getRafflesWithAvailability()
@@ -54,5 +57,13 @@ class RaffleService
     public function getRaffleNames()
     {
         return $this->raffleRepository->getRaffleNames();
+    }
+
+    public function getResults(array $request)
+    {
+        return [
+            'message' => isset($request['date']) ? 'Resultados del ' . Carbon::parse($request['date'])->format('m/d/y') : 'Resultados de hoy',
+            'results' => $this->raffleRepository->getRaffleResults(auth()->user()->getOwnerId(), $request),
+        ];
     }
 }

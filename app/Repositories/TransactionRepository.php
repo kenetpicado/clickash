@@ -179,6 +179,21 @@ class TransactionRepository
             ->get();
     }
 
+    public function getWinners(array $request, $raffle_id, $user_id = null)
+    {
+        $query = $user_id
+            ? Transaction::where('user_id', $user_id)
+            : self::setTeam();
+
+        return $query
+            ->where('raffle_id', $raffle_id)
+            ->day($request)
+            ->with(['raffle:id,name'])
+            ->when($user_id == null, fn ($query) => $query->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')]))
+            ->where('status', '!=', 'VENDIDO')
+            ->get();
+    }
+
     // PENDING REVIEW all down here
     public function getBalanceTeam($request = [])
     {
@@ -210,7 +225,7 @@ class TransactionRepository
             ->first();
     }
 
-    //puedo unificar estas 2 funciones en 1 sola
+    //TODO: USAR SEL TRANSACTION SERVICE GET WINNERS
     public function getTeamWinners($raffle_id, $request = [])
     {
         return self::setTeam()
@@ -221,20 +236,6 @@ class TransactionRepository
                 $query->whereDate('created_at', Carbon::today());
             })
             ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
-            ->where('status', '!=', 'VENDIDO')
-            ->get();
-    }
-
-    public function getUserWinners($user_id, $raffle_id, $request = [])
-    {
-        return Transaction::query()
-            ->where('user_id', $user_id)
-            ->where('raffle_id', $raffle_id)
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereDate('created_at', $request['date']);
-            }, function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
             ->where('status', '!=', 'VENDIDO')
             ->get();
     }

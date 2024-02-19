@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Raffle;
 use App\Models\User;
+use Carbon\Carbon;
 
 class RaffleRepository
 {
@@ -54,5 +55,20 @@ class RaffleRepository
                 'currentAvailability' => fn ($query) => $query->where('user_id', $user_id)
             ])
             ->find($raffle_id, ['raffles.id', 'name', 'image']);
+    }
+
+    public function getRaffleResults($user_id, array $request)
+    {
+        return User::find($user_id)
+            ->raffles()
+            ->with([
+                'winningNumbers' => fn ($query) => $query->where('user_id', $user_id)->when(
+                    isset($request['date']),
+                    fn ($query) => $query->where('date', Carbon::parse($request['date'])->format('Y-m-d')),
+                    fn ($query) => $query->where('date', Carbon::today())
+                )
+                    ->orderBy('hour')
+            ])
+            ->get(['raffles.id', 'name', 'image']);
     }
 }

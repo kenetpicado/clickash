@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransactionResource;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,7 @@ class InvoiceController extends Controller
         $data = $this->transactionService->getInvoiceTransactions($invoice);
 
         return inertia('Clientarea/Invoice/Show', [
-            'transactions' => $data['transactions'],
+            'transactions' => TransactionResource::collection($data['transactions'])->resolve(),
             'total' =>  $data['total'],
             'invoice_number' => $invoice,
             'raffle' => $data['raffle'],

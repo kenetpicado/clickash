@@ -224,4 +224,16 @@ class TransactionService
             'datetime' => $transactions->first()->created_at->format('d/m/y g:i A')
         ];
     }
+
+    public function getWinners(array $request, $raffle)
+    {
+        $user_id = auth()->user()->isSeller()
+            ? auth()->id()
+            : null;
+
+        return [
+            'transactions' => $this->transactionRepository->getWinners($request, $raffle, $user_id),
+            'message' => isset($request['date']) ? 'Ganadores del ' . Carbon::parse($request['date'])->format('d/m/y') : 'Ganadores de hoy'
+        ];
+    }
 }

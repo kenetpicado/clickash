@@ -50,6 +50,11 @@ class Raffle extends Model
         return $this->hasMany(BlockedNumber::class);
     }
 
+    public function winningNumbers()
+    {
+        return $this->hasMany(WinningNumber::class);
+    }
+
     public function scopeHasUser($query, $user_id)
     {
         return $query->whereHas('users', function ($query) use ($user_id) {
