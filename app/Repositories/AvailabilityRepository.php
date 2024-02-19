@@ -30,7 +30,7 @@ class AvailabilityRepository
             ->value('blocked_hours');
     }
 
-    public function getHoursByRaffle($raffle_id)
+    public function getAllRaffleHours($raffle_id)
     {
         return Availability::where('raffle_id', $raffle_id)
             ->where('user_id', auth()->user()->getOwnerId())

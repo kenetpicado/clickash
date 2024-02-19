@@ -25,6 +25,7 @@ class RaffleController extends Controller
 
     /**
      * TODO: Debe eliminarse cuando se implemente la vista de recibos
+     * Retornar en su lugar la respuesta de RaffleSettingController
      */
     public function show(Request $request, $raffle)
     {

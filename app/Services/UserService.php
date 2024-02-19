@@ -33,6 +33,11 @@ class UserService
         ]);
     }
 
+    public function registerFreeAccount(array $validated)
+    {
+        return $this->userRepository->registerFreeAccount($validated);
+    }
+
     public function getAdministrativeUsers()
     {
         return User::query()

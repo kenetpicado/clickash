@@ -17,6 +17,7 @@ class BulkTransaction extends Controller
     ) {
     }
 
+    //TODO: MOVE TO SERVICE
     public function __invoke(BulkTransactionRequest $request)
     {
         $validated = $request->validated();

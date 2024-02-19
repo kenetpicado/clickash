@@ -27,7 +27,7 @@ class RaffleReportController extends Controller
         return inertia('Clientarea/Raffle/Report', [
             'raffle' => $raffle,
             'sales_by_number' => $sales_by_number,
-            'hours' => $this->availabilityRepository->getHoursByRaffle($raffle->id),
+            'hours' => $this->availabilityRepository->getAllRaffleHours($raffle->id),
         ]);
     }
 }

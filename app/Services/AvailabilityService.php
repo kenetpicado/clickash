@@ -47,6 +47,12 @@ class AvailabilityService
         return $this->availabilityRepository->update($request, $id);
     }
 
+    public function getAllRaffleHours($raffle_id)
+    {
+        return $this->availabilityRepository->getAllRaffleHours($raffle_id);
+    }
+
+    //PRIVATE FUNCTIONS
     private function formatRequestHours(array $request)
     {
         $temporalBlockedHours = collect([]);
