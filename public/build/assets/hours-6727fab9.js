@@ -1,1 +1,0 @@
-function t(e){return e.includes("11:")?"bg-cyan-600":e.includes("9:")?"bg-indigo-600":e.includes("6:")?"bg-emerald-600":e.includes("3:")?"bg-amber-600":"bg-rose-600"}function r(e){return`text-sm text-white text-center rounded-xl py-1 ${t(e)}`}export{r as g};

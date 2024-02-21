@@ -11,7 +11,7 @@
             </div>
 
             <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                <div v-for="hour in i.results" :class="getHourClass(hour)">
+                <div v-for="hour in i.results" class="text-sm text-white text-center rounded-xl py-1" :class="getBgColor(hour)">
                     {{ hour }}
                 </div>
             </div>
@@ -22,7 +22,6 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { getHourClass } from '@/Use/hours';
 
 const props = defineProps({
     results: {
@@ -30,5 +29,13 @@ const props = defineProps({
         required: true,
     },
 });
+
+function getBgColor(hour) {
+    if (hour.includes("11:")) return "bg-cyan-600";
+    if (hour.includes("9:")) return "bg-indigo-600";
+    if (hour.includes("6:")) return "bg-emerald-600";
+    if (hour.includes("3:")) return "bg-amber-600";
+    return "bg-rose-600";
+}
 
 </script>
