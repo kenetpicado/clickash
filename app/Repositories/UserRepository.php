@@ -58,4 +58,14 @@ class UserRepository
             'status' => 'enabled',
         ]);
     }
+
+    public function updateCompanyNameInSellers($companyName)
+    {
+        User::where('user_id', auth()->id())->update(['company_name' => $companyName]);
+    }
+
+    public function getCompanyName($user_id)
+    {
+        return User::where('id', $user_id)->value('company_name');
+    }
 }

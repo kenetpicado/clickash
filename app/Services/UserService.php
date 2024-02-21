@@ -64,4 +64,17 @@ class UserService
     {
         $this->userRepository->toggleStatus($seller);
     }
+
+    public function updateProfile(array $validated)
+    {
+        if (auth()->user()->isSeller()) {
+            $validated['company_name'] = $this->userRepository->getCompanyName(auth()->user()->user_id);
+        }
+
+        auth()->user()->updateProfile($validated);
+
+        if (auth()->user()->isOwner()) {
+            $this->userRepository->updateCompanyNameInSellers($validated['company_name']);
+        }
+    }
 }
