@@ -6,12 +6,13 @@
                 {{ i.name }}
             </div>
 
-            <div class="text-xs flex flex-col gap-1">
-                <span v-if="i.results.length == 0" class="text-gray-400">
-                    No hay resultados 😥️
-                </span>
-                <div v-else v-for="r in i.results">
-                    {{ r }}
+            <div v-if="i.results.length == 0" class="flex my-3 justify-center text-gray-400 text-xs">
+                No hay resultados
+            </div>
+
+            <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                <div v-for="hour in i.results" :class="getHourClass(hour)">
+                    {{ hour }}
                 </div>
             </div>
             </Link>
@@ -21,6 +22,7 @@
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { getHourClass } from '@/Use/hours';
 
 const props = defineProps({
     results: {
