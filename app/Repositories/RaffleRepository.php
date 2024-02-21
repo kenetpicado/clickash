@@ -13,7 +13,7 @@ class RaffleRepository
         return User::find($user_id)
             ->raffles()
             ->with([
-                'availability' => fn ($query) => $query->where('user_id', $user_id)
+                'availability' => fn ($query) => $query->where('user_id', $user_id)->select('raffle_id', 'user_id', 'blocked_hours')
             ])
             ->get(['raffles.id', 'name']);
     }

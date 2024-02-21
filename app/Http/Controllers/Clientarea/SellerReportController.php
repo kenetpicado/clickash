@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RaffleReportListResource;
 use App\Models\User;
 use App\Repositories\TransactionRepository;
 use App\Services\RaffleService;
@@ -29,7 +30,7 @@ class SellerReportController extends Controller
         return inertia('Clientarea/Seller/Report', [
             'seller' => $seller,
             'sales' => $sales ?? [],
-            'raffles' => $this->raffleService->getRafflesWithAvailability(),
+            'raffles' => RaffleReportListResource::collection($this->raffleService->getRafflesWithAvailability())->resolve(),
         ]);
     }
 }

@@ -8,12 +8,15 @@
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-gray-600">
             <SelectForm v-model="queryParams.raffle_id" text="Rifa" class="mb-0">
+                <option value="" selected>Ninguna</option>
                 <option v-for="i in raffles" :value="i.id">{{ i.name }}</option>
             </SelectForm>
             <SelectForm v-model="queryParams.hour" text="Turno" class="mb-0">
                 <option v-if="selectedRaffle?.hours?.length > 0" value="" selected>Seleccionar</option>
                 <option v-else value="" selected>No hay turnos</option>
-                <option v-for="i in selectedRaffle?.hours" :value="i.value">{{ i.label }}</option>
+                <option v-for="i in selectedRaffle?.hours" :value="i">
+                    {{ i }}
+                </option>
             </SelectForm>
             <InputForm v-model="queryParams.date" text="Fecha" type="date" />
         </div>
