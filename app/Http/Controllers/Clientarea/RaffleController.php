@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UpdateSettingsRequest;
+use App\Http\Resources\InvoiceResource;
 use App\Http\Resources\RaffleResource;
 use App\Models\Raffle;
 use App\Services\RaffleService;
@@ -34,7 +35,7 @@ class RaffleController extends Controller
 
         return inertia('Clientarea/Raffle/Show', [
             'raffle' => $raffle,
-            'invoices' => $data['invoices'],
+            'invoices' => InvoiceResource::collection($data['invoices']),
             'total' => $data['total'],
         ]);
     }

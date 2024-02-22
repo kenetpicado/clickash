@@ -32,7 +32,7 @@
             <Invoice :invoice="i" v-for="i in invoices.data" :key="i.invoice_number" />
         </div>
 
-        <ThePaginator :links="invoices.links" />
+        <ThePaginator :links="invoices.meta.links" />
     </ClientareaLayout>
 </template>
 

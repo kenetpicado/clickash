@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\SellerRequest;
+use App\Http\Resources\InvoiceResource;
 use App\Models\User;
 use App\Services\TransactionService;
 use App\Services\UserService;
@@ -41,7 +42,7 @@ class SellerController extends Controller
 
         return inertia('Clientarea/Seller/Show', [
             'seller' => $seller,
-            'invoices' => $data['invoices'],
+            'invoices' => InvoiceResource::collection($data['invoices']),
             'total' => $data['total'],
         ]);
     }

@@ -13,7 +13,7 @@
             No hay horario
         </div>
         <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <div v-for="a in availability" class="bg-card p-4 rounded-xl text-gray-600">
+            <div v-for="a in availability" class="bg-card p-4 rounded-xl text-gray-600 border-4 border-gray-200">
                 <div class="flex justify-between items-center mb-2">
                     <span>{{ a.day }}: {{ a.time_label }}</span>
                     <Dropdown>

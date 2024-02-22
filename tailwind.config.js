@@ -23,6 +23,9 @@ export default {
                 basic: "#535353",
                 card: "#ebf0ee",
             },
+            fontSize: {
+                'xxs': '0.6rem'
+            }
         },
     },
 

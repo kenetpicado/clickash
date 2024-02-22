@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-import { Carbon } from '@/Use/Carbon.js';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
