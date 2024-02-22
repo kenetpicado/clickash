@@ -236,4 +236,9 @@ class TransactionService
             'message' => isset($request['date']) ? 'Ganadores del ' . Carbon::parse($request['date'])->format('d/m/y') : 'Ganadores de hoy'
         ];
     }
+
+    public function markAsPaid($transaction): void
+    {
+        $this->transactionRepository->markAsPaid($transaction);
+    }
 }

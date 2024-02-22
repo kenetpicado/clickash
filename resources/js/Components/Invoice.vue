@@ -1,7 +1,7 @@
 <template>
     <Link :href="route('clientarea.invoices.show', invoice.invoice_number)" class="bg-card p-3 rounded-xl" role="button">
         <div class="flex items-center justify-between text-sm mb-2">
-            <span class="text-gray-400">{{ Carbon.create(invoice.created_at).format('d/m/Y g:a') }}</span>
+            <span class="text-gray-400">{{ invoice.created_at }}</span>
             <span class="text-gray-600">{{ invoice.deleted_at ? 'ELIMINADA' : 'VENDIDO' }}</span>
         </div>
         <span class="block text-sm text-gray-600 mb-2 font-bold">
@@ -14,7 +14,7 @@
             Rifa: {{ invoice.raffle }}
         </span>
         <div class="mt-3 text-end text-gray-600">
-            <strong>Total: C${{ invoice.total.toLocaleString() }}</strong>
+            <strong>Total: {{ invoice.total }}</strong>
         </div>
     </Link>
 </template>
