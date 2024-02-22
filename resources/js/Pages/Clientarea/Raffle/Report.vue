@@ -9,13 +9,14 @@
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-gray-600">
             <InputForm v-model="queryParams.date" text="Fecha" type="date" />
             <SelectForm v-model="queryParams.hour" text="Turno">
-                <option v-if="hours.length > 0" value="" selected>Turno</option>
-                <option v-else value="" selected>No hay turnos</option>
-                <option v-for="i in hours" :value="i">{{ Carbon.create().setTime(i).getTimeFormat() }}</option>
+                <option value="">Ninguno</option>
+                <option v-for="i in raffle.hours" :value="i">
+                    {{ Carbon.create().setTime(i).getTimeFormat() }}
+                </option>
             </SelectForm>
         </div>
 
-        <ReportView :sales="sales_by_number" />
+        <ReportView :sales="sales" :total="total" />
     </ClientareaLayout>
 </template>
 
@@ -33,14 +34,14 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    sales_by_number: {
+    sales: {
         type: Object,
-        required: true,
+        required: false
     },
-    hours: {
-        type: Object,
-        required: true,
-    },
+    total: {
+        type: String,
+        required: false
+    }
 })
 
 const searchParams = new URLSearchParams(window.location.search);
@@ -60,9 +61,9 @@ watch(() => queryParams, () => {
     router.get(route('clientarea.raffles.reports', props.raffle.id), params, {
         preserveState: true,
         preserveScroll: true,
-        only: ['sales_by_number'],
+        only: ['sales', 'total'],
         replace: true
     });
-}, { deep: true });
+}, { deep: true, immediate: true });
 
 </script>

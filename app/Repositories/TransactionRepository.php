@@ -154,9 +154,10 @@ class TransactionRepository
             ->update(['status' => Transaction::SOLD]);
     }
 
-    public function getTeamSalesReport($raffle_id, $request)
+    public function getUserSalesReport($user_id, $raffle_id, $request)
     {
-        return self::setTeam()
+        return Transaction::query()
+            ->where('user_id', $user_id)
             ->where('raffle_id', $raffle_id)
             ->where('hour', $request['hour'])
             ->day($request)
@@ -166,11 +167,13 @@ class TransactionRepository
             ->get();
     }
 
-    public function getUserSalesReport($user_id, $raffle_id, $request)
+    public function getSalesReport(array $request, $raffle_id, $user_id = null)
     {
-        return Transaction::query()
-            ->where('user_id', $user_id)
-            ->where('raffle_id', $raffle_id)
+        $query = $user_id
+            ? Transaction::where('user_id', $user_id)
+            : self::setTeam();
+
+        return $query->where('raffle_id', $raffle_id)
             ->where('hour', $request['hour'])
             ->day($request)
             ->selectRaw('digit, sum(amount) as total')
@@ -195,22 +198,6 @@ class TransactionRepository
     }
 
     // PENDING REVIEW all down here
-    public function getBalanceTeam($request = [])
-    {
-        return self::setTeam()
-            ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereBetween('created_at', [
-                    Carbon::parse($request['date'])->format('Y-m-d 00:00:00'),
-                    Carbon::parse($request['date'])->format('Y-m-d 23:59:59'),
-                ]);
-            }, function ($query) {
-                $query->where('created_at', '>=', Carbon::now()->startOfWeek()->format('Y-m-d 00:00:00'));
-            })
-            ->selectRaw('SUM(amount) as income, SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END) as expenditure')
-            ->first();
-    }
-
     public function getCashboxByUser($user_id, $request = [])
     {
         return Transaction::query()
@@ -223,20 +210,5 @@ class TransactionRepository
             })
             ->selectRaw('COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
             ->first();
-    }
-
-    //TODO: USAR SEL TRANSACTION SERVICE GET WINNERS
-    public function getTeamWinners($raffle_id, $request = [])
-    {
-        return self::setTeam()
-            ->where('raffle_id', $raffle_id)
-            ->when(isset($request['date']), function ($query) use ($request) {
-                $query->whereDate('created_at', $request['date']);
-            }, function ($query) {
-                $query->whereDate('created_at', Carbon::today());
-            })
-            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
-            ->where('status', '!=', 'VENDIDO')
-            ->get();
     }
 }

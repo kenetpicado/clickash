@@ -28,8 +28,7 @@ class RaffleController extends Controller
 
     public function show(Request $request, Raffle $raffle)
     {
-        $array = $request->all();
-        $array['raffle_id'] = $raffle->id;
+        $array = $request->merge(['raffle_id' => $raffle->id])->all();
 
         $data = $this->transactionService->getInvoices($array);
 

@@ -5,27 +5,19 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\SalesReportRequest;
 use App\Http\Resources\SalesReportResource;
-use App\Models\Raffle;
-use App\Repositories\TransactionRepository;
+use App\Services\TransactionService;
 
 class SalesReportController extends Controller
 {
     public function __construct(
-        private readonly TransactionRepository $transactionRepository,
+        private readonly TransactionService $transactionService
     ) {
     }
 
-    public function __invoke(SalesReportRequest $request, Raffle $raffle)
+    public function __invoke(SalesReportRequest $request, $raffle)
     {
-        $validated = $request->validated();
+        $data = $this->transactionService->getSalesReport($request->validated(), $raffle);
 
-        $sales = auth()->user()->isSeller()
-            ? $this->transactionRepository->getUserSalesReport(auth()->id(), $raffle->id, $validated)
-            : $this->transactionRepository->getTeamSalesReport($raffle->id, $validated);
-
-        return SalesReportResource::collection($sales)
-            ->additional([
-                'total' => 'C$ '.number_format($sales->sum('total')),
-            ]);
+        return SalesReportResource::collection($data['sales'])->additional(['total' => $data['total']]);
     }
 }

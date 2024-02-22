@@ -15,6 +15,7 @@ class SellerReportController extends Controller
     ) {
     }
 
+    //TODO: DEBE ELIMINARSE, USAR SALES REPORT CONTROLLER
     public function __invoke(SellerReportRequest $request, $seller)
     {
         $sales = $this->transactionRepository->getUserSalesReport($seller, $request->raffle_id, $request->validated());

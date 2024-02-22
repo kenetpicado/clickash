@@ -18,6 +18,16 @@ class RaffleRepository
             ->get(['raffles.id', 'name']);
     }
 
+    public function getRaffleWithAvailability($user_id, $raffle_id)
+    {
+        return User::find($user_id)
+            ->raffles()
+            ->with([
+                'availability' => fn ($query) => $query->where('user_id', $user_id)->select('raffle_id', 'user_id', 'blocked_hours')
+            ])
+            ->find($raffle_id, ['raffles.id', 'name']);
+    }
+
     public function getRaffleNames()
     {
         return Raffle::query()

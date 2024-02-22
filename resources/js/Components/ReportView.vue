@@ -1,7 +1,7 @@
 <template>
     <template v-if="sales.length > 0">
         <div class="text-lg font-bold mb-2">
-            Total: C$ {{ sales.reduce((acc, item) => acc + item.total, 0).toLocaleString() }}
+            Total: {{ total }}
         </div>
 
         <div class="grid grid-cols-4 lg:grid-cols-8 gap-4 text-gray-600">
@@ -10,7 +10,7 @@
                     {{ item.digit }}
                 </div>
                 <small>
-                    C$ {{ item.total.toLocaleString() }}
+                    {{ item.total }}
                 </small>
             </div>
         </div>
@@ -25,6 +25,10 @@
 defineProps({
     sales: {
         type: Object,
+        required: false
+    },
+    total: {
+        type: String,
         required: false
     }
 })

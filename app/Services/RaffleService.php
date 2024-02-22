@@ -23,6 +23,14 @@ class RaffleService
         return $this->raffleRepository->getRafflesWithAvailability(auth()->user()->getOwnerId());
     }
 
+    public function getRaffleWithAvailability($raffle_id)
+    {
+        if (!auth()->user()->isEnabled())
+            return [];
+
+        return $this->raffleRepository->getRaffleWithAvailability(auth()->user()->getOwnerId(), $raffle_id);
+    }
+
     public function getAssignedRaffles()
     {
         if (!auth()->user()->isEnabled())

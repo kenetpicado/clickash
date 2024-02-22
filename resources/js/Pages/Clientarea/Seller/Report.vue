@@ -11,9 +11,8 @@
                 <option value="" selected>Ninguna</option>
                 <option v-for="i in raffles" :value="i.id">{{ i.name }}</option>
             </SelectForm>
-            <SelectForm v-model="queryParams.hour" text="Turno" class="mb-0">
-                <option v-if="selectedRaffle?.hours?.length > 0" value="" selected>Seleccionar</option>
-                <option v-else value="" selected>No hay turnos</option>
+            <SelectForm v-if="queryParams.raffle_id" v-model="queryParams.hour" text="Turno" class="mb-0">
+                <option value="" selected>Ninguno</option>
                 <option v-for="i in selectedRaffle?.hours" :value="i">
                     {{ i }}
                 </option>
@@ -21,7 +20,7 @@
             <InputForm v-model="queryParams.date" text="Fecha" type="date" />
         </div>
 
-        <ReportView :sales="sales" />
+        <ReportView :sales="sales" :total="total" />
     </ClientareaLayout>
 </template>
 
@@ -46,6 +45,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    total: {
+        type: String,
+        required: true
+    }
 })
 
 const searchParams = new URLSearchParams(window.location.search);
@@ -70,9 +73,9 @@ watch(() => queryParams, () => {
     router.get(route('clientarea.sellers.reports.index', props.seller.id), params, {
         preserveState: true,
         preserveScroll: true,
-        only: ['sales'],
+        only: ['sales', 'total'],
         replace: true
     });
-}, { deep: true });
+}, { deep: true, immediate: true });
 
 </script>

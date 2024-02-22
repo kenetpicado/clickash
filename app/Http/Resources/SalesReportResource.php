@@ -16,7 +16,7 @@ class SalesReportResource extends JsonResource
     {
         return [
             'digit' => $this->digit,
-            'total' => 'C$ '.number_format($this->total),
+            'total' => 'C$'.number_format($this->total),
         ];
     }
 }

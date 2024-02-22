@@ -241,4 +241,25 @@ class TransactionService
     {
         $this->transactionRepository->markAsPaid($transaction);
     }
+
+    public function getSalesReport(array $request, $raffle_id): array
+    {
+        if (!isset($request['hour']) || !$raffle_id) {
+            return [
+                'sales' => [],
+                'total' => 'C$0'
+            ];
+        }
+
+        $user_id = auth()->user()->isSeller()
+            ? auth()->id()
+            : $request['user_id'] ?? null;
+
+        $data = $this->transactionRepository->getSalesReport($request, $raffle_id, $user_id);
+
+        return [
+            'sales' => $data,
+            'total' => 'C$'.number_format($data->sum('total'))
+        ];
+    }
 }

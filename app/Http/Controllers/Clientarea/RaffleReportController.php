@@ -3,31 +3,32 @@
 namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RaffleReportListResource;
+use App\Http\Resources\SalesReportResource;
 use App\Models\Raffle;
 use App\Repositories\AvailabilityRepository;
 use App\Repositories\TransactionRepository;
+use App\Services\RaffleService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RaffleReportController extends Controller
 {
     public function __construct(
-        private readonly TransactionRepository $transactionRepository,
-        private readonly AvailabilityRepository $availabilityRepository,
+        private readonly RaffleService $raffleService,
+        private readonly TransactionService $transactionService
     ) {
     }
 
-    public function __invoke(Request $request, Raffle $raffle)
+    public function __invoke(Request $request, $raffle)
     {
-        $sales_by_number = [];
-
-        if ($request->has('hour')) {
-            $sales_by_number = $this->transactionRepository->getTeamSalesReport($raffle->id, $request->all());
-        }
+        $data = $this->transactionService->getSalesReport($request->all(), $raffle);
 
         return inertia('Clientarea/Raffle/Report', [
-            'raffle' => $raffle,
-            'sales_by_number' => $sales_by_number,
-            'hours' => $this->availabilityRepository->getAllRaffleHours($raffle->id),
+            'raffle' => RaffleReportListResource::make($this->raffleService->getRaffleWithAvailability($raffle))->resolve(),
+            'sales' => SalesReportResource::collection($data['sales'])->resolve(),
+            'total' => $data['total']
         ]);
     }
 }
