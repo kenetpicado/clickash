@@ -18,7 +18,7 @@ const items = [
     {
         icon: IconUsersGroup,
         route: route('clientarea.sellers.index'),
-        title: "Vendedores"
+        title: "Usuarios"
     },
     {
         icon: IconCurrencyDollar,

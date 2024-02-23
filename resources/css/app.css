@@ -6,6 +6,14 @@
     display: none;
 }
 
+/* import monserrat */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 300;
+    src: url('/fonts/montserrat.ttf') format('truetype');
+}
+
 @layer base {
     td {
         @apply px-6 py-4;
