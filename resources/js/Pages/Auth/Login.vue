@@ -2,10 +2,13 @@
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputForm from '@/Components/Form/InputForm.vue';
+import Modal from "@/Components/Modal/Modal.vue";
+import { ref } from "vue";
 
 defineProps({
     status: String,
     app_name: String,
+    terms_and_conditions: Object
 });
 
 const form = useForm({
@@ -13,6 +16,8 @@ const form = useForm({
     password: '',
     remember: false,
 });
+
+const show = ref(false)
 
 const submit = () => {
     form.transform(data => ({
@@ -53,13 +58,36 @@ const submit = () => {
                 </button>
             </form>
 
+            <div class="flex justify-between text-sm">
             <Link :href="route('register.create')" class="text-primary font-medium">
             Crear cuenta
             </Link>
+                <div class="text-primary font-medium" @click="show = true">
+                    {{ terms_and_conditions.title }}
+                </div>
+            </div>
         </div>
 
         <a href="https://play.google.com/store/apps/details?id=com.strainteam.clickashadmin" target="_blank">
             <img src="/images/gp.svg" alt="" style="width: 15rem;">
         </a>
+
+        <Modal :show="show" @close="show = false">
+            <div class="p-4 sm:p-6">
+                <div class="text-lg font-bold">
+                    {{ terms_and_conditions.title }}
+                </div>
+
+                <div class="mt-4 text-gray-600">
+                    <span v-html="terms_and_conditions.content" style="white-space: pre-line;"></span>
+                </div>
+            </div>
+
+            <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right gap-4">
+                <button type="submit" class="primary-button" @click="show = false">
+                    Aceptar
+                </button>
+            </div>
+        </Modal>
     </div>
 </template>

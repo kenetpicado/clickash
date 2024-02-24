@@ -17,6 +17,7 @@ use App\Http\Controllers\API\V1\ResultController;
 use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\SellerReportController;
+use App\Http\Controllers\API\V1\TermAndConditionController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
 use App\Http\Controllers\API\V1\TransactionController;
 use App\Http\Controllers\API\V1\TransactionMarkAsPaid;
@@ -39,6 +40,9 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::post('register', RegisterController::class)
         ->name('register');
+
+    Route::get('terms-and-conditions', TermAndConditionController::class)
+        ->name('terms-and-conditions');
 
     Route::middleware(['auth:sanctum', 'online', 'role:owner|seller', 'isMySeller'])->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\SettingResource;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\SettingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,12 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+    public function __construct(
+        private readonly SettingService $settingService
+    ) {
+    }
+
+
     /**
      * Display the login view.
      */
@@ -22,6 +30,7 @@ class AuthenticatedSessionController extends Controller
         return inertia('Auth/Login', [
             'status' => session('status'),
             'app_name' => config('app.name'),
+            'terms_and_conditions' => SettingResource::make($this->settingService->getTermsAndConditions())->resolve()
         ]);
     }
 
