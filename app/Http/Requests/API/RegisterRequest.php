@@ -28,4 +28,11 @@ class RegisterRequest extends FormRequest
             'company_name' => ['required'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'Este correo no esta disponible'
+        ];
+    }
 }
