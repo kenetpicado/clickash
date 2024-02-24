@@ -62,7 +62,7 @@ const submit = () => {
             <Link :href="route('register.create')" class="text-primary font-medium">
             Crear cuenta
             </Link>
-                <div class="text-primary font-medium" @click="show = true">
+                <div class="text-primary font-medium" role="button" @click="show = true">
                     {{ terms_and_conditions.title }}
                 </div>
             </div>
