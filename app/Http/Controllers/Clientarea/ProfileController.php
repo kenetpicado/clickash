@@ -5,35 +5,27 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\ProfileRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        private readonly UserService $userService
+    ) {
+    }
+
     public function index()
     {
         return inertia('Clientarea/Profile/Index', [
-            'user' => User::query()
-                ->withCount('sellers')
-                ->find(auth()->id()),
+            'user' => auth()->user()->loadCount('sellers'),
         ]);
     }
 
     public function update(ProfileRequest $request)
     {
-        $user = User::find(auth()->id());
+        $this->userService->updateProfile($request->validated());
 
-        $user->fill([
-            'name' => $request->name,
-            'email' => $request->email,
-            'company_name' => $request->company_name,
-        ]);
-
-        if ($request->password) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-        return redirect()->route('home');
+        return redirect()->route('clientarea.raffles.index');
     }
 }

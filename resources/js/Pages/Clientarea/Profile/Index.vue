@@ -92,7 +92,7 @@ const form = useForm({
 });
 
 function onSubmit() {
-    form.put(route('profile.update', form.id), {
+    form.put(route('clientarea.profile.update', form.id), {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
