@@ -197,6 +197,28 @@ class TransactionRepository
             ->get();
     }
 
+    public function getTransactionResumePerWeek($user_id)
+    {
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->whereRaw('YEAR(created_at) = ?', [Carbon::now()->year])
+            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
+            ->groupBy('week')
+            ->orderBy('week', 'desc')
+            ->paginate();
+    }
+
+    public function getWeekTransactionResume($week, $user_id)
+    {
+        return Transaction::query()
+            ->where('user_id', $user_id)
+            ->whereRaw('YEAR(created_at) = ?', [Carbon::now()->year])
+            ->whereRaw('WEEK(created_at) = ?', [$week])
+            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
+            ->groupBy('week')
+            ->first();
+    }
+
     // PENDING REVIEW all down here
     public function getCashboxByUser($user_id, $request = [])
     {

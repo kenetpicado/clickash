@@ -35,4 +35,35 @@ class ArchingRepository
             ->selectRaw('COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
             ->first();
     }
+
+    public function getArchingResumePerWeek($seller_id, $min_week, $max_week)
+    {
+        return Arching::query()
+            ->where('seller_id', $seller_id)
+            ->whereRaw('YEAR(created_at) = ?', [Carbon::now()->year])
+            ->whereBetween(DB::raw('WEEK(created_at)'), [$min_week, $max_week])
+            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
+            ->groupBy('week')
+            ->orderBy('week', 'desc')
+            ->paginate();
+    }
+
+    public function getWeekArchingResume($seller_id, $week)
+    {
+        return Arching::query()
+            ->where('seller_id', $seller_id)
+            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at) = ?', [Carbon::now()->year, $week])
+            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
+            ->groupBy('week')
+            ->first();
+    }
+
+    public function getArchingsOfWeek($week, $seller_id)
+    {
+        return Arching::query()
+            ->where('seller_id', $seller_id)
+            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at) = ?', [Carbon::now()->year, $week])
+            ->latest()
+            ->get();
+    }
 }

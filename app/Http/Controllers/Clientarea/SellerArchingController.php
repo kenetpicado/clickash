@@ -4,49 +4,49 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clientarea\SellerArchingRequest;
+use App\Http\Resources\ArchingResource;
+use App\Http\Resources\WeeklyTransactionResource;
 use App\Models\Arching;
 use App\Models\User;
-use App\Repositories\ArchingRepository;
-use App\Repositories\TransactionRepository;
-use Illuminate\Http\Request;
+use App\Services\ArchingService;
+use App\Services\TransactionService;
 
 class SellerArchingController extends Controller
 {
     public function __construct(
-        private readonly TransactionRepository $transactionRepository,
-        private readonly ArchingRepository $archingRepository,
+        private readonly TransactionService $transactionService,
+        private readonly ArchingService $archingService
     ) {
     }
 
-    public function index(Request $request, User $seller)
+    public function index(User $seller)
     {
-        $cashbox = $this->transactionRepository->getCashboxByUser($seller->id, $request->all());
-
-        $resume = $this->archingRepository->getTotalArchingsBySeller($seller->id, $request->all());
-
-        $cashbox->revenue = ($cashbox->income - $cashbox->expenditure) + $resume->deposit - $resume->withdrawal;
-
         return inertia('Clientarea/Seller/Arching/Index', [
-            'cashbox' => $cashbox,
             'seller' => $seller,
-            'archings' => $this->archingRepository->getArchingsBySeller($seller->id, $request->all()),
+            'weeks_resume' => WeeklyTransactionResource::collection($this->transactionService->getTransactionResumePerWeek($seller->id)),
+        ]);
+    }
+
+    public function show(User $seller, $week)
+    {
+        return inertia('Clientarea/Seller/Arching/Show', [
+            'seller' => $seller,
+            'week' => $week,
+            'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($week, $seller->id)),
+            'week_resume' => WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller->id, $week))
         ]);
     }
 
     public function store(SellerArchingRequest $request, $seller)
     {
-        Arching::create($request->validated() + [
-            'user_id' => auth()->id(),
-            'seller_id' => $seller,
-            'current_balance' => 0,
-        ]);
+        $this->archingService->store($request->validated());
 
         return back();
     }
 
-    public function destroy($seller, $arching)
+    public function destroy($seller, Arching $arching)
     {
-        Arching::where('id', $arching)->delete();
+        $arching->delete();
 
         return back();
     }

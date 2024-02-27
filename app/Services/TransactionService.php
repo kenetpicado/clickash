@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Transaction;
 use App\Models\User;
+use App\Repositories\ArchingRepository;
 use App\Repositories\AvailabilityRepository;
 use App\Repositories\BlockedNumberRepository;
 use App\Repositories\RaffleUserRepository;
@@ -16,12 +17,14 @@ class TransactionService
 {
     private $currentTime;
 
-    private $transactionRepository;
+    private TransactionRepository $transactionRepository;
+    private ArchingRepository $archingRepository;
 
     public function __construct()
     {
         $this->currentTime = Carbon::now();
         $this->transactionRepository = new TransactionRepository();
+        $this->archingRepository = new ArchingRepository();
     }
 
     public function validateBulkTransactions(array $request)
@@ -261,5 +264,47 @@ class TransactionService
             'sales' => $data,
             'total' => 'C$'.number_format($data->sum('total'))
         ];
+    }
+
+    public function getTransactionResumePerWeek($user_id)
+    {
+        $resume_transactions = $this->transactionRepository->getTransactionResumePerWeek($user_id);
+        $arching = $this->archingRepository->getArchingResumePerWeek($user_id, $resume_transactions->min('week'), $resume_transactions->max('week'));
+
+        $startDate = Carbon::createFromDate(2024, 1, 1)->startOfWeek();
+
+        $resume_transactions->transform(function ($item) use ($arching, $startDate) {
+            $item->week_label = self::getWeekLabel($startDate, $item->week);
+            $weekRecord = $arching->where('week', $item->week)->first();
+
+            if ($weekRecord) {
+                $item->deposit = $weekRecord->deposit;
+                $item->withdrawal = $weekRecord->withdrawal;
+            }
+
+            return $item;
+        });
+
+        return $resume_transactions;
+    }
+
+    public function getWeekTransactionResume($user_id, $week)
+    {
+        $resume = $this->transactionRepository->getWeekTransactionResume($week, $user_id);
+        $resume_archings = $this->archingRepository->getWeekArchingResume($user_id, $week);
+
+        $resume->week_label = self::getWeekLabel(Carbon::createFromDate(2024, 1, 1)->startOfWeek(), $week);
+
+        if ($resume_archings) {
+            $resume->deposit = $resume_archings->deposit;
+            $resume->withdrawal = $resume_archings->withdrawal;
+        }
+
+        return $resume;
+    }
+
+    private function getWeekLabel($startDate, $week)
+    {
+        return "Semana: " . $startDate->copy()->addWeeks($week)->format('d/m/y') . ' - ' . $startDate->copy()->addWeeks($week)->addDays(6)->format('d/m/y');
     }
 }

@@ -71,6 +71,9 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
         Route::resource('sellers.archings', SellerArchingController::class)
             ->only(['index', 'store', 'destroy']);
 
+        Route::get('sellers/{seller}/archings/{week}', [SellerArchingController::class, 'show'])
+            ->name('sellers.archings.show');
+
         Route::get('sellers/{seller}/reports', SellerReportController::class)
             ->name('sellers.reports.index');
 

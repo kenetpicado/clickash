@@ -14,6 +14,13 @@ class SellerArchingRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'seller_id' => $this->route('seller')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,6 +31,8 @@ class SellerArchingRequest extends FormRequest
         return [
             'type' => 'required|in:RETIRO,DEPOSITO',
             'amount' => 'required|numeric|min:1',
+            'week' => 'required|integer',
+            'seller_id' => 'required'
         ];
     }
 }
