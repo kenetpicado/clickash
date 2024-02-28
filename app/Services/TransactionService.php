@@ -271,7 +271,7 @@ class TransactionService
         $resume_transactions = $this->transactionRepository->getTransactionResumePerWeek($user_id);
         $arching = $this->archingRepository->getArchingResumePerWeek($user_id, $resume_transactions->min('week'), $resume_transactions->max('week'));
 
-        $startDate = Carbon::createFromDate(2024, 1, 1)->startOfWeek();
+        $startDate = Carbon::now()->startOfYear()->startOfWeek();
 
         $resume_transactions->transform(function ($item) use ($arching, $startDate) {
             $item->week_label = self::getWeekLabel($startDate, $item->week);
@@ -293,7 +293,7 @@ class TransactionService
         $resume = $this->transactionRepository->getWeekTransactionResume($week, $user_id);
         $resume_archings = $this->archingRepository->getWeekArchingResume($user_id, $week);
 
-        $resume->week_label = self::getWeekLabel(Carbon::createFromDate(2024, 1, 1)->startOfWeek(), $week);
+        $resume->week_label = self::getWeekLabel(Carbon::now()->startOfYear()->startOfWeek(), $week);
 
         if ($resume_archings) {
             $resume->deposit = $resume_archings->deposit;
@@ -305,6 +305,6 @@ class TransactionService
 
     private function getWeekLabel($startDate, $week)
     {
-        return "Semana: " . $startDate->copy()->addWeeks($week)->format('d/m/y') . ' - ' . $startDate->copy()->addWeeks($week)->addDays(6)->format('d/m/y');
+        return "Semana: " . $startDate->copy()->addWeeks($week - 1)->format('d/m/y') . ' - ' . $startDate->copy()->addWeeks($week - 1)->addDays(6)->format('d/m/y');
     }
 }

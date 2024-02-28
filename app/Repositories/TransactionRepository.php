@@ -202,7 +202,7 @@ class TransactionRepository
         return Transaction::query()
             ->where('user_id', $user_id)
             ->whereRaw('YEAR(created_at) = ?', [Carbon::now()->year])
-            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
+            ->selectRaw('WEEK(created_at, 1) as week, COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
             ->groupBy('week')
             ->orderBy('week', 'desc')
             ->paginate();
@@ -212,9 +212,8 @@ class TransactionRepository
     {
         return Transaction::query()
             ->where('user_id', $user_id)
-            ->whereRaw('YEAR(created_at) = ?', [Carbon::now()->year])
-            ->whereRaw('WEEK(created_at) = ?', [$week])
-            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
+            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at, 1) = ?', [Carbon::now()->year, $week])
+            ->selectRaw('WEEK(created_at, 1) as week, COALESCE(SUM(amount), 0) as income, COALESCE(SUM(CASE WHEN status != "VENDIDO" THEN prize ELSE 0 END), 0) as expenditure')
             ->groupBy('week')
             ->first();
     }
@@ -224,7 +223,7 @@ class TransactionRepository
     {
         return Transaction::query()
             ->where('user_id', $user_id)
-            ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
+            //->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
             ->when(isset($request['date']), function ($query) use ($request) {
                 $query->whereDate('created_at', $request['date']);
             }, function ($query) {

@@ -41,8 +41,8 @@ class ArchingRepository
         return Arching::query()
             ->where('seller_id', $seller_id)
             ->whereRaw('YEAR(created_at) = ?', [Carbon::now()->year])
-            ->whereBetween(DB::raw('WEEK(created_at)'), [$min_week, $max_week])
-            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
+            ->whereBetween(DB::raw('WEEK(created_at, 1)'), [$min_week, $max_week])
+            ->selectRaw('WEEK(created_at, 1) as week, COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
             ->groupBy('week')
             ->orderBy('week', 'desc')
             ->paginate();
@@ -52,8 +52,8 @@ class ArchingRepository
     {
         return Arching::query()
             ->where('seller_id', $seller_id)
-            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at) = ?', [Carbon::now()->year, $week])
-            ->selectRaw('WEEK(created_at) as week, COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
+            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at, 1) = ?', [Carbon::now()->year, $week])
+            ->selectRaw('WEEK(created_at, 1) as week, COALESCE(SUM(CASE WHEN type = "RETIRO" THEN amount ELSE 0 END), 0) as withdrawal, COALESCE(SUM(CASE WHEN type = "DEPOSITO" THEN amount ELSE 0 END), 0) as deposit')
             ->groupBy('week')
             ->first();
     }
@@ -62,7 +62,7 @@ class ArchingRepository
     {
         return Arching::query()
             ->where('seller_id', $seller_id)
-            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at) = ?', [Carbon::now()->year, $week])
+            ->whereRaw('YEAR(created_at) = ? and WEEK(created_at, 1) = ?', [Carbon::now()->year, $week])
             ->latest()
             ->get();
     }

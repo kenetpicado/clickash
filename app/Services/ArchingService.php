@@ -22,13 +22,11 @@ class ArchingService
 
     public function store(array $request)
     {
-        $currentWeek = Carbon::now()->week - 1;
+        $currentWeek = Carbon::now()->week;
 
         if ($currentWeek != $request['week']) {
-            $startDate = Carbon::createFromDate(2024, 1, 1);
-            $startDate->startOfWeek();
-
-            $request['created_at'] = $startDate->addWeeks($request['week'])->addDays(5)->endOfDay();
+            $startDate = Carbon::createFromDate(2024, 1, 1)->addWeeks($request['week'] - 1)->addDays(6);
+            $request['created_at'] = $startDate->endOfDay();
         }
 
         Arching::create($request + ['current_balance' => 0, 'user_id' => auth()->id()]);
