@@ -219,7 +219,7 @@ class TransactionService
 
         return [
             'user' => DB::table('users')->where('id', $transactions->value('user_id'))->value('name'),
-            'raffle' => DB::table('raffles')->where('id', $transactions->value('user_id'))->value('name'),
+            'raffle' => DB::table('raffles')->where('id', $transactions->value('raffle_id'))->value('name'),
             'invoice_number' => $invoice,
             'total' => $transactions->sum('amount'),
             'company' => auth()->user()->getCompanyName(),
