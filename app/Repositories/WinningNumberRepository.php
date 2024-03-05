@@ -34,6 +34,7 @@ class WinningNumberRepository
     public function alreadyExists($raffle, $hour)
     {
         return WinningNumber::where('raffle_id', $raffle)
+            ->where('user_id', auth()->id())
             ->where('hour', $hour)
             ->where('date', Carbon::today())
             ->exists();
