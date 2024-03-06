@@ -23,7 +23,11 @@ class RaffleWinningNumberController extends Controller
 
     public function store(WinningNumberRequest $request, $raffle)
     {
-        $this->winningNumberService->store($request->validated(), $raffle);
+        try {
+            $this->winningNumberService->store($request->validated(), $raffle);
+        } catch (\Exception $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
 
         return self::index(request(), $raffle);
     }

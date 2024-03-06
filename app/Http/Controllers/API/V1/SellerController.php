@@ -31,17 +31,6 @@ class SellerController extends Controller
         return self::index();
     }
 
-    // TODO: Debe eliminarse cuando se implemente la vista de recibos
-    public function show(Request $request, User $seller)
-    {
-        $array = $request->all();
-
-        return TransactionResource::collection($this->transactionRepository->getUserTransactionsPerDay($seller->id, $array))
-            ->additional([
-                'total' => 'C$ ' . number_format($this->transactionRepository->getUserTransactionsTotalPerDay($seller->id, $array)),
-            ]);
-    }
-
     public function update(SellerRequest $request, User $seller)
     {
         $seller->update($request->validated());

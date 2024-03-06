@@ -53,35 +53,12 @@ class TransactionRepository
             ->paginate();
     }
 
-    public function getTeamTransactionsPerDay($request = [])
-    {
-        return self::setTeam()
-            ->with([
-                'user' => fn ($query) => $query->withTrashed()->select('id', 'name'),
-                'raffle:id,name'
-            ])
-            ->day($request)
-            ->latest('id')
-            ->paginate();
-    }
-
     public function getTeamTransactionsTotalPerDay($request = [])
     {
         return self::setTeam()
             ->day($request)
             ->trashed($request)
             ->sum('amount');
-    }
-
-    public function getUserTransactionsPerDay($user_id, $request = [])
-    {
-        return Transaction::query()
-            ->where('user_id', $user_id)
-            ->day($request)
-            ->trashed($request)
-            ->with('raffle:id,name')
-            ->latest('id')
-            ->paginate();
     }
 
     public function getUserTransactionsTotalPerDay($user_id, $request = [])

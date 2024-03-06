@@ -19,7 +19,6 @@ use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\SellerReportController;
 use App\Http\Controllers\API\V1\TermAndConditionController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
-use App\Http\Controllers\API\V1\TransactionController;
 use App\Http\Controllers\API\V1\TransactionMarkAsPaid;
 use Illuminate\Support\Facades\Route;
 
@@ -60,9 +59,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('raffles/{raffle}/settings', RaffleSettingController::class)
             ->name('raffles.settings');
 
-        Route::apiResource('transactions', TransactionController::class)
-            ->only(['index', 'destroy']);
-
         Route::apiResource('invoices', InvoiceController::class)
             ->only(['index', 'show', 'destroy']);
 
@@ -92,8 +88,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['middleware' => ['role:owner']], function () {
             Route::put('toggle-status/{seller}', ToggleStatusController::class);
 
-            Route::apiResource('sellers', SellerController::class);
+            Route::apiResource('sellers', SellerController::class)
+                ->except(['show']);
 
+            // TODO: DEBE ELIMINARSE
             Route::get('sellers/{seller}/reports', SellerReportController::class)
                 ->name('sellers.reports.index');
 
