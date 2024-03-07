@@ -34,7 +34,11 @@ class RaffleWinningNumberController extends Controller
 
     public function destroy($raffle, WinningNumber $winningNumber)
     {
-        $this->winningNumberService->destroy($winningNumber);
+        try {
+            $this->winningNumberService->destroy($winningNumber);
+        } catch (\Exception $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
 
         return self::index(request(), $raffle);
     }

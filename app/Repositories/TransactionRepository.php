@@ -43,7 +43,7 @@ class TransactionRepository
             : self::setTeam();
 
         return $query
-            ->selectRaw('invoice_number, MAX(created_at) as created_at, MAX(deleted_at) as deleted_at, MAX(raffle_id) as raffle_id, MAX(user_id) as user_id, (SELECT MAX(name) FROM raffles WHERE raffles.id = MAX(raffle_id)) as raffle, SUM(amount) as total')
+            ->selectRaw('invoice_number, MAX(created_at) as created_at, MAX(deleted_at) as deleted_at, MAX(raffle_id) as raffle_id, MAX(user_id) as user_id, (SELECT MAX(name) FROM raffles WHERE raffles.id = MAX(raffle_id)) as raffle, SUM(amount) as total, MAX(client) as client')
             ->groupBy('invoice_number')
             ->latest('created_at')
             ->day($request)
@@ -65,26 +65,6 @@ class TransactionRepository
     {
         return Transaction::query()
             ->where('user_id', $user_id)
-            ->day($request)
-            ->trashed($request)
-            ->sum('amount');
-    }
-
-    public function getRaffleTransactionsPerDay($raffle_id, $request = [])
-    {
-        return self::setTeam()
-            ->where('raffle_id', $raffle_id)
-            ->day($request)
-            ->trashed($request)
-            ->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')])
-            ->latest('id')
-            ->paginate();
-    }
-
-    public function getRaffleTransactionsTotalPerDay($raffle_id, $request = [])
-    {
-        return self::setTeam()
-            ->where('raffle_id', $raffle_id)
             ->day($request)
             ->trashed($request)
             ->sum('amount');
@@ -168,7 +148,7 @@ class TransactionRepository
         return $query
             ->where('raffle_id', $raffle_id)
             ->day($request)
-            ->with(['raffle:id,name'])
+            ->with(['raffle:id,name', 'user:id,name'])
             ->when($user_id == null, fn ($query) => $query->with(['user' => fn ($query) => $query->withTrashed()->select('id', 'name')]))
             ->where('status', '!=', 'VENDIDO')
             ->get();
@@ -200,7 +180,6 @@ class TransactionRepository
     {
         return Transaction::query()
             ->where('user_id', $user_id)
-            //->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
             ->when(isset($request['date']), function ($query) use ($request) {
                 $query->whereDate('created_at', $request['date']);
             }, function ($query) {

@@ -5,17 +5,13 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\SellerRequest;
 use App\Http\Resources\SellerResource;
-use App\Http\Resources\TransactionResource;
 use App\Models\User;
-use App\Repositories\TransactionRepository;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 
 class SellerController extends Controller
 {
     public function __construct(
         private readonly UserService $userService,
-        private readonly TransactionRepository $transactionRepository
     ) {
     }
 
@@ -26,7 +22,11 @@ class SellerController extends Controller
 
     public function store(SellerRequest $request)
     {
-        $this->userService->createSeller($request->validated());
+        try {
+            $this->userService->createSeller($request->validated());
+        } catch (\Exception $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
 
         return self::index();
     }

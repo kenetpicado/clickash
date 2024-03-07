@@ -224,6 +224,7 @@ class TransactionService
             'total' => $transactions->sum('amount'),
             'company' => auth()->user()->getCompanyName(),
             'transactions' => $transactions,
+            'client' => $transactions->value('client'),
             'datetime' => $transactions->first()->created_at->format('d/m/y g:i A')
         ];
     }

@@ -59,7 +59,7 @@ class BulkTransaction extends Controller
             $storedTransactions[] = $this->transactionRepository->store($transaction + [
                 'raffle_id' => $validated['raffle_id'],
                 'prize' => $prize,
-                'client' => $validated['client'],
+                'client' => $validated['client'] == 'nada' ? null : $validated['client'],
                 'invoice_number' => $invoiceNumber,
             ]);
         }
@@ -84,6 +84,7 @@ class BulkTransaction extends Controller
             'invoice_number' => $invoiceNumber,
             'total' => $data->sum('total'),
             'multiplier' => $settings['multiplier'] ?? 70,
+            'client' => $storedTransactions[0]['client'],
             'data' => $data,
         ]);
     }
