@@ -20,7 +20,7 @@ class BlockedNumberRepository
             ->when($raffle_id, fn ($query) => $query->where('raffle_id', $raffle_id))
             ->with('raffle:id,name')
             ->orderBy('number')
-            ->get(['blocked_numbers..id', 'number', 'settings', 'raffle_id']);
+            ->get(['blocked_numbers.id', 'number', 'settings', 'raffle_id']);
     }
 
     public function store(array $request)
