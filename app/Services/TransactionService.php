@@ -33,6 +33,7 @@ class TransactionService
         $blockedNumberRepository = new BlockedNumberRepository();
         $raffleUserRepository = new RaffleUserRepository();
         $dateTimeService = new DateTimeServiceCopy();
+        $winningNumberService = new WinningNumberService();
 
         $ownerId = auth()->user()->getOwnerId();
 
@@ -65,14 +66,10 @@ class TransactionService
                 abort(422, "El turno de las {$transaction['hour']} ya pasó");
             }
 
-            if (isset($raffleSettings['max'])) {
-                if (strlen($transaction['digit']) > strlen($raffleSettings['max'])) {
-                    abort(422, "Los números solo pueden contener " . strlen($raffleSettings['max']) . " digitos");
-                }
-
-                if ($transaction['digit'] > $raffleSettings['max']) {
-                    abort(422, "El número máximo es {$raffleSettings['max']}");
-                }
+            try {
+                $winningNumberService->getParsedNumber($raffleSettings, $transaction['digit']);
+            } catch (\Exception $e) {
+                abort($e->getCode(), $e->getMessage());
             }
 
             foreach ($models as $model) {
@@ -263,7 +260,7 @@ class TransactionService
 
         return [
             'sales' => $data,
-            'total' => 'C$'.number_format($data->sum('total'))
+            'total' => 'C$' . number_format($data->sum('total'))
         ];
     }
 

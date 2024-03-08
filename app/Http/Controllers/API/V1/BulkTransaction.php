@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\BulkTransactionRequest;
 use App\Repositories\TransactionRepository;
 use App\Services\TransactionService;
+use App\Services\WinningNumberService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -17,10 +18,10 @@ class BulkTransaction extends Controller
     ) {
     }
 
-    //TODO: MOVE TO SERVICE
     public function __invoke(BulkTransactionRequest $request)
     {
         $validated = $request->validated();
+        $winningnNumberService = new WinningNumberService();
 
         $settings = $this->transactionService->validateBulkTransactions($validated);
 
@@ -33,6 +34,8 @@ class BulkTransaction extends Controller
         $transformedData = [];
 
         foreach ($validated['data'] as $transaction) {
+            $transaction['digit'] = $winningnNumberService->getParsedNumber($settings, $transaction['digit']);
+
             $key = $transaction['digit'] . $transaction['hour'] . $transaction['super_x'];
 
             if (!isset($transformedData[$key])) {
