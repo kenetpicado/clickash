@@ -6,8 +6,8 @@
                 {{ i.name }}
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                <div v-for="hour in i.results" class="text-sm text-white text-center rounded-xl py-1" :class="getBgColor(hour)">
+            <div class="grid grid-cols-1 gap-2">
+                <div v-for="hour in i.results" class="text-sm text-white text-center rounded-xl py-1 px-0.5" :class="getBgColor(hour)">
                     {{ hour }}
                 </div>
             </div>

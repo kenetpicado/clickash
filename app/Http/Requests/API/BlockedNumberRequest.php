@@ -29,7 +29,7 @@ class BlockedNumberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => 'required|numeric',
+            'number' => 'required',
             'settings' => 'required|array',
             'raffle_id' => 'required',
         ];

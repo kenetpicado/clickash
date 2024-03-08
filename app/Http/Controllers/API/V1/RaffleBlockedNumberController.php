@@ -22,7 +22,11 @@ class RaffleBlockedNumberController extends Controller
 
     public function store(BlockedNumberRequest $request, $raffle)
     {
-        $this->blockedNumberService->store($request->validated());
+        try {
+            $this->blockedNumberService->store($request->validated());
+        } catch (\Exception $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
 
         return self::index($raffle);
     }
