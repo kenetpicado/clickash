@@ -55,6 +55,12 @@ class WinningNumberService
             }, $elements);
 
             $request['number'] = implode('/', $elements);
+        } else {
+            if ($request['number'] > $settings['max'] || $request['number'] < $settings['min']) {
+                throw new \Exception('El número debe estar entre ' . $settings['min'] . ' y ' . $settings['max'], 403);
+            }
+
+            $request['number'] = str_pad($request['number'], strlen($settings['max']), '0', STR_PAD_LEFT);
         }
 
         $winningNumber = $this->winningNumberRepository->store($request, $raffle_id);
