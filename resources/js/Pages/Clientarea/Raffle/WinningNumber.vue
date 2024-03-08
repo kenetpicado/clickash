@@ -26,7 +26,8 @@
         <FormModal :show="openModal" title="Resultado" @onCancel="resetValues" @onSubmit="onSubmit">
 
             <div class="text-red-500 mb-4" v-if="raffle.blocked_hours.length == 0">
-                No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en "Horario"
+                No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en
+                "Horario"
             </div>
 
             <SelectForm v-else v-model="form.hour" text="Turno" required>
@@ -36,7 +37,15 @@
                 </option>
             </SelectForm>
 
-            <InputForm v-if="raffle.settings.date" v-model="selectedDate" type="date" text="Fecha" required />
+            <div v-if="raffle.settings.date" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <InputForm v-model="selectedDay" type="number" text="Dia" required />
+                <SelectForm v-model="selectedMonth" text="Mes" required>
+                    <option v-for="(month, index) in months" :value="index">
+                        {{ month }}
+                    </option>
+                </SelectForm>
+            </div>
+
             <InputForm v-else v-model="form.number" type="number" text="Dígito" required />
 
             <div class="text-gray-400 text-sm">
@@ -44,7 +53,8 @@
             </div>
 
             <div class="mt-5 text-basic" v-if="form.number && form.hour">
-                Agregando el numero ganador: <span class="font-bold">{{ form.number }}</span> a la rifa {{ raffle.name }}
+                Agregando el numero ganador: <span class="font-bold">{{ form.number }}</span> a la rifa {{ raffle.name
+                }}
                 para el turno de las {{ Carbon.create().setTime(form.hour).getTimeFormat() }} del corriente dia:
                 {{ Carbon.create().format('d/m/Y') }}.
             </div>
@@ -81,12 +91,15 @@ const props = defineProps({
 })
 
 const openModal = ref(false)
-const selectedDate = ref('')
+const selectedDay = ref('')
+const selectedMonth = ref(0)
 
 const form = useForm({
     number: null,
     hour: null,
 });
+
+const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
 const stats = computed(() => {
     return props.winning_numbers.map((result) => {
@@ -102,14 +115,12 @@ const stats = computed(() => {
 
 function resetValues() {
     form.reset()
+    selectedDay.value = ''
     openModal.value = false
 }
 
-watch(() => selectedDate.value, (value) => {
-    if (value) {
-        form.number = Carbon.create(value).format('d/m');
-    } else
-        form.number = null;
+watch(() => [selectedDay.value, selectedMonth.value], ([day, month]) => {
+    form.number = day + '/' + (parseInt(month) + 1);
 });
 
 const onSubmit = () => {
