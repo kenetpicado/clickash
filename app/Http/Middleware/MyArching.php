@@ -19,7 +19,7 @@ class MyArching
         if (isset($request->arching) && auth()->user()->isOwner()) {
             $id = $request->arching instanceof Arching ? $request->arching->id : $request->arching;
             if (Arching::where('id', $id)->value('user_id') !== auth()->id()) {
-                abort(403, 'Unauthorized');
+                abort(403, 'No tienes permisos para realizar esta acción.');
             }
         }
 
