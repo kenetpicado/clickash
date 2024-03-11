@@ -18,7 +18,7 @@ class ArchingService
     public function getArchingsOfWeek($seller_id, $week)
     {
         if (auth()->user()->isSeller() && auth()->id() != $seller_id) {
-            $seller_id = auth()->id();
+            throw new \Exception('No tienes permisos para ver las transacciones de otro vendedor', 403);
         }
 
         return $this->archingRespository->getArchingsOfWeek($seller_id, $week);

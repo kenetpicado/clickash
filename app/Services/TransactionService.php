@@ -267,7 +267,7 @@ class TransactionService
     public function getTransactionResumePerWeek($user_id)
     {
         if (auth()->user()->isSeller() && auth()->id() != $user_id) {
-            $user_id = auth()->id();
+            throw new \Exception('No tienes permisos para ver las transacciones de otro vendedor', 403);
         }
 
         $resume_transactions = $this->transactionRepository->getTransactionResumePerWeek($user_id);
@@ -293,7 +293,7 @@ class TransactionService
     public function getWeekTransactionResume($user_id, $week)
     {
         if (auth()->user()->isSeller() && auth()->id() != $user_id) {
-            $user_id = auth()->id();
+            throw new \Exception('No tienes permisos para ver las transacciones de otro vendedor', 403);
         }
 
         $resume = $this->transactionRepository->getWeekTransactionResume($week, $user_id);

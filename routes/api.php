@@ -116,7 +116,7 @@ Route::group(['prefix' => 'v1'], function () {
                 ->only(['index', 'store', 'update', 'destroy']);
 
             Route::apiResource('sellers.archings', SellerArchingController::class)
-                ->middleware('MyArching')
+                ->middleware('check.arching')
                 ->only(['store', 'destroy']);
 
             Route::post('sellers/{seller}/weeks', [SellerWeekController::class, 'store']);

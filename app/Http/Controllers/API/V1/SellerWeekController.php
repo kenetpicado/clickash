@@ -14,21 +14,28 @@ class SellerWeekController extends Controller
     public function __construct(
         private readonly TransactionService $transactionService,
         private readonly ArchingService     $archingService
-    )
-    {
+    ) {
     }
 
     public function index($seller)
     {
-        return WeeklyTransactionResource::collection($this->transactionService->getTransactionResumePerWeek($seller));
+        try {
+            return WeeklyTransactionResource::collection($this->transactionService->getTransactionResumePerWeek($seller));
+        } catch (\Exception $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
     }
 
     public function show($seller, $week)
     {
-        return WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller, $week))
-            ->additional([
-                'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($seller, $week))
-            ]);
+        try {
+            return WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller, $week))
+                ->additional([
+                    'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($seller, $week))
+                ]);
+        } catch (\Exception $e) {
+            abort($e->getCode(), $e->getMessage());
+        }
     }
 
     public function store(SellerArchingRequest $request, $seller)
