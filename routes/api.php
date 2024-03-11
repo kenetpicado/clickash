@@ -57,7 +57,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('raffles', [RaffleController::class, 'index'])
             ->name('raffles.index');
 
-        //TODO: ELIMINAR EN LA PROXIMA ACTUALIZACION
+        //TODO: ELIMINAR EN LA PROXIMA ACTUALIZACION. YA NO EXISTE LA RUTA EN EL APP
         Route::get('raffles/{raffle}/settings', RaffleSettingController::class)
             ->name('raffles.settings');
 
@@ -96,7 +96,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::apiResource('sellers', SellerController::class)
                 ->except(['show']);
 
-            // TODO: DEBE ELIMINARSE
+            // TODO: DEBE ELIMINARSE: AUN NO ES SEGURO ELIMINAR
             Route::get('sellers/{seller}/reports', SellerReportController::class)
                 ->name('sellers.reports.index');
 
