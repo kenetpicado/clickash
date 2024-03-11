@@ -32,7 +32,7 @@ const close = () => {
     <Modal :show="show" :max-width="maxWidth" :closeable="closeable" @close="close">
         <form @submit.prevent="$emit('onSubmit')">
             <div class="p-4 sm:p-6">
-                <div class="text-lg font-medium text-basic">
+                <div class="text-lg font-bold text-basic">
                     {{ title }}
                 </div>
 

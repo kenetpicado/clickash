@@ -4,7 +4,7 @@
             <span class="title">
                 {{ seller.name }}: Bloqueados
             </span>
-            <button v-if="queryParams.raffle_id" type="button" class="simple-button" @click="openModal = true">
+            <button v-if="queryParams.raffle_id" type="button" class="primary-button" @click="openModal = true">
                 Nuevo
             </button>
         </template>
@@ -34,6 +34,7 @@
                 <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
                 <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
             </div>
+            <Error :message="error" />
         </FormModal>
     </ClientareaLayout>
 </template>
@@ -48,6 +49,7 @@ import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
 import { defineProps, ref, reactive, watch } from 'vue';
+import Error from '@/Components/Error.vue';
 
 const props = defineProps({
     blockeds: {
@@ -74,7 +76,7 @@ const form = useForm({
 });
 
 const openModal = ref(false)
-
+const error = ref(null);
 const searchParams = new URLSearchParams(window.location.search);
 
 const queryParams = reactive({
@@ -82,6 +84,7 @@ const queryParams = reactive({
 })
 
 const onSubmit = () => {
+    error.value = null;
     form.raffle_id = queryParams.raffle_id;
 
     form.post(route('clientarea.sellers.blocked-numbers.store', props.seller.id), {
@@ -92,13 +95,14 @@ const onSubmit = () => {
             toast.success('Agregado correctamente');
         },
         onError: (e) => {
-            toast.error(e.message);
+            error.value = e.message;
         }
     });
 }
 
 const resetValues = () => {
     form.reset();
+    error.value = null;
     openModal.value = false
 };
 

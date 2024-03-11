@@ -2,9 +2,9 @@
     <ClientareaLayout title="Ganadores">
         <template #header>
             <span class="title">
-                Ganadores
+                {{ raffle.name }}: Ganadores
             </span>
-            <button type="button" class="simple-button" @click="openModal = true">
+            <button type="button" class="primary-button" @click="openModal = true">
                 Nuevo
             </button>
         </template>

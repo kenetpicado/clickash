@@ -63,7 +63,7 @@ class AvailabilityService
             $temporalBlockedHours->push($this->formatThisHour($hour));
         }
 
-        $request['blocked_hours'] = $temporalBlockedHours->unique()->sort();
+        $request['blocked_hours'] = $temporalBlockedHours->unique()->sort()->values()->toArray();
 
         return $request;
     }

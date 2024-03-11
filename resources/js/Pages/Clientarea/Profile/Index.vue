@@ -12,8 +12,8 @@
         </div>
         <div class="flex justify-between items-center mb-4">
             <span>Información</span>
-            <button v-if="!isEdit" @click="isEdit = true" type="button" class="simple-button">Editar</button>
-            <button v-else @click="isEdit = false" type="button" class="simple-button">Cancelar</button>
+            <button v-if="!isEdit" @click="isEdit = true" type="button" class="primary-button">Editar</button>
+            <button v-else @click="isEdit = false" type="button" class="secondary-button">Cancelar</button>
         </div>
         <template v-if="!isEdit">
             <div class="mb-4">

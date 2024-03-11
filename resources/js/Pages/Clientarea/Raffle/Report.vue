@@ -2,7 +2,7 @@
     <ClientareaLayout title="Reporte">
         <template #header>
             <span class="title">
-                {{ raffle.name }}: Reporte de ventas
+                {{ raffle.name }}: Reporte
             </span>
         </template>
 

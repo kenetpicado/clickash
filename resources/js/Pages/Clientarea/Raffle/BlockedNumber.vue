@@ -4,7 +4,7 @@
             <span class="title">
                 {{ raffle.name }}: Bloqueados
             </span>
-            <button type="button" class="simple-button" @click="openModal = true">
+            <button type="button" class="primary-button" @click="openModal = true">
                 Nuevo
             </button>
         </template>
@@ -21,6 +21,7 @@
                 <InputForm text="Limite individual" v-model="form.settings.individual_limit" type="number" />
                 <InputForm text="Limite general" v-model="form.settings.general_limit" type="number" />
             </div>
+            <Error :message="error" />
         </FormModal>
     </ClientareaLayout>
 </template>
@@ -34,6 +35,7 @@ import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
 import { defineProps, ref } from 'vue';
 import BlockedNumber from '@/Components/BlockedNumber.vue';
+import Error from '@/Components/Error.vue';
 
 const props = defineProps({
     blockeds: {
@@ -55,6 +57,7 @@ const form = useForm({
 });
 
 const openModal = ref(false)
+const error = ref(null);
 
 const onSubmit = () => {
     form.post(route('clientarea.raffles.blocked-numbers.store', props.raffle.id), {
@@ -65,13 +68,14 @@ const onSubmit = () => {
             toast.success('Agregado correctamente');
         },
         onError: (e) => {
-            toast.error(e.message);
+            error.value = e.message;
         }
     });
 }
 
 const resetValues = () => {
     form.reset();
+    error.value = null;
     openModal.value = false
 };
 

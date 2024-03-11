@@ -50,7 +50,7 @@ const isActive = (r) => {
 
 <template>
     <Head :title="title" />
-    <nav class="bg-card">
+    <nav class="bg-white mb-3 shadow-lg">
         <div class="flex items-center justify-between px-4 py-2 mx-auto max-w-screen-lg">
             <Link :href="route('clientarea.raffles.index')" class="font-bold text-lg text-gray-600">{{ $page.props.app_name }}
             </Link>

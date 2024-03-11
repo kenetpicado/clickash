@@ -4,7 +4,7 @@
             <span class="title">
                 Vendedores
             </span>
-            <button @click="triggerNew = !triggerNew" type="button" class="simple-button">
+            <button @click="triggerNew = !triggerNew" type="button" class="primary-button">
                 Nuevo
             </button>
         </template>

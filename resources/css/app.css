@@ -39,7 +39,7 @@
     }
 
     .simple-button {
-        @apply bg-card text-gray-500 inline-flex items-center justify-center px-3 py-1 rounded-xl transition select-none duration-300 transform active:scale-110;
+        @apply bg-card text-gray-500 inline-flex items-center justify-center px-3 py-1 rounded-lg transition select-none duration-300 transform active:scale-110;
     }
 
     .title {

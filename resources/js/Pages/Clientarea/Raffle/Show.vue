@@ -2,7 +2,7 @@
     <ClientareaLayout title="Rifa">
         <template #header>
             <span class="title">
-                {{ raffle.name }}
+                {{ raffle.name }}: Recibos
             </span>
         </template>
 

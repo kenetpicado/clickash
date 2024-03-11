@@ -2,11 +2,11 @@
     <ClientareaLayout title="Caja">
         <template #header>
             <span class="title">
-                {{ seller.name }}
+                {{ seller.name }}: {{ week_resume?.data?.week_label }}
             </span>
         </template>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-gray-600 mb-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-gray-600 mb-6">
             <div class="bg-card p-3 rounded-xl">
                 <div class="flex items-center justify-between text-sm mb-2">
                     <span class="text-gray-400">{{ week_resume.data.week_label }}</span>
@@ -23,7 +23,7 @@
             <span class="title">
                 Movimientos
             </span>
-            <button @click="openModal = true" type="button" class="simple-button">
+            <button @click="openModal = true" type="button" class="primary-button">
                 Nuevo
             </button>
         </div>
