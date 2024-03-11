@@ -266,6 +266,10 @@ class TransactionService
 
     public function getTransactionResumePerWeek($user_id)
     {
+        if (auth()->user()->isSeller() && auth()->id() != $user_id) {
+            $user_id = auth()->id();
+        }
+
         $resume_transactions = $this->transactionRepository->getTransactionResumePerWeek($user_id);
         $arching = $this->archingRepository->getArchingResumePerWeek($user_id, $resume_transactions->min('week'), $resume_transactions->max('week'));
 
@@ -288,17 +292,21 @@ class TransactionService
 
     public function getWeekTransactionResume($user_id, $week)
     {
+        if (auth()->user()->isSeller() && auth()->id() != $user_id) {
+            $user_id = auth()->id();
+        }
+
         $resume = $this->transactionRepository->getWeekTransactionResume($week, $user_id);
         $resume_archings = $this->archingRepository->getWeekArchingResume($user_id, $week);
 
-        $resume->week_label = self::getWeekLabel(Carbon::now()->startOfYear()->startOfWeek(), $week);
-
-        if ($resume_archings) {
-            $resume->deposit = $resume_archings->deposit;
-            $resume->withdrawal = $resume_archings->withdrawal;
-        }
-
-        return $resume;
+        return (object)[
+            'week' => $week,
+            'week_label' => self::getWeekLabel(Carbon::now()->startOfYear()->startOfWeek(), $week),
+            'income' => $resume?->income,
+            'expenditure' => $resume?->expenditure,
+            'deposit' => $resume_archings?->deposit,
+            'withdrawal' => $resume_archings?->withdrawal,
+        ];
     }
 
     private function getWeekLabel($startDate, $week)

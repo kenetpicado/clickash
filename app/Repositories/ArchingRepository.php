@@ -58,7 +58,7 @@ class ArchingRepository
             ->first();
     }
 
-    public function getArchingsOfWeek($week, $seller_id)
+    public function getArchingsOfWeek($seller_id, $week)
     {
         return Arching::query()
             ->where('seller_id', $seller_id)

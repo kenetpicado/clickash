@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'online' => \App\Http\Middleware\OnlineStatus::class,
         'role' => \App\Http\Middleware\CheckRole::class,
         'isMySeller' => \App\Http\Middleware\IsMySeller::class,
+        'MyArching' => \App\Http\Middleware\MyArching::class,
     ];
 }

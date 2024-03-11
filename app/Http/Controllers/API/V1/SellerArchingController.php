@@ -59,10 +59,10 @@ class SellerArchingController extends Controller
         return self::index(Request::create('', 'GET', []), $seller);
     }
 
-    public function destroy($seller, $arching)
+    public function destroy($seller, Arching $arching)
     {
-        Arching::where('id', $arching)->delete();
+        $arching->delete();
 
-        return self::index(Request::create('', 'GET', []), $seller);
+        return self::index(Request::create('', 'GET', []), $seller); // TODO: RETORNAR NADA
     }
 }

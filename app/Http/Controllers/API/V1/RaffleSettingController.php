@@ -13,6 +13,7 @@ class RaffleSettingController extends Controller
     ) {
     }
 
+    //TODO: ELIMINAR EN ACTUALIZACION POSTERIOE
     public function __invoke($raffle)
     {
         return RaffleResource::make($this->raffleService->getRaffle($raffle))->resolve();

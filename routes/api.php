@@ -17,6 +17,7 @@ use App\Http\Controllers\API\V1\ResultController;
 use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\SellerReportController;
+use App\Http\Controllers\API\V1\SellerWeekController;
 use App\Http\Controllers\API\V1\TermAndConditionController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
 use App\Http\Controllers\API\V1\TransactionMarkAsPaid;
@@ -56,6 +57,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('raffles', [RaffleController::class, 'index'])
             ->name('raffles.index');
 
+        //TODO: ELIMINAR EN LA PROXIMA ACTUALIZACION
         Route::get('raffles/{raffle}/settings', RaffleSettingController::class)
             ->name('raffles.settings');
 
@@ -70,6 +72,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('sellers/{seller}/archings', [SellerArchingController::class, 'index'])
             ->name('sellers.archings.index');
+
+        Route::apiResource('sellers.weeks', SellerWeekController::class)
+            ->only(['index', 'show']);
 
         Route::apiResource('results', ResultController::class)
             ->parameters(['results' => 'raffle'])
@@ -111,7 +116,10 @@ Route::group(['prefix' => 'v1'], function () {
                 ->only(['index', 'store', 'update', 'destroy']);
 
             Route::apiResource('sellers.archings', SellerArchingController::class)
+                ->middleware('MyArching')
                 ->only(['store', 'destroy']);
+
+            Route::post('sellers/{seller}/weeks', [SellerWeekController::class, 'store']);
         });
     });
 });

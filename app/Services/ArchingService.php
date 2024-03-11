@@ -15,9 +15,13 @@ class ArchingService
         $this->archingRespository = new ArchingRepository();
     }
 
-    public function getArchingsOfWeek($week, $seller_id)
+    public function getArchingsOfWeek($seller_id, $week)
     {
-        return $this->archingRespository->getArchingsOfWeek($week, $seller_id);
+        if (auth()->user()->isSeller() && auth()->id() != $seller_id) {
+            $seller_id = auth()->id();
+        }
+
+        return $this->archingRespository->getArchingsOfWeek($seller_id, $week);
     }
 
     public function store(array $request)
@@ -25,7 +29,7 @@ class ArchingService
         $currentWeek = Carbon::now()->week;
 
         if ($currentWeek != $request['week']) {
-            $startDate = Carbon::createFromDate(2024, 1, 1)->addWeeks($request['week'] - 1)->addDays(6);
+            $startDate = Carbon::createFromDate(Carbon::now()->year, 1, 1)->addWeeks($request['week'] - 1)->addDays(6);
             $request['created_at'] = $startDate->endOfDay();
         }
 

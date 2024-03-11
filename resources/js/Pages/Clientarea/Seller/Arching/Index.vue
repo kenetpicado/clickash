@@ -19,13 +19,7 @@
                         <span class="text-gray-400">{{ i.week_label }}</span>
                     </div>
                     <div class="text-gray-600 grid grid-cols-2 gap-1 text-sm">
-                        <span>Ingresos {{ i.income }}</span>
-                        <span>Egresos {{ i.expenditure }}</span>
-                        <span>Depósitos {{ i.deposit }}</span>
-                        <span>Retiros {{ i.withdrawal }}</span>
-                    </div>
-                    <div class="mt-3 text-end text-gray-600">
-                        <strong>{{ i.type }}: {{ i.balance }}</strong>
+                        <span v-for="value in i.resume">{{ value }}</span>
                     </div>
                     </Link>
                 </template>

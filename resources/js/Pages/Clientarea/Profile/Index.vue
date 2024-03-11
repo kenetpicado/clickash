@@ -2,7 +2,7 @@
     <ClientareaLayout title="Perfil">
         <template #header>
             <span class="title">
-                Mi perfil
+                Perfil
             </span>
         </template>
         <div class="bg-card p-4 rounded-xl flex flex-col items-center gap-2 mb-4">
@@ -11,7 +11,7 @@
             <span class="text-sm text-gray-400">{{ user.role == 'owner' ? 'Administrador' : 'Vendedor' }}</span>
         </div>
         <div class="flex justify-between items-center mb-4">
-            <span>Información de la cuenta</span>
+            <span>Información</span>
             <button v-if="!isEdit" @click="isEdit = true" type="button" class="simple-button">Editar</button>
             <button v-else @click="isEdit = false" type="button" class="simple-button">Cancelar</button>
         </div>
@@ -22,7 +22,7 @@
                         <IconList class="text-primary" />
                     </span>
                     <div class="flex flex-col">
-                        <span>Nombre de la empresa</span>
+                        <span>Compañia</span>
                         <span class="text-gray-400">{{ user.company_name ?? 'N/A' }}</span>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
         <div v-else>
             <form @submit.prevent="onSubmit">
                 <InputForm text="Nombre" v-model="form.name" required />
-                <InputForm text="Nombre de la empresa" v-model="form.company_name" required />
+                <InputForm text="Compañia" v-model="form.company_name" required />
                 <InputForm text="Correo" v-model="form.email" type="email" required />
                 <button class="primary-button flex ml-auto mb-6">
                     Guardar

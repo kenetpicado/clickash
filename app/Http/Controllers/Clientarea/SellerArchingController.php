@@ -32,7 +32,7 @@ class SellerArchingController extends Controller
         return inertia('Clientarea/Seller/Arching/Show', [
             'seller' => $seller,
             'week' => $week,
-            'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($week, $seller->id)),
+            'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($seller->id, $week)),
             'week_resume' => WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller->id, $week))
         ]);
     }

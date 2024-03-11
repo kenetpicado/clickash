@@ -12,13 +12,9 @@
                     <span class="text-gray-400">{{ week_resume.data.week_label }}</span>
                 </div>
                 <div class="text-gray-600 grid grid-cols-2 gap-1 text-sm">
-                    <span>Ingresos {{ week_resume.data.income }}</span>
-                    <span>Egresos {{ week_resume.data.expenditure }}</span>
-                    <span>Depósitos {{ week_resume.data.deposit }}</span>
-                    <span>Retiros {{ week_resume.data.withdrawal }}</span>
-                </div>
-                <div class="mt-3 text-end text-gray-600">
-                    <strong>{{ week_resume.data.type }}: {{ week_resume.data.balance }}</strong>
+                    <span v-for="value in week_resume.data.resume">
+                        {{ value }}
+                    </span>
                 </div>
             </div>
         </div>
