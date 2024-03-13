@@ -30,13 +30,10 @@
                         </Dropdown>
                     </div>
                     <div class="flex flex-col mb-1">
-                        <span class="text-base flex items-center gap-1 mb-1">
-                            <span>{{ i.name }}</span>
-                            <span v-if="i.status == 'enabled'">
-                                <IconCircleCheck size="20" class="text-green-pea-500"/>
-                            </span>
-                            <span v-else>
-                                <IconCircleOff size="20" class="text-red-300"/>
+                        <span class="flex items-center gap-1 mb-1">
+                            <span class="text-base">{{ i.name }}</span>
+                            <span v-if="i.status != 'enabled'" class="text-xs text-gray-500">
+                               (Bloqueado)
                             </span>
                         </span>
                         <span class="text-gray-500">{{ i.email }}</span>
@@ -58,7 +55,7 @@
 
 <script setup>
 import { useSeller } from '@/Composables/useSeller';
-import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash, IconBox, IconCircleCheck, IconCircleOff } from '@tabler/icons-vue';
+import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash, IconBox } from '@tabler/icons-vue';
 import FormModal from './Modal/FormModal.vue';
 import InputForm from './Form/InputForm.vue';
 import { ref, watch } from 'vue';
