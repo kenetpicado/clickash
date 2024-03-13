@@ -2,12 +2,12 @@
     <MenuItem v-slot="{ active }">
     <Link v-if="href" :href="href"
         :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-    <component :is="icon" :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
+    <component :is="icon" :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5']" />
     {{ title }}
     </Link>
     <button v-else type="button"
         :class="[active ? 'bg-primary text-white' : 'text-gray-800', 'group flex w-full items-center rounded-md px-2 py-2 text-sm']">
-        <component :is="icon" :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5 text-primary']" />
+        <component :is="icon" :class="[active ? 'text-white' : '', 'mr-2 h-5 w-5']" />
         {{ title }}
     </button>
     </MenuItem>

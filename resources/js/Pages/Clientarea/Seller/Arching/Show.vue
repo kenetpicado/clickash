@@ -7,16 +7,7 @@
         </template>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-gray-600 mb-6">
-            <div class="bg-card p-3 rounded-xl">
-                <div class="flex items-center justify-between text-sm mb-2">
-                    <span class="text-gray-400">{{ week_resume.data.week_label }}</span>
-                </div>
-                <div class="text-gray-600 grid grid-cols-2 gap-1 text-sm">
-                    <span v-for="value in week_resume.data.resume">
-                        {{ value }}
-                    </span>
-                </div>
-            </div>
+            <WeekResume :week="week_resume.data" />
         </div>
 
         <div class="flex items-center justify-between mb-4 text-gray-600">
@@ -33,7 +24,7 @@
         </div>
 
         <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
-            <div class="bg-card p-3 rounded-xl" v-for="i in movements.data">
+            <div class="bg-card p-3 rounded-lg" v-for="i in movements.data">
                 <div class="flex items-center justify-between">
                     <div class="text-gray-400 text-sm mb-2">
                         {{ i.created_at }}
@@ -79,6 +70,7 @@ import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
 import { IconTrash } from '@tabler/icons-vue';
 import { ref } from 'vue';
+import WeekResume from '@/Components/WeekResume.vue';
 
 const props = defineProps({
     movements: {

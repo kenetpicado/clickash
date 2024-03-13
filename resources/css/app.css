@@ -31,11 +31,11 @@
 
 @layer components {
     .primary-button {
-        @apply inline-flex justify-center items-center px-5 py-2 tracking-wider border-2 border-primary bg-primary rounded-xl text-sm text-white active:bg-primary-dark duration-150 transition ease-in-out;
+        @apply inline-flex border border-green-pea-500 text-sm justify-center items-center px-5 py-2 bg-green-pea-700 rounded-lg text-white active:bg-primary-dark duration-150 transition ease-in-out hover:bg-green-pea-600 active:bg-green-pea-700 disabled:bg-green-pea-100  disabled:text-green-pea-400;
     }
 
     .secondary-button {
-        @apply inline-flex justify-center items-center px-5 py-2 bg-white border-2 border-primary rounded-xl text-sm text-primary;
+        @apply inline-flex justify-center items-center text-sm px-5 py-2 bg-white border border-green-pea-500 rounded-lg text-green-pea-500 text-primary;
     }
 
     .simple-button {

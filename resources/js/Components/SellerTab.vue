@@ -1,14 +1,14 @@
 <template>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div v-for="i in sellers" class="bg-card rounded-xl p-2 w-full">
+        <div v-for="i in sellers" class="bg-gray-100 rounded-lg p-2 w-full">
             <div class="flex gap-2 w-full">
-                <div class="bg-white rounded-xl w-1/3 px-1">
-                    <img src="/images/vendedor.png" alt="" class="w-20 h-20 object-contain">
+                <div class="rounded-lg w-1/3 px-1">
+                    <img src="/images/inbox-pana.svg" alt="" class="w-20 h-20 object-contain rounded-lg">
                 </div>
-                <div class="text-xs text-gray-600 w-full h-full">
+                <div class="text-xs w-full h-full">
                     <div class="flex justify-between w-full">
                         <span class="">
-                            {{ i.status == 'enabled' ? 'Activo' : 'Inactivo' }}
+                            {{  i.online }}
                         </span>
 
                         <Dropdown>
@@ -21,16 +21,25 @@
                                     :icon="IconReportAnalytics" />
                             </div>
                             <div class="px-1 py-1">
-                                <DropdownItem :href="route('clientarea.sellers.blocked-numbers.index', i.id)" title="Dígitos bloqueados" :icon="IconLock" />
+                                <DropdownItem :href="route('clientarea.sellers.blocked-numbers.index', i.id)"
+                                    title="Dígitos bloqueados" :icon="IconLock" />
                                 <DropdownItem @click="edit(i)" title="Editar" :icon="IconEdit" />
                                 <DropdownItem @click="blockSeller(i.id)" :title="status[i.status]" :icon="IconLock" />
                                 <DropdownItem @click="destroy(i.id)" title="Eliminar" :icon="IconTrash" />
                             </div>
                         </Dropdown>
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-base">{{ i.name }}</span>
-                        <span>{{ i.email }}</span>
+                    <div class="flex flex-col mb-1">
+                        <span class="text-base flex items-center gap-1 mb-1">
+                            <span>{{ i.name }}</span>
+                            <span v-if="i.status == 'enabled'">
+                                <IconCircleCheck size="20" class="text-green-pea-500"/>
+                            </span>
+                            <span v-else>
+                                <IconCircleOff size="20" class="text-red-300"/>
+                            </span>
+                        </span>
+                        <span class="text-gray-500">{{ i.email }}</span>
                     </div>
                 </div>
             </div>
@@ -49,12 +58,13 @@
 
 <script setup>
 import { useSeller } from '@/Composables/useSeller';
-import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash, IconBox } from '@tabler/icons-vue';
+import { IconEdit, IconEyeDollar, IconLock, IconReportAnalytics, IconTrash, IconBox, IconCircleCheck, IconCircleOff } from '@tabler/icons-vue';
 import FormModal from './Modal/FormModal.vue';
 import InputForm from './Form/InputForm.vue';
 import { ref, watch } from 'vue';
 import DropdownItem from './DropdownItem.vue';
 import Dropdown from './Dropdown.vue';
+
 
 const props = defineProps({
     sellers: {

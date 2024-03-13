@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div v-for="raffle in raffles" class="bg-card rounded-xl p-2 w-full">
-            <div class="flex justify-between text-gray-600">
+        <div v-for="raffle in raffles" class="bg-gray-100 rounded-lg p-2 w-full">
+            <div class="flex justify-between">
                 <span>{{ raffle.name }}</span>
 
                 <Dropdown>
@@ -19,8 +19,8 @@
                         <DropdownItem :href="route('clientarea.raffles.blocked-numbers.index', raffle.id)"
                             title="Dígitos bloqueados" :icon="IconLock" />
 
-                        <DropdownItem :href="route('clientarea.raffles.availability.index', raffle.id)"
-                            title="Horario" :icon="IconDeviceWatch" />
+                        <DropdownItem :href="route('clientarea.raffles.availability.index', raffle.id)" title="Horario"
+                            :icon="IconDeviceWatch" />
 
                         <DropdownItem @click="edit(raffle)" title="Configuración" :icon="IconSettings" />
                     </div>
@@ -28,7 +28,7 @@
             </div>
 
             <div class="flex items-center gap-2 mb-3">
-                <div class="bg-white rounded-xl w-20 h-20 overflow-hidden">
+                <div class="rounded-lg w-20 h-20 overflow-hidden">
                     <img v-if="raffle.image" :src="raffle.image" alt="" class="w-full h-full">
                     <img v-else src="/games.png" alt="" class="w-full h-full">
                 </div>
@@ -40,18 +40,10 @@
                     <span v-if="raffle.settings.individual_limit">
                         Limite individual: C${{ raffle.settings.individual_limit }}
                     </span>
-                    <span v-if="raffle.settings.multiplier">
-                        Multiplicador: {{ raffle.settings.multiplier }}
+                    <span v-if="!raffle.settings.date">
+                        {{ raffle.settings.min }} - {{ raffle.settings.max }}
                     </span>
                 </div>
-            </div>
-            <div class="w-full text-center bg-white py-1 rounded-xl text-primary text-xs">
-                <span v-if="raffle.settings.date">
-                    Fecha
-                </span>
-                <span v-else>
-                    Desde {{ raffle.settings.min }} hasta {{ raffle.settings.max }}
-                </span>
             </div>
         </div>
     </div>

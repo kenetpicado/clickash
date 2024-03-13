@@ -59,10 +59,10 @@ const submit = () => {
             </form>
 
             <div class="flex justify-between text-sm">
-            <Link :href="route('register.create')" class="text-primary font-medium">
+            <Link :href="route('register.create')" class="text-green-pea-500 font-medium">
             Crear cuenta
             </Link>
-                <div class="text-primary font-medium" role="button" @click="show = true">
+                <div class="text-green-pea-500 font-medium" role="button" @click="show = true">
                     {{ terms_and_conditions.title }}
                 </div>
             </div>

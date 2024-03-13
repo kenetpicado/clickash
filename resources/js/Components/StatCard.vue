@@ -1,10 +1,10 @@
 <template>
-    <div class="bg-white h-20 rounded-xl">
+    <div class="bg-gray-100 h-20 rounded-xl">
         <div class="flex items-center h-full p-4 gap-3">
-            <span class="bg-primary rounded-full p-2">
+            <span class="bg-green-pea-700 rounded-full p-2">
                 <component :is="stat.icon ?? DEFAULT_ICON" size="30" class="text-white" />
             </span>
-            <div class="text-gray-600">
+            <div class="">
                 <div class="font-bold text-lg">
                     {{ stat.value }}
                 </div>
