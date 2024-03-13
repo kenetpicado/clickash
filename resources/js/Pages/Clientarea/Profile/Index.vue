@@ -44,9 +44,6 @@
                     </div>
                 </div>
             </div>
-            <button @click="logout" type="button" class="flex primary-button mx-auto mb-6">
-                Cerrar sesión
-            </button>
         </template>
         <div v-else>
             <form @submit.prevent="onSubmit" class="mb-8">
@@ -69,7 +66,6 @@ import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { IconUsers } from '@tabler/icons-vue';
 import { IconRecordMail } from '@tabler/icons-vue';
 import { IconList } from '@tabler/icons-vue';
-import { useAuth } from '@/Composables/useAuth.js';
 import { ref } from 'vue';
 import { defineProps } from 'vue';
 import { useForm } from '@inertiajs/vue3';
@@ -84,7 +80,6 @@ const props = defineProps({
     },
 });
 
-const { logout } = useAuth();
 const isEdit = ref(false);
 
 const form = useForm({

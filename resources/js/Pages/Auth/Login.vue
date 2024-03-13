@@ -31,14 +31,13 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Inicia sesión" />
     <loading :active="form.processing" :is-full-page="true" />
 
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-3 sm:pt-0 bg-white px-4 lg:px-0">
-
-        <img class="mx-auto h-16 w-auto" src="/logo1x1.png" alt="Workflow" />
-
-        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-card shadow-md overflow-hidden rounded-xl">
+    <div class="min-h-screen flex justify-center items-center bg-white px-4 lg:px-0">
+        <div class="w-full sm:max-w-md px-6 py-8 bg-gray-100 shadow-md overflow-hidden rounded-xl">
+            <img class="mx-auto h-16 w-auto" src="/logo1x1.png" alt="Workflow" />
             <h2 class="mt-4 text-center text-lg font-extrabold text-basic">
                 Inicia sesión
             </h2>
@@ -59,18 +58,14 @@ const submit = () => {
             </form>
 
             <div class="flex justify-between text-sm">
-            <Link :href="route('register.create')" class="text-green-pea-500 font-medium">
-            Crear cuenta
-            </Link>
+                <Link :href="route('register.create')" class="text-green-pea-500 font-medium">
+                Crear cuenta
+                </Link>
                 <div class="text-green-pea-500 font-medium" role="button" @click="show = true">
                     {{ terms_and_conditions.title }}
                 </div>
             </div>
         </div>
-
-        <a href="https://play.google.com/store/apps/details?id=com.strainteam.clickashadmin" target="_blank">
-            <img src="/images/gp.svg" alt="" style="width: 15rem;">
-        </a>
 
         <Modal :show="show" @close="show = false">
             <div class="p-4 sm:p-6">
@@ -78,7 +73,7 @@ const submit = () => {
                     {{ terms_and_conditions.title }}
                 </div>
 
-                <div class="mt-4 text-gray-600">
+                <div class="mt-4 text-gray-600 max-h-96 overflow-y-auto">
                     <span v-html="terms_and_conditions.content" style="white-space: pre-line;"></span>
                 </div>
             </div>

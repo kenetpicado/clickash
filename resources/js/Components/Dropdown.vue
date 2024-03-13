@@ -2,7 +2,8 @@
     <Menu as="div" class="relative inline-block text-left">
 
         <MenuButton>
-            <IconList class="text-gray-400" />
+            <IconList v-if="showIcon" class="text-gray-400" />
+            <slot name="item" />
         </MenuButton>
 
         <transition enter-active-class="transition duration-100 ease-out" enter-from-class="transform scale-95 opacity-0"
@@ -17,7 +18,14 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { Menu, MenuButton, MenuItems } from '@headlessui/vue';
 import { IconList } from '@tabler/icons-vue';
+
+defineProps({
+    showIcon: {
+        type: Boolean,
+        default: true
+    }
+});
 
 </script>
