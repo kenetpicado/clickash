@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-card rounded-xl">
+    <div class="bg-gray-100 rounded-xl">
         <div class="flex h-full items-center justify-between p-4">
             <div class="text-gray-600 space-y-1">
                 <div class="font-bold text-lg">

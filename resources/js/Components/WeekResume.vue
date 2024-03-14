@@ -1,5 +1,5 @@
 <template>
-    <component :is="href ? Link : 'div'" class="bg-card p-3 rounded-lg" :href="href">
+    <component :is="href ? Link : 'div'" class="bg-gray-100 p-3 rounded-lg" :href="href">
         <div class="flex items-center justify-between text-sm mb-2">
             <span class="text-gray-400">{{ week.week_label }}</span>
         </div>

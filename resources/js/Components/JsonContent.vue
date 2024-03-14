@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-xl p-2 w-full">
+    <div class="bg-gray-100 rounded-xl p-2 w-full">
         <div class="flex justify-between">
             <span class="pl-2">{{ title }}</span>
 

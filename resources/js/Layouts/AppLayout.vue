@@ -19,7 +19,7 @@ defineProps({
 
 <template>
     <Head :title="title" />
-    <section class="flex w-full bg-gray-100">
+    <section class="flex w-full">
         <Sidebar />
 
         <main class="w-full p-4 lg:p-8">

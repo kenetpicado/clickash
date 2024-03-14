@@ -12,8 +12,8 @@
         <div v-if="availability.length == 0" class="w-full text-center text-gray-400">
             No hay horario
         </div>
-        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-            <div v-for="a in availability" class="bg-card p-4 rounded-xl text-gray-600">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+            <div v-for="a in availability" class="bg-gray-100 p-4 rounded-xl text-gray-600">
                 <div class="flex justify-between items-center mb-2">
                     <span>{{ a.day }}: {{ a.time_label }}</span>
                     <Dropdown>
@@ -25,7 +25,7 @@
                 </div>
                 <h2 class="font-semibold mb-2 text-sm">Sorteos</h2>
 
-                <div class="grid grid-cols-3 lg:grid-cols-4 gap-2">
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
                     <div v-for="hour in a.blocked_hours_parsed" class="text-sm text-white text-center rounded-xl py-1" :class="getBgColor(hour)">
                         {{ hour }}
                     </div>

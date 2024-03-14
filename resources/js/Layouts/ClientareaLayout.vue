@@ -1,11 +1,11 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import { IconCurrencyDollar, IconGift, IconHome, IconLogout, IconUser, IconUsersGroup } from '@tabler/icons-vue';
-import NavItem from './Partials/NavItem.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownItem from '@/Components/DropdownItem.vue';
 import { useAuth } from '@/Composables/useAuth.js';
 import AvatarUrl from '@/Use/profile.js';
+import { MenuItem } from '@headlessui/vue';
 
 defineProps({
     title: {
@@ -22,14 +22,7 @@ const { logout } = useAuth();
 
 const items = [
     {
-        icon: IconUsersGroup,
-        route: route('clientarea.sellers.index'),
-        title: "Vendedores"
-    },
-    {
-        icon: IconCurrencyDollar,
-        route: route('clientarea.invoices.index'),
-        title: "Recibos"
+        header: "Inicio"
     },
     {
         icon: IconHome,
@@ -42,6 +35,22 @@ const items = [
         title: "Resultados"
     },
     {
+        icon: IconCurrencyDollar,
+        route: route('clientarea.invoices.index'),
+        title: "Recibos"
+    },
+    {
+        header: "Administración"
+    },
+    {
+        icon: IconUsersGroup,
+        route: route('clientarea.sellers.index'),
+        title: "Vendedores"
+    },
+    {
+        header: "Cuenta"
+    },
+    {
         icon: IconUser,
         route: route('clientarea.profile.index'),
         title: "Perfil"
@@ -52,43 +61,90 @@ const isActive = (r) => {
     return window.location.href.includes(r);
 };
 
+function getClass(fullRoute) {
+    return isActive(fullRoute)
+        ? 'bg-green-pea-700 text-white'
+        : 'hover:bg-gray-100';
+}
+
 </script>
 
 <template>
 
     <Head :title="title" />
-    <nav class="bg-white mb-3 shadow">
-        <div class="flex items-center justify-between px-4 py-2 mx-auto max-w-screen-lg">
-            <Link :href="route('clientarea.raffles.index')" class="font-bold text-lg">{{ $page.props.app_name }}
-            </Link>
 
-            <Dropdown :showIcon="false">
-                <template #item>
-                    <img :src="AvatarUrl($page.props?.auth?.name)" class="w-10 h-10 object-cover rounded-full"
-                        alt="">
-                </template>
-                <div class="px-1 py-1">
-                    <DropdownItem v-for="r in items" :href="r.route" :title="r.title" :icon="r.icon" />
+    <div class="flex">
+        <aside class="w-72 min-h-screen p-0 m-0 bg-white flex flex-col border hidden lg:block">
+            <div class="h-full px-3 py-4 overflow-y-auto">
+                <div class="flex flex-col items-center my-6">
+                    <div class="h-14 w-14">
+                        <img class="h-full w-full" src="/logo1x1.png" alt="" />
+                    </div>
+                    <Link :href="route('clientarea.raffles.index')" class="font-bold text-lg mt-2 text-gray-500">
+                    ClickAsh
+                    </Link>
                 </div>
-                <div class="px-1 py-1">
-                    <DropdownItem @click="logout" title="Cerrar sesión" :icon="IconLogout" />
-                </div>
-            </Dropdown>
-        </div>
-    </nav>
-    <main class="p-4 mx-auto max-w-screen-lg mb-12">
-        <div class="flex items-center overflow-x-auto hide-scrollbar">
-            <slot name="options" />
-        </div>
-        <div class="flex items-center justify-between mb-4">
-            <slot name="header" />
-        </div>
-        <slot />
-    </main>
+                <ul class="space-y-1">
+                    <li v-for="item in items">
+                        <span v-if="item.header"
+                            class="block text-xs text-gray-500 uppercase tracking-wider font-semibold mt-6 px-2">
+                            {{ item.header }}
+                        </span>
+                        <Link v-else :href="item.route">
+                        <span class="flex items-center px-2 py-3 rounded-xl gap-4" :class="getClass(item.route)">
+                            <component :is="item.icon" :class="isActive(item.route) ? 'text-white' : ''"></component>
+                            <span>{{ item.title }}</span>
+                        </span>
+                        </Link>
+                    </li>
+                    <li>
+                        <span @click="logout" class="flex items-center px-2 py-3 rounded-lg gap-4 hover:bg-indigo-50"
+                            role="button">
+                            <IconLogout></IconLogout>
+                            <span>Salir</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
 
-    <!-- <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-gray-100 border-2 rounded-lg bottom-2 left-1/2">
-        <div class="grid h-full max-w-lg grid-cols-5 mx-auto">
-            <NavItem v-for="item in items" :key="item.route" :item="item" :active="isActive(item.route)" />
+        <div class="w-full">
+            <nav class="bg-white mb-3 shadow">
+                <div class="flex items-center justify-between px-4 py-2 mx-auto max-w-screen-lg">
+                    <Link :href="route('clientarea.raffles.index')" class="font-bold text-lg text-gray-600">
+                    {{ $page.props.auth.company_name }}
+                    </Link>
+
+                    <Dropdown :showIcon="false">
+                        <template #item>
+                            <img :src="AvatarUrl($page.props?.auth?.name)" class="w-10 h-10 object-cover rounded-full"
+                                alt="">
+                        </template>
+                        <div class="px-1 py-1">
+                            <template v-for="r in items">
+                                <MenuItem v-slot="{ active }" v-if="r.header">
+                                <span class="block text-xs text-gray-400 font-semibold mt-2 px-2">
+                                    {{ r.header }}
+                                </span>
+                                </MenuItem>
+                                <DropdownItem v-else :href="r.route" :title="r.title" :icon="r.icon" />
+                            </template>
+                        </div>
+                        <div class="px-1 py-1">
+                            <DropdownItem @click="logout" title="Cerrar sesión" :icon="IconLogout" />
+                        </div>
+                    </Dropdown>
+                </div>
+            </nav>
+            <main class="p-4 mx-auto max-w-screen-lg mb-4">
+                <div class="flex items-center overflow-x-auto hide-scrollbar">
+                    <slot name="options" />
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <slot name="header" />
+                </div>
+                <slot />
+            </main>
         </div>
-    </div> -->
+    </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
-    <div class="bg-card p-3 rounded-xl text-gray-600">
+    <div class="bg-gray-100 p-3 rounded-xl text-gray-600">
         <div class="flex justify-between items-center mb-2">
             <span class="text-xl font-bold">{{ digit.number }}</span>
-            <IconTrash class="text-primary" size="20" @click="$emit('destroy', digit.id)" role="button" />
+            <IconTrash size="20" @click="$emit('destroy', digit.id)" role="button" />
         </div>
         <div class="grid grid-cols-1 gap-2">
             <div v-if="digit.settings.general_limit">

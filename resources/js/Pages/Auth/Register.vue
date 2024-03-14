@@ -28,7 +28,7 @@ const submit = () => {
 
         <img class="mx-auto h-16 w-auto" src="/logo1x1.png" alt="Workflow" />
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-card shadow-md overflow-hidden rounded-xl">
+        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-gray-100 shadow-md overflow-hidden rounded-xl">
             <h2 class="mt-4 text-center text-lg font-extrabold text-basic">
                 Crear cuenta
             </h2>

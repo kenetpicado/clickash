@@ -6,7 +6,7 @@
             </span>
         </template>
 
-        <div class="mb-4 text-gray-600 bg-card p-3 rounded-xl">
+        <div class="mb-4 text-gray-600 space-y-2">
             <h2>Recibo: {{ invoice_number }}</h2>
             <h2>Rifa: {{ raffle }}</h2>
             <h2>Vendedor: {{ user }}</h2>
@@ -16,7 +16,7 @@
         <div v-if="transactions.length == 0" class="w-full text-center text-gray-400">
             No hay datos que mostrar
         </div>
-        <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <Transaction :transaction="i" v-for="i in transactions" :key="i.id" />
         </div>
 

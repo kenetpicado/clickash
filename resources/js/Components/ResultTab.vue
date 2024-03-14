@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" v-if="results.some(r => r.results.length > 0)">
         <template v-for="i in results">
-            <Link v-if="i.results.length > 0" :href="route('clientarea.results.show', i.id)" class="bg-card rounded-xl p-3 w-full text-gray-600">
+            <Link v-if="i.results.length > 0" :href="route('clientarea.results.show', i.id)" class="bg-gray-100 rounded-xl p-3 w-full text-gray-600">
             <div class="mb-1 font-medium">
                 {{ i.name }}
             </div>

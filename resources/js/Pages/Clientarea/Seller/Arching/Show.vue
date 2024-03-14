@@ -23,8 +23,8 @@
             No hay movimientos
         </div>
 
-        <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
-            <div class="bg-card p-3 rounded-lg" v-for="i in movements.data">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <div class="bg-gray-100 p-3 rounded-lg" v-for="i in movements.data">
                 <div class="flex items-center justify-between">
                     <div class="text-gray-400 text-sm mb-2">
                         {{ i.created_at }}

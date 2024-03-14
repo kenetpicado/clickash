@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-card p-3 rounded-xl">
+    <div class="bg-gray-100 p-3 rounded-xl">
         <div class="flex items-center justify-between text-sm mb-2">
             <span class="text-gray-400">{{ transaction.created_at }}</span>
             <span class="text-gray-600">{{ transaction.status }}</span>

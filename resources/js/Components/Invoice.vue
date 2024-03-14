@@ -1,5 +1,5 @@
 <template>
-    <Link :href="route('clientarea.invoices.show', invoice.invoice_number)" class="bg-card p-3 rounded-xl" role="button">
+    <Link :href="route('clientarea.invoices.show', invoice.invoice_number)" class="bg-gray-100 p-3 rounded-xl" role="button">
         <div class="flex items-center justify-between text-sm mb-2">
             <span class="text-gray-400">{{ invoice.created_at }}</span>
             <span class="text-gray-600">{{ invoice.deleted_at ? 'ELIMINADA' : 'VENDIDO' }}</span>
