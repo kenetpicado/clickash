@@ -26,7 +26,7 @@
                 <h2 class="font-semibold mb-2 text-sm">Sorteos</h2>
 
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-2">
-                    <div v-for="hour in a.blocked_hours_parsed" class="text-sm text-white text-center rounded-xl py-1" :class="getBgColor(hour)">
+                    <div v-for="hour in a.blocked_hours_parsed" class="text-sm text-white text-center rounded-xl py-1" :class="bgClassColor[raffle.id] ?? 'bg-gray-500'">
                         {{ hour }}
                     </div>
                 </div>
@@ -78,7 +78,8 @@ import { confirmAlert } from '@/Use/helpers';
 import { toast } from '@/Use/toast';
 import { router, useForm } from '@inertiajs/vue3';
 import { IconEdit, IconTrash } from '@tabler/icons-vue';
-import { defineProps, ref } from 'vue';
+import { ref } from 'vue';
+import { bgClassColor } from '@/Use/hours.js';
 
 const props = defineProps({
     availability: {
@@ -171,14 +172,6 @@ const destroyDay = (id) => {
             });
         },
     });
-}
-
-function getBgColor(hour) {
-    if (hour.includes("11:")) return "bg-cyan-600";
-    if (hour.includes("9:")) return "bg-indigo-600";
-    if (hour.includes("6:")) return "bg-emerald-600";
-    if (hour.includes("3:")) return "bg-amber-600";
-    return "bg-rose-600";
 }
 
 </script>

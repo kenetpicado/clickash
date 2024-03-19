@@ -24,7 +24,6 @@
         </div>
 
         <FormModal :show="openModal" title="Resultado" @onCancel="resetValues" @onSubmit="onSubmit">
-
             <div class="text-red-500 mb-4" v-if="raffle.blocked_hours.length == 0">
                 No se encontraron turnos disponibles para el dia en curso. Por favor, verifique la disponibilidad en
                 "Horario"
@@ -38,10 +37,6 @@
             </SelectForm>
 
             <InputForm v-model="form.number" text="Dígito" required />
-
-            <div class="text-gray-400 text-sm">
-                Verifique que los datos ingresados sean correctos antes de guardar.
-            </div>
         </FormModal>
 
     </ClientareaLayout>

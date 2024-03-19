@@ -1,15 +1,11 @@
-export function getBgColor(hour) {
-    if (hour.includes("11:")) return "bg-cyan-600";
-    if (hour.includes("9:")) return "bg-indigo-600";
-    if (hour.includes("6:")) return "bg-emerald-600";
-    if (hour.includes("3:")) return "bg-amber-600";
-    //if (hour.includes("8:")) return "bg-red-600";
-
-    return "bg-rose-600";
-}
-
-export function getHourClass(hour) {
-    const bgColor = getBgColor(hour);
-
-    return `text-sm text-white text-center rounded-xl py-1 ${bgColor}`
+export const bgClassColor = {
+    1: "bg-cyan-500",
+    11: "bg-cyan-500",
+    2: "bg-pink-500",
+    3: "bg-pink-500",
+    12: "bg-pink-500",
+    4: "bg-violet-900",
+    10: "bg-violet-900",
+    5: "bg-amber-500",
+    6: "bg-amber-500",
 }
