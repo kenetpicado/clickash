@@ -29,8 +29,10 @@ defineProps({
     },
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+
 const queryParams = reactive({
-    date: '',
+    date: urlParams.get('date') || null,
 });
 
 watch(() => queryParams, () => {

@@ -109,3 +109,7 @@ Route::middleware(['auth:sanctum', 'online'])
     ->group(function () {
         Route::resource('profile', ProfileController::class)->only(['index', 'update']);
     });
+
+Route::get('test', function () {
+    return inertia('Test');
+});

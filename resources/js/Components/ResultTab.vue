@@ -1,9 +1,13 @@
 <template>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" v-if="results.some(r => r.results.length > 0)">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <template v-for="i in results">
-            <Link v-if="i.results.length > 0" :href="route('clientarea.results.show', i.id)" class="bg-gray-100 rounded-xl p-3 w-full text-gray-600">
+            <Link :href="getRoute(i.id)" class="bg-gray-100 rounded-xl p-3 w-full text-gray-600">
             <div class="mb-1 font-medium">
                 {{ i.name }}
+            </div>
+
+            <div v-if="i.results.length == 0" class="text-gray-400 text-sm mt-1">
+                No hay resultados
             </div>
 
             <div class="grid grid-cols-1 gap-2">
@@ -13,11 +17,6 @@
             </div>
             </Link>
         </template>
-    </div>
-    <div v-else>
-        <div class="w-full text-center text-gray-400">
-            No hay resultados
-        </div>
     </div>
 </template>
 
@@ -37,6 +36,16 @@ function getBgColor(hour) {
     if (hour.includes("6:")) return "bg-emerald-600";
     if (hour.includes("3:")) return "bg-amber-600";
     return "bg-rose-600";
+}
+
+function getRoute(id) {
+    const urlsearchParams = new URLSearchParams(window.location.search);
+
+    if (urlsearchParams.get('date')) {
+        return route('clientarea.results.show', [id, { date: urlsearchParams.get('date') }]);
+    }
+
+    return route('clientarea.results.show', id);
 }
 
 </script>
