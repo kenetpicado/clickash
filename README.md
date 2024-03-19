@@ -26,7 +26,7 @@ Estas tecnologías han sido fundamentales en el desarrollo de este proyecto y ha
 
 ¡Buenas noticias! Nuestra aplicación también está disponible para dispositivos Android.
 
-🔗 [Descarga desde PlayStore]([https://github.com/jey1322/Donut_androidApp](https://play.google.com/store/apps/details?id=com.strainteam.clickashadmin&pcampaignid=web_share)https://play.google.com/store/apps/details?id=com.strainteam.clickashadmin&pcampaignid=web_share)
+🔗 [Descarga desde PlayStore](https://play.google.com/store/apps/details?id=com.strainteam.clickashadmin&pcampaignid=web_share)
 
 ¡Esperamos que disfrutes de la aplicación tanto en la web como en dispositivos Android!
 
