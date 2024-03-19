@@ -20,6 +20,7 @@ class TransactionResource extends JsonResource
             'invoice_number' => $this->invoice_number,
             'digit' => $this->digit,
             'amount' => $this->amount,
+            'client' => $this->client,
             'hour' => Carbon::parse($this->hour)->format('g:i A'),
             'status' => $this->deleted_at ? 'ELIMINADO' : $this->status,
             'prize' => 'C$'.number_format($this->prize),

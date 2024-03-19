@@ -57,6 +57,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('raffles', [RaffleController::class, 'index'])
             ->name('raffles.index');
 
+        Route::get('raffles/{raffle}', [RaffleController::class, 'show'])
+            ->name('raffles.show');
+
         //TODO: ELIMINAR EN LA PROXIMA ACTUALIZACION. YA NO EXISTE LA RUTA EN EL APP
         Route::get('raffles/{raffle}/settings', RaffleSettingController::class)
             ->name('raffles.settings');
@@ -102,9 +105,6 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::put('raffles/{raffle}', [RaffleController::class, 'update'])
                 ->name('raffles.update');
-
-            Route::get('raffles/{raffle}', [RaffleController::class, 'show'])
-                ->name('raffles.show');
 
             Route::apiResource('raffles.blocked-numbers', RaffleBlockedNumberController::class)
                 ->only(['index', 'store', 'destroy']);

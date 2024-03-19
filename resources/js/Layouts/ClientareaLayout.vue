@@ -98,7 +98,7 @@ function getClass(fullRoute) {
                         </Link>
                     </li>
                     <li>
-                        <span @click="logout" class="flex items-center px-2 py-3 rounded-lg gap-4 hover:bg-indigo-50"
+                        <span @click="logout" class="flex items-center px-2 py-3 rounded-lg gap-4 hover:bg-gray-100"
                             role="button">
                             <IconLogout></IconLogout>
                             <span>Salir</span>
