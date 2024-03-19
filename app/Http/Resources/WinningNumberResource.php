@@ -20,10 +20,6 @@ class WinningNumberResource extends JsonResource
             'number' => $this->number,
             'hour' => Carbon::parse($this->hour)->format('g:i A'),
             'date' => Carbon::createFromFormat('Y-m-d', $this->date)->format('d/m/Y'),
-            //TODO: ELIMINAR
-            'raffle' => [
-                'name' => 'Eliminar'
-            ],
         ];
     }
 }
