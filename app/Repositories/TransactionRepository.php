@@ -3,9 +3,7 @@
 namespace App\Repositories;
 
 use App\Enums\TransactionStatusEnum;
-use App\Models\Raffle;
 use App\Models\Transaction;
-use App\Models\User;
 use Carbon\Carbon;
 
 class TransactionRepository
@@ -22,7 +20,7 @@ class TransactionRepository
             'prize' => $request['prize'],
             'status' => TransactionStatusEnum::SOLD->value,
             'super_x' => $request['super_x'],
-            'invoice_number' => $request['invoice_number']
+            'invoice_number' => $request['invoice_number'],
         ]);
     }
 

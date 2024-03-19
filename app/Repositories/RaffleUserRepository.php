@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\RaffleUser;
-use Carbon\Carbon;
 
 class RaffleUserRepository
 {

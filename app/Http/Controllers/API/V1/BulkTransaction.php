@@ -36,10 +36,11 @@ class BulkTransaction extends Controller
         foreach ($validated['data'] as $transaction) {
             $transaction['digit'] = $winningnNumberService->getParsedNumber($settings, $transaction['digit']);
 
-            $key = $transaction['digit'] . $transaction['hour'] . $transaction['super_x'];
+            $key = $transaction['digit'].$transaction['hour'].$transaction['super_x'];
 
-            if (!isset($transformedData[$key])) {
+            if (! isset($transformedData[$key])) {
                 $transformedData[$key] = $transaction;
+
                 continue;
             }
 

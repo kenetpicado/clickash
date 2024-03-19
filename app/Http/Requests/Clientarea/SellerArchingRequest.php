@@ -17,7 +17,7 @@ class SellerArchingRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'seller_id' => $this->route('seller')
+            'seller_id' => $this->route('seller'),
         ]);
     }
 
@@ -32,7 +32,7 @@ class SellerArchingRequest extends FormRequest
             'type' => 'required|in:RETIRO,DEPOSITO',
             'amount' => 'required|numeric|min:1',
             'week' => 'required|integer',
-            'seller_id' => 'required'
+            'seller_id' => 'required',
         ];
     }
 }

@@ -21,7 +21,6 @@ class AuthenticatedSessionController extends Controller
     ) {
     }
 
-
     /**
      * Display the login view.
      */
@@ -30,7 +29,7 @@ class AuthenticatedSessionController extends Controller
         return inertia('Auth/Login', [
             'status' => session('status'),
             'app_name' => config('app.name'),
-            'terms_and_conditions' => SettingResource::make($this->settingService->getTermsAndConditions())->resolve()
+            'terms_and_conditions' => SettingResource::make($this->settingService->getTermsAndConditions())->resolve(),
         ]);
     }
 

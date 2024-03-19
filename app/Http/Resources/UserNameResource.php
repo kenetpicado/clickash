@@ -15,7 +15,7 @@ class UserNameResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->name . (auth()->user()->isSeller() ? ' (Tú)' : ''),
+            'name' => $this->name.(auth()->user()->isSeller() ? ' (Tú)' : ''),
         ];
     }
 }

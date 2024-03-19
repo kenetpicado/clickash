@@ -20,11 +20,11 @@ class WeeklyTransactionResource extends JsonResource
             'week' => $this->week,
             'week_label' => $this->week_label,
             'resume' => [
-                'Ingresos: C$ ' . number_format($this->income),
-                'Egresos: C$ ' . number_format($this->expenditure),
-                'Depósitos: C$ ' . number_format($this->deposit),
-                'Retiros: C$ ' . number_format($this->withdrawal),
-                ($balance < 0 ? 'Pérdida' : 'Ganancia') . ': C$ ' . number_format(abs($balance)),
+                'Ingresos: C$ '.number_format($this->income),
+                'Egresos: C$ '.number_format($this->expenditure),
+                'Depósitos: C$ '.number_format($this->deposit),
+                'Retiros: C$ '.number_format($this->withdrawal),
+                ($balance < 0 ? 'Pérdida' : 'Ganancia').': C$ '.number_format(abs($balance)),
             ],
         ];
     }

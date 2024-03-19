@@ -23,7 +23,7 @@ class Transaction extends Model
         'prize',
         'status',
         'super_x',
-        'invoice_number'
+        'invoice_number',
     ];
 
     protected $hidden = ['updated_at'];
@@ -34,7 +34,9 @@ class Transaction extends Model
     }
 
     const SOLD = 'VENDIDO';
+
     const PRIZE = 'PREMIADO';
+
     const PAID = 'PAGADO';
 
     public function raffle()

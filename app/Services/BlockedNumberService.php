@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\RaffleUser;
 use App\Repositories\BlockedNumberRepository;
 use App\Repositories\RaffleUserRepository;
 
@@ -36,7 +35,7 @@ class BlockedNumberService
             throw new \Exception('El dígito ya está bloqueado', 403);
         }
 
-        if (!$request['settings']['general_limit'] && !$request['settings']['individual_limit']) {
+        if (! $request['settings']['general_limit'] && ! $request['settings']['individual_limit']) {
             throw new \Exception('Debes seleccionar al menos un límite', 403);
         }
 

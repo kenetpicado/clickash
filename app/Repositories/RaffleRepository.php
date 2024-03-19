@@ -13,7 +13,7 @@ class RaffleRepository
         return User::find($user_id)
             ->raffles()
             ->with([
-                'availability' => fn ($query) => $query->where('user_id', $user_id)->select('raffle_id', 'user_id', 'blocked_hours')
+                'availability' => fn ($query) => $query->where('user_id', $user_id)->select('raffle_id', 'user_id', 'blocked_hours'),
             ])
             ->get(['raffles.id', 'name']);
     }
@@ -23,7 +23,7 @@ class RaffleRepository
         return User::find($user_id)
             ->raffles()
             ->with([
-                'availability' => fn ($query) => $query->where('user_id', $user_id)->select('raffle_id', 'user_id', 'blocked_hours')
+                'availability' => fn ($query) => $query->where('user_id', $user_id)->select('raffle_id', 'user_id', 'blocked_hours'),
             ])
             ->find($raffle_id, ['raffles.id', 'name']);
     }
@@ -52,7 +52,7 @@ class RaffleRepository
         return User::find($user_id)
             ->raffles()
             ->with([
-                'currentAvailability' => fn ($query) => $query->where('user_id', $user_id)
+                'currentAvailability' => fn ($query) => $query->where('user_id', $user_id),
             ])
             ->get(['raffles.id', 'name', 'image']);
     }
@@ -62,7 +62,7 @@ class RaffleRepository
         return User::find($user_id)
             ->raffles()
             ->with([
-                'currentAvailability' => fn ($query) => $query->where('user_id', $user_id)
+                'currentAvailability' => fn ($query) => $query->where('user_id', $user_id),
             ])
             ->find($raffle_id, ['raffles.id', 'name', 'image']);
     }
@@ -77,7 +77,7 @@ class RaffleRepository
                     fn ($query) => $query->where('date', Carbon::parse($request['date'])->format('Y-m-d')),
                     fn ($query) => $query->where('date', Carbon::today())
                 )
-                    ->orderBy('hour')
+                    ->orderBy('hour'),
             ])
             ->get(['raffles.id', 'name', 'image']);
     }

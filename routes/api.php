@@ -3,7 +3,6 @@
 use App\Http\Controllers\API\V1\AuthenticatedSessionController;
 use App\Http\Controllers\API\V1\BulkTransaction;
 use App\Http\Controllers\API\V1\InvoiceController;
-use App\Http\Controllers\API\V1\SalesReportController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RaffleAvailabilityController;
 use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\API\V1\RaffleReportListController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\ResultController;
+use App\Http\Controllers\API\V1\SalesReportController;
 use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\SellerController;
 use App\Http\Controllers\API\V1\SellerWeekController;

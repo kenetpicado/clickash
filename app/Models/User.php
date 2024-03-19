@@ -19,6 +19,7 @@ class User extends Authenticatable
     use SoftDeletes;
 
     const STATUS_ENABLED = 'enabled';
+
     const STATUS_DISABLED = 'disabled';
 
     /**
@@ -133,7 +134,7 @@ class User extends Authenticatable
 
     public function getCompanyName()
     {
-        if (!$this->company_name) {
+        if (! $this->company_name) {
             DB::table('users')->where('id', auth()->user()->getOwnerId())->value('company_name');
         } else {
             return $this->company_name;

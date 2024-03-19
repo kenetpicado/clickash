@@ -31,7 +31,7 @@ class InvoiceController extends Controller
 
         return inertia('Clientarea/Invoice/Show', [
             'transactions' => TransactionResource::collection($data['transactions'])->resolve(),
-            'total' =>  $data['total'],
+            'total' => $data['total'],
             'invoice_number' => $invoice,
             'raffle' => $data['raffle'],
             'user' => $data['user'],

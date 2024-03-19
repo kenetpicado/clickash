@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class WinningNumberService
 {
     private WinningNumberRepository $winningNumberRepository;
+
     private TransactionRepository $transactionRepository;
 
     public function __construct()
@@ -55,7 +56,7 @@ class WinningNumberService
     public function getParsedNumber($settings, $number)
     {
         if ($settings['date']) {
-            if (!preg_match('/^\d{1,2}\/\d{1,2}$/', $number)) {
+            if (! preg_match('/^\d{1,2}\/\d{1,2}$/', $number)) {
                 throw new \Exception('La fecha debe tener el formato dd/mm', 403);
             }
 
@@ -76,7 +77,7 @@ class WinningNumberService
             $number = implode('/', $elements);
         } else {
             if ($number > $settings['max'] || $number < $settings['min']) {
-                throw new \Exception('El dígito debe estar entre ' . $settings['min'] . ' y ' . $settings['max'], 403);
+                throw new \Exception('El dígito debe estar entre '.$settings['min'].' y '.$settings['max'], 403);
             }
 
             $number = str_pad($number, strlen($settings['max']), '0', STR_PAD_LEFT);

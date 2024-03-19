@@ -18,6 +18,7 @@ class TransactionService
     private $currentTime;
 
     private TransactionRepository $transactionRepository;
+
     private ArchingRepository $archingRepository;
 
     public function __construct()
@@ -42,12 +43,12 @@ class TransactionService
         $models = [
             [
                 'id' => auth()->id(),
-                'type' => 'user'
+                'type' => 'user',
             ],
             [
                 'id' => $ownerId,
-                'type' => 'team'
-            ]
+                'type' => 'team',
+            ],
         ];
 
         //CHECK IF THE TIME IS BLOCKED
@@ -114,7 +115,7 @@ class TransactionService
     public function checkIndividualLimit($amount, $limit)
     {
         if ($amount > $limit) {
-            abort(422, 'El monto máximo es C$' . $limit);
+            abort(422, 'El monto máximo es C$'.$limit);
         }
     }
 
@@ -126,13 +127,13 @@ class TransactionService
 
         if ($transactionsTotalAmount + $amount > $limit) {
             $availableAmount = $limit - $transactionsTotalAmount;
-            abort(422, "El monto " . ($type == 'team' ? 'global' : 'personal') . " disponible para {$request['digit']} es C$" . $availableAmount);
+            abort(422, 'El monto '.($type == 'team' ? 'global' : 'personal')." disponible para {$request['digit']} es C$".$availableAmount);
         }
     }
 
     public function destroy($transaction)
     {
-        if (!$transaction->created_at->isToday()) {
+        if (! $transaction->created_at->isToday()) {
             abort(403, 'No puedes eliminar una transacción de otro día');
         }
 
@@ -151,7 +152,7 @@ class TransactionService
             abort(404, 'No se encontraron transacciones');
         }
 
-        if (!$transactions->first()->created_at->isToday()) {
+        if (! $transactions->first()->created_at->isToday()) {
             abort(403, 'No puedes eliminar un recibo de otro día');
         }
 
@@ -178,30 +179,33 @@ class TransactionService
     {
         $isSeller = auth()->user()->isSeller();
 
-        if ($isSeller)
+        if ($isSeller) {
             $user_id = auth()->id();
-        else
+        } else {
             $user_id = $user;
+        }
 
         $invoices = $this->transactionRepository->getInvoicesPerDay($request, $user_id);
 
-        if ($user_id)
+        if ($user_id) {
             $total = $this->transactionRepository->getUserTransactionsTotalPerDay($user_id, $request);
-        else
+        } else {
             $total = $this->transactionRepository->getTeamTransactionsTotalPerDay($request);
+        }
 
         $users = User::whereIn('id', $invoices->pluck('user_id')->unique())
             ->withTrashed()
             ->get(['id', 'name']);
 
         $invoices->transform(function ($invoice) use ($users, $isSeller) {
-            $invoice->user = $users->where('id', $invoice->user_id)->value('name') . ($isSeller ? ' (Tú)' : '');
+            $invoice->user = $users->where('id', $invoice->user_id)->value('name').($isSeller ? ' (Tú)' : '');
+
             return $invoice;
         });
 
         return [
             'invoices' => $invoices,
-            'total' => 'C$ ' . number_format($total)
+            'total' => 'C$ '.number_format($total),
         ];
     }
 
@@ -222,7 +226,7 @@ class TransactionService
             'company' => auth()->user()->getCompanyName(),
             'transactions' => $transactions,
             'client' => $transactions->value('client'),
-            'datetime' => $transactions->first()->created_at->format('d/m/y g:i A')
+            'datetime' => $transactions->first()->created_at->format('d/m/y g:i A'),
         ];
     }
 
@@ -234,7 +238,7 @@ class TransactionService
 
         return [
             'transactions' => $this->transactionRepository->getWinners($request, $raffle, $user_id),
-            'message' => isset($request['date']) ? 'Ganadores del ' . Carbon::parse($request['date'])->format('d/m/y') : 'Ganadores de hoy'
+            'message' => isset($request['date']) ? 'Ganadores del '.Carbon::parse($request['date'])->format('d/m/y') : 'Ganadores de hoy',
         ];
     }
 
@@ -245,10 +249,10 @@ class TransactionService
 
     public function getSalesReport(array $request, $raffle_id): array
     {
-        if (!isset($request['hour']) || !$raffle_id) {
+        if (! isset($request['hour']) || ! $raffle_id) {
             return [
                 'sales' => [],
-                'total' => 'C$0'
+                'total' => 'C$0',
             ];
         }
 
@@ -260,7 +264,7 @@ class TransactionService
 
         return [
             'sales' => $data,
-            'total' => 'C$' . number_format($data->sum('total'))
+            'total' => 'C$'.number_format($data->sum('total')),
         ];
     }
 
@@ -299,7 +303,7 @@ class TransactionService
         $resume = $this->transactionRepository->getWeekTransactionResume($week, $user_id);
         $resume_archings = $this->archingRepository->getWeekArchingResume($user_id, $week);
 
-        return (object)[
+        return (object) [
             'week' => $week,
             'week_label' => self::getWeekLabel(Carbon::now()->startOfYear()->startOfWeek(), $week),
             'income' => $resume?->income,
@@ -311,6 +315,6 @@ class TransactionService
 
     private function getWeekLabel($startDate, $week)
     {
-        return "Semana: " . $startDate->copy()->addWeeks($week - 1)->format('d/m/y') . ' - ' . $startDate->copy()->addWeeks($week - 1)->addDays(6)->format('d/m/y');
+        return 'Semana: '.$startDate->copy()->addWeeks($week - 1)->format('d/m/y').' - '.$startDate->copy()->addWeeks($week - 1)->addDays(6)->format('d/m/y');
     }
 }

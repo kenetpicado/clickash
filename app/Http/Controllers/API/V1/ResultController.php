@@ -28,6 +28,6 @@ class ResultController extends Controller
     {
         $data = $this->transactionService->getWinners($request->all(), $raffle);
 
-        return TransactionResource::collection($data['transactions'])->additional(['message' => $data['message'],]);
+        return TransactionResource::collection($data['transactions'])->additional(['message' => $data['message']]);
     }
 }

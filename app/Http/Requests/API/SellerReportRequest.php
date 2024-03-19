@@ -24,7 +24,7 @@ class SellerReportRequest extends FormRequest
         return [
             'raffle_id' => ['required', 'integer'],
             'hour' => ['required', 'date_format:H:i:s'],
-            'date' => ['nullable', 'date']
+            'date' => ['nullable', 'date'],
         ];
     }
 }

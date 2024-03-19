@@ -17,24 +17,27 @@ class RaffleService
 
     public function getRafflesWithAvailability()
     {
-        if (!auth()->user()->isEnabled())
+        if (! auth()->user()->isEnabled()) {
             return [];
+        }
 
         return $this->raffleRepository->getRafflesWithAvailability(auth()->user()->getOwnerId());
     }
 
     public function getRaffleWithAvailability($raffle_id)
     {
-        if (!auth()->user()->isEnabled())
+        if (! auth()->user()->isEnabled()) {
             return [];
+        }
 
         return $this->raffleRepository->getRaffleWithAvailability(auth()->user()->getOwnerId(), $raffle_id);
     }
 
     public function getAssignedRaffles()
     {
-        if (!auth()->user()->isEnabled())
+        if (! auth()->user()->isEnabled()) {
             return [];
+        }
 
         return $this->raffleRepository->getAssignedRaffles(auth()->user()->getOwnerId());
     }
@@ -46,8 +49,9 @@ class RaffleService
 
     public function getAssignedRafflesWithAvailability($user_id)
     {
-        if (!auth()->user()->isEnabled())
+        if (! auth()->user()->isEnabled()) {
             return [];
+        }
 
         return $this->raffleRepository->getAssignedRafflesWithAvailability($user_id);
     }
@@ -70,7 +74,7 @@ class RaffleService
     public function getResults(array $request)
     {
         return [
-            'message' => isset($request['date']) ? 'Resultados del ' . Carbon::parse($request['date'])->format('m/d/y') : 'Resultados de hoy',
+            'message' => isset($request['date']) ? 'Resultados del '.Carbon::parse($request['date'])->format('m/d/y') : 'Resultados de hoy',
             'results' => $this->raffleRepository->getRaffleResults(auth()->user()->getOwnerId(), $request),
         ];
     }

@@ -32,7 +32,7 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.unique' => 'Este correo no esta disponible'
+            'email.unique' => 'Este correo no esta disponible',
         ];
     }
 }

@@ -5,13 +5,9 @@ namespace App\Http\Controllers\Clientarea;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RaffleReportListResource;
 use App\Http\Resources\SalesReportResource;
-use App\Models\Raffle;
-use App\Repositories\AvailabilityRepository;
-use App\Repositories\TransactionRepository;
 use App\Services\RaffleService;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class RaffleReportController extends Controller
 {
@@ -28,7 +24,7 @@ class RaffleReportController extends Controller
         return inertia('Clientarea/Raffle/Report', [
             'raffle' => RaffleReportListResource::make($this->raffleService->getRaffleWithAvailability($raffle))->resolve(),
             'sales' => SalesReportResource::collection($data['sales'])->resolve(),
-            'total' => $data['total']
+            'total' => $data['total'],
         ]);
     }
 }

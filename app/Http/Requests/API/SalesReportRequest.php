@@ -24,7 +24,7 @@ class SalesReportRequest extends FormRequest
         return [
             'hour' => 'required|date_format:H:i:s',
             'date' => 'nullable',
-            'user_id' => 'nullable'
+            'user_id' => 'nullable',
         ];
     }
 }

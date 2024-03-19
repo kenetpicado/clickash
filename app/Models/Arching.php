@@ -15,7 +15,7 @@ class Arching extends Model
         'seller_id',
         'user_id',
         'current_balance',
-        'created_at'
+        'created_at',
     ];
 
     public function seller()

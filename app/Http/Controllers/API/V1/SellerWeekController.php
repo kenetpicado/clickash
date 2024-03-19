@@ -13,7 +13,7 @@ class SellerWeekController extends Controller
 {
     public function __construct(
         private readonly TransactionService $transactionService,
-        private readonly ArchingService     $archingService
+        private readonly ArchingService $archingService
     ) {
     }
 
@@ -31,7 +31,7 @@ class SellerWeekController extends Controller
         try {
             return WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller, $week))
                 ->additional([
-                    'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($seller, $week))
+                    'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($seller, $week)),
                 ]);
         } catch (\Exception $e) {
             abort($e->getCode(), $e->getMessage());

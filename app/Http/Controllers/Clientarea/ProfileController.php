@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Clientarea;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\ProfileRequest;
-use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {

@@ -33,7 +33,7 @@ class SellerArchingController extends Controller
             'seller' => $seller,
             'week' => $week,
             'movements' => ArchingResource::collection($this->archingService->getArchingsOfWeek($seller->id, $week)),
-            'week_resume' => WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller->id, $week))
+            'week_resume' => WeeklyTransactionResource::make($this->transactionService->getWeekTransactionResume($seller->id, $week)),
         ]);
     }
 

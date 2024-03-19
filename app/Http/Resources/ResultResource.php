@@ -18,7 +18,7 @@ class ResultResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'results' => $this->winningNumbers->map(fn ($item) => Carbon::parse($item->hour)->format('g:i A: ') . $item->number)
+            'results' => $this->winningNumbers->map(fn ($item) => Carbon::parse($item->hour)->format('g:i A: ').$item->number),
         ];
     }
 }
