@@ -77,11 +77,8 @@ function getClass(fullRoute) {
         <aside class="w-72 min-h-screen p-0 m-0 bg-white flex flex-col border hidden lg:block">
             <div class="h-full px-3 py-4 overflow-y-auto">
                 <div class="flex flex-col items-center my-6">
-                    <div class="h-14 w-14">
-                        <img class="h-full w-full" src="/logo1x1.png" alt="" />
-                    </div>
-                    <Link :href="route('clientarea.raffles.index')" class="font-bold text-lg mt-2 text-gray-500">
-                    ClickAsh
+                    <Link :href="route('clientarea.raffles.index')" class="h-20 w-20">
+                        <img class="h-full w-full rounded-xl" src="/CA-LogoText.jpg" alt="" />
                     </Link>
                 </div>
                 <ul class="space-y-1">

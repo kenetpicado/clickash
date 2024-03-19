@@ -10,10 +10,14 @@
     <meta name="theme-color" content="#2a6049">
 
     {{-- favicon --}}
-    <link rel="icon" href="{{ asset('/favicon.png') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('/Profile-Color.jpg') }}" type="image/x-icon" />
     <meta name="title" content="Inicio - {{ config('app.name', 'ClickAsh') }}" />
+    <meta name="author" content="ClickAsh" />
+
     <meta name="description"
         content="ClickAsh es una innovadora aplicación diseñada para facilitar la venta de rifas. Con esta plataforma, podrás supervisar de manera efectiva cada etapa del proceso de venta realizado por tus vendedores, obteniendo un control total sobre las transacciones y gestionando las cajas en tiempo real para garantizar una operación fluida y eficiente. Con ClickAsh, optimiza la administración de tu negocio y disfruta de una experiencia de gestión integral y en tiempo real. " />
+
+    <meta name="keywords" content="clickash, rifa, rifas, venta, ventas, venta de rifas" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -22,6 +26,7 @@
     <meta property="og:description"
         content="ClickAsh es una innovadora aplicación diseñada para facilitar la venta de rifas. Con esta plataforma, podrás supervisar de manera efectiva cada etapa del proceso de venta realizado por tus vendedores, obteniendo un control total sobre las transacciones y gestionando las cajas en tiempo real para garantizar una operación fluida y eficiente. Con ClickAsh, optimiza la administración de tu negocio y disfruta de una experiencia de gestión integral y en tiempo real. " />
     <meta property="og:image" content="{{ asset('/favicon.png') }}" />
+    <meta property="og:site_name" content="{{ config('app.name', 'ClickAsh') }}" />
 
     <!-- Scripts -->
     @routes
