@@ -10,13 +10,11 @@ use App\Http\Controllers\API\V1\RaffleBlockedNumberController;
 use App\Http\Controllers\API\V1\RaffleController;
 use App\Http\Controllers\API\V1\RaffleHourController;
 use App\Http\Controllers\API\V1\RaffleReportListController;
-use App\Http\Controllers\API\V1\RaffleSettingController;
 use App\Http\Controllers\API\V1\RaffleWinningNumberController;
 use App\Http\Controllers\API\V1\RegisterController;
 use App\Http\Controllers\API\V1\ResultController;
 use App\Http\Controllers\API\V1\SellerArchingController;
 use App\Http\Controllers\API\V1\SellerController;
-use App\Http\Controllers\API\V1\SellerReportController;
 use App\Http\Controllers\API\V1\SellerWeekController;
 use App\Http\Controllers\API\V1\TermAndConditionController;
 use App\Http\Controllers\API\V1\ToggleStatusController;
@@ -60,10 +58,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('raffles/{raffle}', [RaffleController::class, 'show'])
             ->name('raffles.show');
 
-        //TODO: ELIMINAR EN LA PROXIMA ACTUALIZACION. YA NO EXISTE LA RUTA EN EL APP
-        Route::get('raffles/{raffle}/settings', RaffleSettingController::class)
-            ->name('raffles.settings');
-
         Route::apiResource('invoices', InvoiceController::class)
             ->only(['index', 'show', 'destroy']);
 
@@ -98,10 +92,6 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::apiResource('sellers', SellerController::class)
                 ->except(['show']);
-
-            // TODO: DEBE ELIMINARSE: AUN NO ES SEGURO ELIMINAR
-            Route::get('sellers/{seller}/reports', SellerReportController::class)
-                ->name('sellers.reports.index');
 
             Route::put('raffles/{raffle}', [RaffleController::class, 'update'])
                 ->name('raffles.update');

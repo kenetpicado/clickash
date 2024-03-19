@@ -111,19 +111,6 @@ class TransactionRepository
             ->update(['status' => Transaction::SOLD]);
     }
 
-    public function getUserSalesReport($user_id, $raffle_id, $request)
-    {
-        return Transaction::query()
-            ->where('user_id', $user_id)
-            ->where('raffle_id', $raffle_id)
-            ->where('hour', $request['hour'])
-            ->day($request)
-            ->selectRaw('digit, sum(amount) as total')
-            ->groupBy('digit')
-            ->orderBy('digit')
-            ->get();
-    }
-
     public function getSalesReport(array $request, $raffle_id, $user_id = null)
     {
         $query = $user_id
