@@ -34,7 +34,8 @@
             <Invoice :invoice="i" v-for="i in invoices.data" :key="i.invoice_number" />
         </div>
 
-        <div v-if="invoices.links?.next" class="w-full text-center text-green-pea-400" @click="loadNextPage" role="button">
+        <div v-if="invoices.links?.next" class="w-full text-center text-green-pea-400" @click="loadNextPage"
+            role="button">
             Cargar más
         </div>
 
@@ -50,7 +51,7 @@ import { computed, reactive, watch } from 'vue';
 import InputForm from '@/Components/Form/InputForm.vue';
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
 import { useInvoice } from '@/Composables/useInvoice.js';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
     seller: {
@@ -72,29 +73,42 @@ const stats = computed(() => {
 const { invoices, getInvoices, isLoading } = useInvoice();
 
 const queryParams = reactive({
-    date: '',
-    trashed: false,
+    date: localStorage.getItem('invoice_date') || '',
+    trashed: localStorage.getItem('invoice_trashed') === 'true',
 });
 
-watch(() => queryParams, () => onGetInvoices(), { deep: true });
+const page = ref(null);
+
+watch(() => queryParams, () => {
+    page.value = null;
+
+    for (const key in queryParams) {
+        localStorage.setItem('invoice_' + key, queryParams[key]);
+    }
+
+    onGetInvoices()
+}, { deep: true });
+
+watch(() => page.value, () => {
+    onGetInvoices();
+});
 
 onMounted(() => {
     onGetInvoices();
 })
 
-function onGetInvoices(extraParams = {}, push = false) {
-    let params = { ...queryParams, ...extraParams };
+function onGetInvoices() {
+    let params = { ...queryParams, ...{ page: page.value } };
 
     for (const key in params) {
         if (!params[key]) delete params[key];
     }
 
-    getInvoices({ user_id: props.seller.id, ...params }, push);
+    getInvoices({ user_id: props.seller.id, ...params }, params.page > 1);
 }
 
 function loadNextPage() {
-    let page = invoices.value.links.next.split('page=')[1];
-    onGetInvoices({ page }, true);
+    page.value = invoices.value.links.next.split('page=')[1];
 }
 
 </script>

@@ -20,7 +20,7 @@ class InvoiceResource extends JsonResource
             'raffle' => $this->raffle,
             'user' => $this->user,
             'client' => $this->client,
-            'status' => $this->deleted_at ? 'ELIMINADO: '.$this->deleted_at->format('d/m/y g:s A') : 'VENDIDO',
+            'status' => $this->deleted_at ? 'ELIMINADO: '.$this->deleted_at->format('g:s A') : 'VENDIDO',
             'total' => 'C$ '.number_format($this->total),
         ];
     }
