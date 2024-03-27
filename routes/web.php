@@ -13,7 +13,6 @@ use App\Http\Controllers\Clientarea\SellerArchingController;
 use App\Http\Controllers\Clientarea\SellerBlockedNumberController;
 use App\Http\Controllers\Clientarea\SellerController;
 use App\Http\Controllers\Clientarea\SellerReportController;
-use App\Http\Controllers\Clientarea\ToggleStatusController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\RaffleCloneController;
 use App\Http\Controllers\Dashboard\RaffleController;
@@ -79,8 +78,6 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
 
         Route::resource('sellers.blocked-numbers', SellerBlockedNumberController::class)
             ->only(['index', 'store', 'destroy']);
-
-        Route::put('toggle-status/{seller}', ToggleStatusController::class)->name('toggle-status');
 
         Route::resource('raffles', ClientareaRaffleController::class)
             ->only(['index', 'show', 'update']);
