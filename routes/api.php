@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
         ->name('login');
 
@@ -88,7 +88,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         // Solo los dueños pueden acceder a estas rutas
         Route::group(['middleware' => ['role:owner']], function () {
-            Route::put('toggle-status/{seller}', ToggleStatusController::class);
+            Route::put('toggle-status/{seller}', ToggleStatusController::class)
+                ->name('toggle-status');
 
             Route::apiResource('sellers', SellerController::class)
                 ->except(['show']);

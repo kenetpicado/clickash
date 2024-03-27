@@ -9,7 +9,7 @@
             </button>
         </template>
 
-        <SellerTab :sellers="sellers" :triggerNew="triggerNew" />
+        <SellerTab :triggerNew="triggerNew" />
 
     </ClientareaLayout>
 </template>
@@ -18,13 +18,6 @@
 import SellerTab from '@/Components/SellerTab.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import { ref } from 'vue';
-
-defineProps({
-    sellers: {
-        type: Object,
-        required: true,
-    },
-});
 
 const triggerNew = ref(false)
 

@@ -8,7 +8,7 @@
                 <div class="text-xs w-full h-full">
                     <div class="flex justify-between w-full">
                         <span class="">
-                            {{  i.online }}
+                            {{ i.online }}
                         </span>
 
                         <Dropdown>
@@ -24,7 +24,7 @@
                                 <DropdownItem :href="route('clientarea.sellers.blocked-numbers.index', i.id)"
                                     title="Dígitos bloqueados" :icon="IconLock" />
                                 <DropdownItem @click="edit(i)" title="Editar" :icon="IconEdit" />
-                                <DropdownItem @click="blockSeller(i.id)" :title="status[i.status]" :icon="IconLock" />
+                                <DropdownItem @click="toggleStatus(i.id)" :title="status[i.status]" :icon="IconLock" />
                                 <DropdownItem @click="destroy(i.id)" title="Eliminar" :icon="IconTrash" />
                             </div>
                         </Dropdown>
@@ -62,47 +62,36 @@ import { ref, watch } from 'vue';
 import DropdownItem from './DropdownItem.vue';
 import Dropdown from './Dropdown.vue';
 
-
 const props = defineProps({
-    sellers: {
-        type: Object,
-        required: true
-    },
     triggerNew: {
         type: Boolean,
         required: true
     }
 })
 
+const { store, update, form, toggleStatus, destroy, sellers, getSellers, resetForm } = useSeller();
 const openModal = ref(false)
 const isNew = ref(true)
-const { store, update, form, toggleStatus, destroy } = useSeller();
-
-const blockSeller = (id) => {
-    form.id = id
-    toggleStatus()
-}
 
 const onSubmit = () => {
-    if (isNew.value) {
+    if (isNew.value)
         store(resetValues);
-    } else {
+    else
         update(resetValues);
-    }
 }
 
 const resetValues = () => {
-    form.reset()
+    resetForm()
     isNew.value = true
     openModal.value = false
 }
 
 const edit = (data) => {
-    isNew.value = false
     form.id = data.id,
-        form.name = data.name,
-        form.email = data.email,
-        openModal.value = true
+    form.name = data.name,
+    form.email = data.email,
+    isNew.value = false
+    openModal.value = true
 }
 
 watch(() => props.triggerNew, (value) => {
@@ -114,5 +103,7 @@ const status = {
     enabled: 'Bloquear',
     disabled: 'Desbloquear'
 }
+
+getSellers()
 
 </script>

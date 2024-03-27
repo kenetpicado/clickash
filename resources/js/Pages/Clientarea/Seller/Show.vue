@@ -25,14 +25,14 @@
             </div>
         </SwitchGroup>
 
-        <div v-if="invoices.data.length == 0" class="w-full text-center text-gray-400">
+        <div v-if="invoices.data?.length == 0" class="w-full text-center text-gray-400">
             No hay transacciones
         </div>
         <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             <Invoice :invoice="i" v-for="i in invoices.data" :key="i.invoice_number" />
         </div>
 
-        <ThePaginator :links="invoices.meta.links" />
+        <ThePaginator :links="invoices.meta?.links" />
     </ClientareaLayout>
 </template>
 
@@ -44,20 +44,13 @@ import Invoice from '@/Components/Invoice.vue';
 import { IconCurrencyDollar } from '@tabler/icons-vue';
 import { computed, reactive, watch } from 'vue';
 import InputForm from '@/Components/Form/InputForm.vue';
-import { router } from '@inertiajs/vue3';
 import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue'
+import { useInvoice } from '@/Composables/useInvoice.js';
+import { onMounted } from 'vue';
 
 const props = defineProps({
     seller: {
         type: Object,
-        required: true,
-    },
-    invoices: {
-        type: Object,
-        required: true,
-    },
-    total: {
-        type: [Number, String],
         required: true,
     },
 });
@@ -66,32 +59,33 @@ const stats = computed(() => {
     return [
         {
             title: 'Total',
-            value: props.total.toLocaleString(),
+            value: invoices.value?.total?.toLocaleString(),
             icon: IconCurrencyDollar,
         },
     ]
 })
 
-const urlParams = new URLSearchParams(window.location.search);
+const { invoices, getInvoices } = useInvoice();
 
 const queryParams = reactive({
-    date: urlParams.get('date') ?? '',
-    trashed: urlParams.get('trashed') === 'true',
+    date: '',
+    trashed: false,
 });
 
-watch(() => queryParams, () => {
+watch(() => queryParams, onGetInvoices, { deep: true });
+
+onMounted(() => {
+    onGetInvoices();
+})
+
+function onGetInvoices() {
     let params = { ...queryParams };
 
     for (const key in params) {
         if (!params[key]) delete params[key];
     }
 
-    router.get(route('clientarea.sellers.show', props.seller.id), params, {
-        preserveState: true,
-        preserveScroll: true,
-        only: ['invoices', 'total'],
-        replace: true,
-    });
-}, { deep: true });
+    getInvoices({ user_id: props.seller.id, ...params });
+}
 
 </script>
