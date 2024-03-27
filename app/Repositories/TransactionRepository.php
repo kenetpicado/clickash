@@ -48,7 +48,7 @@ class TransactionRepository
             ->trashed($request)
             ->whereNotNull('invoice_number')
             ->when(isset($request['raffle_id']), fn ($query) => $query->where('raffle_id', $request['raffle_id']))
-            ->paginate();
+            ->paginate(2);
     }
 
     public function getTeamTransactionsTotalPerDay($request = [])

@@ -1,5 +1,7 @@
 <template>
     <ClientareaLayout title="Ventas">
+        <loading :active="isLoading" :is-full-page="true" />
+
         <template #header>
             <span class="title">
                 {{ seller.name }}
@@ -32,13 +34,15 @@
             <Invoice :invoice="i" v-for="i in invoices.data" :key="i.invoice_number" />
         </div>
 
-        <ThePaginator :links="invoices.meta?.links" />
+        <div v-if="invoices.links?.next" class="w-full text-center text-green-pea-400" @click="loadNextPage" role="button">
+            Cargar más
+        </div>
+
     </ClientareaLayout>
 </template>
 
 <script setup>
 import StatCard from '@/Components/StatCard.vue';
-import ThePaginator from '@/Components/ThePaginator.vue';
 import ClientareaLayout from '@/Layouts/ClientareaLayout.vue';
 import Invoice from '@/Components/Invoice.vue';
 import { IconCurrencyDollar } from '@tabler/icons-vue';
@@ -65,27 +69,32 @@ const stats = computed(() => {
     ]
 })
 
-const { invoices, getInvoices } = useInvoice();
+const { invoices, getInvoices, isLoading } = useInvoice();
 
 const queryParams = reactive({
     date: '',
     trashed: false,
 });
 
-watch(() => queryParams, onGetInvoices, { deep: true });
+watch(() => queryParams, () => onGetInvoices(), { deep: true });
 
 onMounted(() => {
     onGetInvoices();
 })
 
-function onGetInvoices() {
-    let params = { ...queryParams };
+function onGetInvoices(extraParams = {}, push = false) {
+    let params = { ...queryParams, ...extraParams };
 
     for (const key in params) {
         if (!params[key]) delete params[key];
     }
 
-    getInvoices({ user_id: props.seller.id, ...params });
+    getInvoices({ user_id: props.seller.id, ...params }, push);
+}
+
+function loadNextPage() {
+    let page = invoices.value.links.next.split('page=')[1];
+    onGetInvoices({ page }, true);
 }
 
 </script>
