@@ -66,7 +66,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
             ->only(['index', 'update']);
 
         Route::resource('sellers', SellerController::class)
-            ->except(['edit', 'create']);
+            ->only(['index', 'show']);
 
         Route::resource('sellers.archings', SellerArchingController::class)
             ->only(['index', 'store', 'destroy']);
