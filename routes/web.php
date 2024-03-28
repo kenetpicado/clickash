@@ -28,6 +28,10 @@ Route::get('/', HomeController::class)
     ->middleware(['auth:sanctum'])
     ->name('home');
 
+Route::resource('profile', ProfileController::class)
+    ->middleware(['auth:sanctum', 'online'])
+    ->only(['index']);
+
 Route::middleware(['auth:sanctum', 'online', 'role:root'])
     ->prefix('dashboard')
     ->name('dashboard.')
@@ -62,7 +66,7 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
             ->name('index');
 
         Route::resource('profile', ClientareaProfileController::class)
-            ->only(['index', 'update']);
+            ->only(['index']);
 
         Route::resource('sellers', SellerController::class)
             ->only(['index', 'show']);
@@ -100,11 +104,6 @@ Route::middleware(['auth:sanctum', 'online', 'role:owner', 'isMySeller'])
         Route::resource('results', ResultController::class)
             ->parameters(['results' => 'raffle'])
             ->only(['index', 'show']);
-    });
-
-Route::middleware(['auth:sanctum', 'online'])
-    ->group(function () {
-        Route::resource('profile', ProfileController::class)->only(['index', 'update']);
     });
 
 Route::get('test', function () {

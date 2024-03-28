@@ -42,15 +42,13 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
     Route::get('terms-and-conditions', TermAndConditionController::class)
         ->name('terms-and-conditions');
 
+    Route::apiResource('profile', ProfileController::class)
+        ->middleware(['auth:sanctum', 'online'])
+        ->only(['index', 'update']);
+
     Route::middleware(['auth:sanctum', 'online', 'role:owner|seller', 'isMySeller'])->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
-
-        Route::get('profile', [ProfileController::class, 'index'])
-            ->name('profile.index');
-
-        Route::put('profile', [ProfileController::class, 'update'])
-            ->name('profile.update');
 
         Route::get('raffles', [RaffleController::class, 'index'])
             ->name('raffles.index');
